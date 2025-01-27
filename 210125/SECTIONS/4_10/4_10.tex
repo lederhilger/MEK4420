@@ -1,0 +1,48 @@
+The class of \textsc{Green} functions is central to this course on marine hydrodynamics.
+From the theory of partial differential equaitons, we recall that for the \textsc{Poisson} equaiton
+\[
+    \nabla^2 \phi(\xvec) = f(\xvec) \quad \text{on } \Omega,
+\]
+the solution is given by the convolution
+\[
+    \phi(\xvec) = \green \ast f = \int_{\Omega} \green{(\xvec, \bm{\xi})} f(\bm{\xi}) \,\dee\bm{\xi},
+\]
+where
+\[
+    \nabla^2 \green(\xvec, \bm{\xi}) = \delta(\xvec - \bm{\xi}).
+\]
+For the purposes of this part of the course, the \textsc{Green} function for the \textsc{Laplace} operator on the d-sphere is the \textsc{Newton} kernel
+\[
+    \green(\xvec) = \begin{cases}
+        \ln{(\xvec)}, & d = 2\\
+        \xvec^{2-d}, & d \neq 2
+    \end{cases}.
+\]
+
+\subsubsection*{Example: \emph{Circle}}
+Consider $r^2 = {(x - \zhe)}^2 + {(y - \che)}^2$, and the volume flux through the circle centered at the origin of radius $R_0$ of the source function $\phi(r) = \ln{r}$.
+The volume flux is given by
+\[
+    \int_{\partial\Omega} \uvec \cdot \nhat \,\dee S, \qquad \nhat = \frac{\xvec}{r}.
+\]
+We have that $\nabla\phi = \uvec$, meaning we have that
+\[
+    \uvec = \frac{x - \zhe}{r^2}\ihat + \frac{y - \che}{r^2}\jhat.
+\]
+Since the circle is centered at the origin, $\zhe = 0$ and $\che = 0$, meaning $\uvec = r^{-2}\xvec$.
+We parametrize the circle through the differential element $\dee S = R_0 \dee\theta$, and evaluate the integrand at $r = R_0$,
+\[
+    \int_{0}^{2\pi} \xvec\cdot\xvec r^{-3} R_0 \,\dee\theta = \int_{0}^{2\pi}\,\dee\theta = 2\pi.
+\]
+
+\subsubsection*{Example: \emph{Sphere}}
+Consider now $r^2 = {(x - \zhe)}^2 + {(y - \che)}^2 + {(z - \ze)}^2$ and the sphere of radius $R_0$ centered at the origin, and the volume flux through its surface by the source function $\phi(r) = \sfrac{1}{r}$.
+We have that
+\[
+    \uvec = \nabla\phi = -\frac{\xvec}{r}, \qquad \nhat = \frac{\xvec}{r}.
+\]
+The differential surface element on the sphere is $\dee S = {R_0}^2 \sin{\theta} \,\dee\varphi\dee\theta$, where $\theta$ and $\varphi$ are the polar and azimuthal variables, respectively.
+Now the volume flux is given by
+\[
+    -\frac{1}{{R_0}^2}\int_{\partial\Omega} \,\dee S = -\int_{0}^{\pi} \int_{0}^{2\pi} \sin{\theta}\,\dee\varphi\dee\theta = -4\pi.
+\]

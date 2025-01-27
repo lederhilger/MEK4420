@@ -1,0 +1,63 @@
+Because of incompressibility, an irrotational flow can be described simply by the \textsc{Laplace} equation
+\[
+    \nabla^2 \phi = 0 \quad \text{on } \Omega,
+\]
+such that $\nabla\phi = \uvec$.
+We consider the following expression equality.
+\[
+    \nabla\cdot(\phi_1 \nabla\phi_2 - \phi_2 \nabla\phi_1) = 0.
+\]
+By the product rule, we have that the left-hand side of the equality is equal to
+\[
+    \nabla\phi_1 \cdot \nabla\phi_2 + \phi_1 \nabla^2 \phi_2 - \nabla\phi_2 \cdot \nabla\phi_1 + \phi_2 \nabla^2 \phi_1,
+\]
+which is indeed equal to zero by virtue of the potentials being harmonic.
+Considering now the case $\phi_2 = \green$, we may integrate the above equation
+\[
+    \int_{\Omega} \nabla\cdot(\phi\nabla\green - \green\nabla\phi) \,\dee V = 0,
+\]
+which by \textsc{Gau\ss}' divergence theorem leads to
+\[
+    \int_{\partial\Omega} (\phi\partial_n \green - \green \partial_n \phi) \,\dee S = 0.
+\]
+As will be shown later on in the course, we want to integrate over surfaces where the potential is singular.
+The divergence theorem does not hold in such cases, so the singularity must be removed.
+This can be remedied by considering a small circle around the singularity situated at $\bzhe$ of radius $\epsilon$.
+\begin{figure}[H]
+    \centering
+    \input{removed_singularity.tex}
+\end{figure}
+
+\noindent We may then integrate about this contour to account for the singularity, and ensuring the divergence theorem holds.
+\[
+    \int_{\partial\Omega_{\epsilon}} (\phi \partial_n \green - \green \partial_n \phi) \,\dee S, \quad \nhat = -\frac{\xvec}{r}.
+\]
+In two dimensions, the \textsc{Green} function is the logarithm, and we calculate that $\partial_n \ln{r} = -\epsilon^{-1}$.
+The differential line element may be discretized as $\dee S = \epsilon \dee\theta$, and for the limiting case of an evanescent $\epsilon$, we may approximate the potential by its \textsc{Taylor} expansion as follows.
+\[
+    \phi(\xvec) = \phi(\bzhe) + (\xvec - \bzhe)\cdot\nabla\phi(\bzhe) + \cdots = \phi(\bzhe) + O(\epsilon),
+\]
+since we know $\xvec - \bzhe \leq \epsilon$.
+The above integral is then approximated to the first order by
+\[
+    -\int_{0}^{2\pi} (\phi(\bzhe) + \epsilon \ln{\epsilon} \partial_n \phi) \,\dee\theta,
+\]
+for which we may consider the limiting case, yielding
+\[
+    \int_{\partial\Omega_{\epsilon}} (\phi \partial_n \green - \green \partial_n \phi) \,\dee S \approx -2\pi\phi(\bzhe).
+\]
+Then to the first order, we have in general that for areas of integration enclosing a singularity,
+\[
+    \int_{\partial\Omega} (\phi \partial_n \green - \green \partial_n \phi) \,\dee S = 2\pi\phi(\bzhe).
+\]
+Should the singularity lie on the boundary, the integration path is a semicircle.
+\begin{figure}[H]
+    \centering
+    \input{boundary_singularity.tex}
+\end{figure}
+
+\noindent When the singularity is at the boundary like this, the resulting contribution to the integral is consequently halved:
+\[
+    \int_{\partial\Omega} (\phi \partial_n \green - \green \partial_n \phi) \,\dee S = \pi\phi(\bzhe).
+\]
+When the singularity is outside the domain of integration, we have seen that the integral is equal to zero.
