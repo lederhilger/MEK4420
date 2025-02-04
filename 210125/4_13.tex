@@ -1,0 +1,32 @@
+Linearizing the pressure initially instead, such that $p \approx -\varrho \deet\phi = -\varrho\phi\deet U$, we have that the force is simply
+\[
+    \bm{F} = -\varrho \deet U \int_{\partial\Omega} \phi\nhat \,\dee S,
+\]
+and the moment
+\[
+    \bm{M} = -\varrho \deet U \int_{\partial\Omega} \phi \xvec\times\nhat \,\dee S.
+\]
+Using \textsc{Newton}'s second law of motion, we express the force in terms of mass and acceleration,
+\[
+    F_i = -m_{1i} \deet U, \qquad m_{1i} = \varrho\int_{\partial\Omega} \phi n_i \,\dee S.
+\]
+A body moving with velocity $\bm{U} = U_1 \ihat + U_2 \jhat$ and angular velocity $\bm{\Omega} = U_6 \khat$ may have its potential expressed as a superposition
+\[
+    \Phi = U_1 \phi_1 + U_2 \phi_2 + U_6 \phi_6
+\]
+Similarly to the linearization above, we find that in general, the force may be expressed
+\[
+    F_i = -\sum_{j \in \{1,2,6\}} m_{ji} \deet U_j, \qquad m_{ji} = \varrho \int_{\partial\Omega} \phi_j n_i \,\dee S,
+\]
+where $n_i = \partial_{\nhat} \phi_i$, and $m_{ji}$ is the added mass tensor.
+
+\subsubsection*{Example: \emph{Added mass of circular cross-section}}
+We wish to calculate the added mass coefficient of a circle of radius $R_0$ moving according to the potential
+\[
+    \phi_1 = -{R_0}^2 \deex\ln{r} = -\frac{x{R_0}^2}{r^2}.
+\]
+We parametrize the circle with $\dee S = R_0 \,\dee\theta$, and consider the normal vector corresponding to translation along $\ihat$, $n_1 = \nhat\cdot\ihat = -\sfrac{x}{r}$, and find that
+\[
+    m_{11} = \varrho R_0 \int_{0}^{2\pi} \left( -\frac{x {R_0}^2}{r^2} \right) \left( -\frac{x}{r} \right) \,\dee\theta = \varrho \pi {R_0}^2.
+\]
+We see that the added mass corresponds to the fluid displaced by the surface meeting the fluid.
