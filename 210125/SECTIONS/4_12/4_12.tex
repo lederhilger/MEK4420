@@ -5,7 +5,7 @@
 We consider a submerged body in an unbounded fluid moving with velocity $\bm{U} = U(t)\ihat$.
 The fluid is described by a potential $\Phi(\xvec, t)$, whose gradient is evanescent at large $r$.
 Physically, this means that the motion of the body through the fluid does not influence the fluid in the far field.
-We impose the kinematic boundary condition on the body of slip, meaning $\partial_n \Phi = \bm{U}\cdot\nhat$, where $\nhat = n_x \ihat + n_y \jhat$.
+We impose the kinematic boundary condition on the body of slip, meaning $\partial_{\nhat} \Phi = \bm{U}\cdot\nhat$, where $\nhat = n_x \ihat + n_y \jhat$.
 As an ansatz, we say that
 \[
     \Phi(\xvec, t) = U(t) \phi(\xvec),
@@ -15,7 +15,7 @@ where $\phi(\xvec)$ satisfies the \textsc{Laplace} equation
     \nabla^2 \phi = 0, \quad \text{in } \Omega,
 \]
 \[
-    \partial_n \phi = n_x, \quad \text{on } \partial\Omega,
+    \partial_{\nhat} \phi = n_x, \quad \text{on } \partial\Omega,
 \]
 \[
     \lim_{r \to \infty} \absl{\nabla\phi} = 0,
@@ -60,20 +60,20 @@ Now using the genrealized \textsc{Stokes} theorem, we have that it further simpl
 \]
 Since the contour $S_B$ is steady, we may interchange the temporal differential operator with the integral for that contribution to $\partial\Omega$.
 Due to impermeability, we have that $\bm{U} \cdot \nhat$ on that contour.
-Furthermore, $\partial_n \phi = \bm{U} \cdot \nhat$, so
+Furthermore, $\partial_{\nhat} \phi = \bm{U} \cdot \nhat$, so
 \[
-    \varrho \frac{\dee}{\dee t} \int_{S_B} \phi \nhat \,\dee S = \varrho \int_{S_B} \big( \deet\phi\nhat + \partial_n \phi \nabla\phi \big) \,\dee S.
+    \varrho \frac{\dee}{\dee t} \int_{S_B} \phi \nhat \,\dee S = \varrho \int_{S_B} \big( \deet\phi\nhat + \partial_{\nhat} \phi \nabla\phi \big) \,\dee S.
 \]
 We may rewrite the rate of change of the momentum, or the force, in terms of the above, we have that
 \begin{equation*}
     \begin{aligned}
         \bm{F} = & - \varrho \frac{\dee}{\dee t} \int_{S_B} \phi \nhat \,\dee S\\
-        & - \varrho\int_{S_C} \big( \partial_n \phi \nabla\phi - \sfrac{1}{2}\absl{\nabla \phi}^2 \nhat \big) \,\dee S,
+        & - \varrho\int_{S_C} \big( \partial_{\nhat} \phi \nabla\phi - \sfrac{1}{2}\absl{\nabla \phi}^2 \nhat \big) \,\dee S,
     \end{aligned}
 \end{equation*}
 where we have used that
 \[
-    \int_{\partial\Omega} \big( \partial_n\phi \nabla\phi - \sfrac{1}{2}\absl{\nabla \phi}^2 \nhat \big) \,\dee S = \int_{\Omega} \nabla\phi \nabla^2 \phi \,\dee V \equiv 0.
+    \int_{\partial\Omega} \big( \partial_{\nhat}\phi \nabla\phi - \sfrac{1}{2}\absl{\nabla \phi}^2 \nhat \big) \,\dee S = \int_{\Omega} \nabla\phi \nabla^2 \phi \,\dee V \equiv 0.
 \]
 In a similar manner, one may use
 \[
@@ -83,6 +83,6 @@ to show that
 \begin{equation*}
     \begin{aligned}
         \bm{M} = & - \varrho \frac{\dee}{\dee t}\int_{S_B} \phi (\xvec\times\nhat) \,\dee S\\
-        & - \varrho \int_{S_C} \xvec\times \big( \partial_n \phi \nabla\phi - \sfrac{1}{2}{\absl{\nabla\phi}}^2 \big) \,\dee S.
+        & - \varrho \int_{S_C} \xvec\times \big( \partial_{\nhat} \phi \nabla\phi - \sfrac{1}{2}{\absl{\nabla\phi}}^2 \big) \,\dee S.
     \end{aligned}
 \end{equation*}
