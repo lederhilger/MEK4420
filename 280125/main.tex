@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage{simonspreamble}
+
+%%%%%% WRITE COURSE CODE HERE %%%%%%
+\makeatletter
+\edef\headcourse{MEK4420}
+\makeatother
+
+%%%%%% FILL OUT TITLE, NAME, AND DATE %%%%%%
+\title{Lecture Notes}
+\subtitle{\textit{\headcourse}}
+\author{\textsc{Simon Lederhilger}}
+\date{January 28\textsuperscript{th} 2025}
+
+%%%%%% DEFINES THE HEADER TITLE %%%%%%
+\makeatletter
+\edef\headtitle{\@title}
+\makeatother
+
+\begin{document}
+\maketitle\thispagestyle{fancy}
+\begin{multicols*}{2}
+    \section[Discrete Integral Eq.]{The Discrete Integral Equation}
+    \subfile{SECTIONS/J2_6/J2_6.tex}
+
+    \section[Added Mass]{More on the Added Mass Tensor}
+    \subfile{SECTIONS/ADDED_MASS/added_mass.tex}
+
+    \printbibliography
+\end{multicols*}
+\end{document}

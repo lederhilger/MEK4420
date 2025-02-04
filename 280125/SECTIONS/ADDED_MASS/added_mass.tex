@@ -1,0 +1,26 @@
+\subsection{Symmetry}
+The added mass tensor is symmetric.
+We may prove this by showing that $\addedmass - \addedmass^{\dag} \equiv 0$.
+That is,
+\[
+    \addedmass - \addedmass^{\dag} = \varrho \int_{\partial\Omega} \big( \phi_i \partial_{\nhat} \phi_j - \phi_j \partial_{\nhat} \phi_i \big) \,\dee S \equiv 0.
+\]
+
+\subsection{Kinetic Energy}
+The kinetic energy of the fluid may be expressed as the integral
+\[
+    \frac{\varrho}{2}\int_{\Omega} \nabla\Phi \cdot \nabla\Phi \,\dee V.
+\]
+We recall the identity $\nabla\Phi \cdot \nabla\Phi + \Phi \nabla\cdot\nabla\Phi = \nabla \cdot (\Phi \nabla\Phi)$, and using \textsc{Gauss}' divergence theorem, we may decompose the potentials, yielding the following expression of the kinetic energy in terms of the added mass tensor, $\sfrac{1}{2}\sum_{i,j} U_i U_j m_{ij}$.
+
+\subsubsection{Example: \emph{Added mass of sphere}}
+We wish to calculate the added mass of a sphere of radius $R_0$ moving according to the potential
+\[
+    \phi_1 = -\frac{{R_0}^3}{2}\deex(-\sfrac{1}{r}) = -\frac{x{R_0}^3}{2r^3}.
+\]
+We use the definition of the added mass,
+\[
+    m_{11} = \varrho \int_{\partial\Omega} \phi_1 n_1 \,\dee S = \frac{\varrho R_0}{2} \int_{\partial\Omega} {n_1}^2 \,\dee S.
+\]
+Using the fact that the three components of the Cartesian unit normal vector are the same length, the integrand must be a third of that of the unit normal vector.
+Integrating that across the surface yields the surface area of the sphere, so that indeed $m_{11} = \sfrac{\rho}{2} \displacedvolume$, where $\displacedvolume = \sfrac{4}{3} \pi {R_0}^3$ is the displaced fluid.
