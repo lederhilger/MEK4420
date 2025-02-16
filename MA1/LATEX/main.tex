@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{simonspreamble}
+
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
+
+%%%%%% WRITE COURSE CODE HERE %%%%%%
+\makeatletter
+\edef\headcourse{MEK4420}
+\makeatother
+
+%%%%%% FILL OUT TITLE, NAME, AND DATE %%%%%%
+\title{Første obligatoriske innlevering}
+\subtitle{\textit{\headcourse}}
+\author{\textsc{Simon Lederhilger}}
+\date{28. januar 2025}
+
+%%%%%% DEFINES THE HEADER TITLE %%%%%%
+\makeatletter
+\edef\headtitle{\@title}
+\makeatother
+
+\begin{document}
+\maketitle\thispagestyle{fancy}
+\begin{multicols*}{2}
+    \section[Addert masse]{Addert masse på geometrier}
+    \subfile{SECTIONS/ADDED_MASS/added_mass.tex}
+
+    \section[Diskret form]{Integrallikning på diskret form}
+    \subfile{SECTIONS/DISCRETE_INTEGRAL_EQUATION/discrete_integral_equation.tex}
+
+    \section[Sirkel]{Addert masse på en sirkel}
+    \subfile{SECTIONS/CIRCLE/circle.tex}
+
+    \section[Ellipse]{Addert masse på en ellipse}
+    \subfile{SECTIONS/ELLIPSE/ellipse.tex}
+
+    \section[Kvadrat]{Addert masse på et kvadrat}
+    \subfile{SECTIONS/SQUARE/square.tex}
+
+    %\printbibliography
+\end{multicols*}
+\end{document}
