@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage{simonspreamble}
+
+%%%%%% WRITE COURSE CODE HERE %%%%%%
+\makeatletter
+\edef\headcourse{MEK4420}
+\makeatother
+
+%%%%%% FILL OUT TITLE, NAME, AND DATE %%%%%%
+\title{Lecture Notes}
+\subtitle{\textit{\headcourse}}
+\author{\textsc{Simon Lederhilger}}
+\date{February 4\textsuperscript{th} 2025}
+
+%%%%%% DEFINES THE HEADER TITLE %%%%%%
+\makeatletter
+\edef\headtitle{\@title}
+\makeatother
+
+\begin{document}
+\maketitle\thispagestyle{fancy}
+    \begin{multicols*}{2}
+        \section[Green Function]{The Wave-\textsc{Green} function}
+        \subfile{SECTIONS/J6_3/J6_3.tex}
+
+        \section[Radiation]{The Radiation Problem}
+        \subfile{SECTIONS/J6_6/J6_6.tex}
+
+        \printbibliography
+    \end{multicols*}
+\end{document}
