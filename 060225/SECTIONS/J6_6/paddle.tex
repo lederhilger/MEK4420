@@ -1,0 +1,13 @@
+\begin{tikzpicture}
+    \begin{scope}
+        \def\imagelength{3}
+        \def\bodylength{1}
+        \def\bedpos{-1}\def\beddepth{.2}
+        \draw[latex-latex] (0,0)--(0,.5) node[right]{$\xi_2$};
+        \fill[pattern = north west lines] (-\imagelength, \bedpos-\beddepth)--(-\imagelength, \bedpos)--(\imagelength, \bedpos)--(\imagelength, \bedpos-\beddepth);
+        \draw (-\imagelength, \bedpos)--(\imagelength, \bedpos);
+        \draw plot [domain = -\imagelength:-{\bodylength/2}, samples = 200] (\x, {-.1*sin(\imagelength*pi*(\x + \bodylength/2) r)});
+        \draw plot [domain = {\bodylength/2}:\imagelength, samples = 200] (\x, {.1*sin(\imagelength*pi*(\x - \bodylength/2) r)});
+        \draw[thick] (-\bodylength/2, .2)--(-\bodylength/2, -.1)--(\bodylength/2, -.1)--(\bodylength/2, .2);
+    \end{scope}
+\end{tikzpicture}

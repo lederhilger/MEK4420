@@ -1,0 +1,48 @@
+To solve the \textsc{Laplace} equation in a wave field, we will need to construct a \textsc{Green} function.
+We say \emph{a priori} that it ought to be of the form
+\[
+    \Dzhe(\xvec, t) = \Re{\big( \green(\xvec) \exp{(i \omega t)} \big)},
+\]
+where $\green(\xvec) = \ln{r}$ in the absence of waves.
+For waves present the \textsc{Green} function must satisfy the following conditions.
+It must obviously satisfy the \textsc{Laplace} equation,
+\[
+    \nabla^2 \green(\xvec) = 0 \qquad \text{in } \Omega\backslash\{\bzhe\}.
+\]
+It must also satisfy the dynamic boundary condition at the surface,
+\[
+    \omega^2 \green = \gravity \deey \green \qquad \text{at } y = 0.
+\]
+We will be looking for radiating solutions, emanating from some body at the origin, such that
+\[
+    \green(\xvec) \sim \exp{(\mp i k x)} \qquad \text{as } x \to \pm\infty.
+\]
+We furthermore assume infinite depth, so that
+\[
+    \absl{\nabla\green} \to 0 \qquad \text{as } y \to -\infty.
+\]
+We allow ourselves, for brevity and so as to not exhaust our glyphic arsenal so to speak, to write $\xvec, \bzhe \in \mathbb{C}^{1}$, the vector space over the complex numbers.
+That is, we write for the time being that $\xvec = x + iy$ and $\bzhe = \zhe + i\che$.
+The complex conjugate is denoted $\xvec^{\ast} = x - iy$.
+It is found that\footnote{\cite{wehausen1960surface} \textsc{Wehausen} \& \textsc{Laitone}, sect.17}
+\[
+    \green(\xvec) = \ln{\sfrac{r}{r_1}} + \Re{(f_1)} + i \Re{(f_2)},
+\]
+where $r = \absl{\xvec - \bzhe}$ and $r_1 = \absl{\xvec - \bzhe^{\ast}}$.
+For the wave in question, $\omega = \sqrt{\kappa \gravity}$, where $\kappa$ is the wave number.
+We introduce $\ezh = -\kappa i (\xvec - \bzhe^{\ast})$.
+We have that
+\begin{equation*}
+    \begin{aligned}
+        f_1(\ezh) & = 2\principalvalue \int_{0}^{\infty} \frac{\exp{(\ezh \sfrac{k}{\kappa})}}{\kappa - k} \,\dee k\\
+        & = -2\big( \mathrm{E}_1(\ezh) + \ln{(\ezh)} - \ln{(-\ezh)} \big)\exp{(\ezh)},
+    \end{aligned}
+\end{equation*}
+and
+\[
+    f_2(\ezh) = 2\pi \exp{(\ezh)}.
+\]
+The asymptotic behavior of $f_1$ is as follows.\footnote{\cite{abramowitz1965handbook} \textsc{Abramowitz} \& \textsc{Stegun}, ch.5}
+\[
+    f_1 = \pm 2 \pi i \exp{(\ezh)} \qquad \text{for } x - \zhe \to \pm \infty.
+\]

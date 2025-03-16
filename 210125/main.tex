@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage{simonspreamble}
+
+%%%%%% WRITE COURSE CODE HERE %%%%%%
+\makeatletter
+\edef\headcourse{MEK4420}
+\makeatother
+
+%%%%%% FILL OUT TITLE, NAME, AND DATE %%%%%%
+\title{Lecture Notes}
+\subtitle{\textit{\headcourse}}
+\author{\textsc{Simon Lederhilger}}
+\date{January 21\textsuperscript{st} 2025}
+
+%%%%%% DEFINES THE HEADER TITLE %%%%%%
+\makeatletter
+\edef\headtitle{\@title}
+\makeatother
+
+\begin{document}
+\maketitle\thispagestyle{fancy}
+\begin{multicols*}{2}
+\section[Bodies in Fluid]{Fixed Bodies and Moving Bodies}
+\subfile{SECTIONS/4_10/4_10.tex}
+
+\section[Green's Theorem]{\textsc{Green}'s theorem and Distributions of Singularities}
+\subfile{SECTIONS/4_11/4_11.tex}
+
+\section[Pressure Forces]{Hydrodynamic Pressure Forces}
+\subfile{SECTIONS/4_12/4_12.tex}
+
+\section[Force on Geometry]{Force on a Moving Body in an Unbounded Fluid}
+\subfile{SECTIONS/4_13/4_13.tex}
+
+%\printbibliography
+\end{multicols*}
+\end{document}

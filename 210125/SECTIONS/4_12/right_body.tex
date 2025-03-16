@@ -1,0 +1,19 @@
+\begin{tikzpicture}
+    \begin{scope}[scale = .4]
+        \def\r{2.2}
+        \def\R{5}
+        \coordinate (O) at (0,0);
+        \draw (0,\r) arc (90:270:\r)--(0,-\r) arc (270:315:{2*\r})--({\r*sqrt(2)}, {\r*(1-sqrt(2))}) arc (-45:45:{\r*(2-sqrt(2))})--({\r*sqrt(2)}, {\r*(sqrt(2)-1)}) arc (45:90:{2*\r});
+        \node at ({(\r + .75)*cos(135)}, {(\r + .75)*sin(135)}) {$S_B$};
+        \draw[-latex, thick] ({2*\r*cos(67.5)}, {2*\r*sin(67.5) - \r})--({(2*\r - 1)*cos(67.5)}, {(2*\r - 1)*sin(67.5) - \r}) node[midway, left]{$\nhat$};
+        \draw[-latex, thick] (O)--({.8*\r*cos(-25)}, {.8*\r*sin(-25)}) node[above right]{$\bm{U}$};
+        \draw[fill = black] (O) circle (.05);
+        \def\rr{.8}
+        \def\iangel{125} \def\fangel{245}
+        \draw[-latex, thick] ({\rr*cos(\iangel)}, {\rr*sin(\iangel)}) arc (\iangel:\fangel:\rr) node[midway, left]{$\bm{\Omega}$};
+        \def\disp{.5}
+        \draw ({\disp}, {0}) circle (\R);
+        \draw[-latex, thick] ({\R + \disp}, 0)--({\R + \disp + 1}, 0) node[right]{$\nhat$};
+        \node at ({\disp + (\R + .75)*cos(45)}, {(\R + .75)*sin(45)}) {$S_C$};
+    \end{scope}
+\end{tikzpicture}
