@@ -13,7 +13,6 @@ class Chebyshov:
         Ч = zeros_like(self.θ); N = len(Ч)
         for n in range(N):
             Ч[n] = -cos(2*n*pi/(2*(N-1)))
-        #print(f"Ч: {Ч}")
         return Ч
     
     def inverse_map(self) -> ndarray:
