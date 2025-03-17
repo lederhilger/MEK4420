@@ -1,44 +1,45 @@
 from numpy import *
+from solve.chebyshov import Chebyshov
 
 class IntegralEquation:
     def __init__(self, N, coordinates):
         self.N = N
         self.x = coordinates
 
-    def ж(self) -> tuple:
+    def ж(self) -> ndarray:
         ж = zeros((2,self.N))
         for n in range(self.N):
             ж[0][n], ж[1][n] = .5*(self.x[0][0][n]+self.x[0][1][n]), .5*(self.x[1][0][n]+self.x[1][1][n])
         return ж
     
-    def Δx(self) -> tuple:
+    def Δx(self) -> ndarray:
         Δx = zeros(self.N); Δy = zeros(self.N)
         for n in range(self.N):
             Δx[n] = self.x[0][0][n] - self.x[0][1][n]
-            Δy[n] = self.x[1][1][n] - self.x[1][0][n]
+            Δy[n] = self.x[1][0][n] - self.x[1][1][n]
         return Δx, Δy
 
-    def normal_vector(self) -> tuple:
+    def normal_vector(self) -> ndarray:
         '''
         Δx = x_m - x_p, Δy = y_m - y_p
         nhat = (Δy, -Δx)
         '''
-        normal_vector = zeros((2,self.N))
+        nx = zeros(self.N); ny = zeros(self.N)
         δx, δy = self.Δx()
         for n in range(self.N):
             denominator = sqrt(δx[n]**2 + δy[n]**2)
-            normal_vector[1][n] = δx[n]/denominator
-            normal_vector[0][n] = δy[n]/denominator
-        return normal_vector
+            nx[n] = -δy[n]/denominator
+            ny[n] = δx[n]/denominator
+        return nx, ny
 
-    def dS(self) -> tuple:
+    def dS(self) -> ndarray:
         δx, δy = self.Δx()
         dS = zeros(self.N)
         for n in range(self.N):
             dS[n] = sqrt(δx[n]**2 + δy[n]**2)
         return dS
     
-    def assemble(self) -> tuple:
+    def assemble(self) -> ndarray:
         x_p, x_m = self.x[0]
         y_p, y_m = self.x[1]
         ж, ч = self.ж()
@@ -57,10 +58,10 @@ class IntegralEquation:
                     if argument > 1 and abs(argument - 1) < tol:
                         dΘ[i,j] = -1*arccos(1)
                     else:
-                        dΘ[i,j] = -1*arccos(argument)    
+                        dΘ[i,j] = -1*arccos(argument)
         return dΘ
     
-    def assemble_h(self) -> tuple:
+    def assemble_h(self) -> ndarray:
         δx, δy = self.Δx()
         ж, ч = self.ж()
         dS = self.dS()
@@ -74,7 +75,7 @@ class IntegralEquation:
                 h[i,j] *= .25*dS[j]
         return h
     
-    def right_hs(self, mode: int) -> tuple:
+    def right_hs(self, mode: int) -> ndarray:
         n_x, n_y = self.normal_vector()
         ж, ч = self.ж()
         if mode == 1:
@@ -106,23 +107,27 @@ class IntegralEquation:
     def added_mass(self):
         m_11 = 0; m_22 = 0; m_66 = 0
         phi_1, phi_2, phi_6 = self.solve()
-        normal_vector = self.normal_vector(); dS = self.dS()
+        nx, ny = self.normal_vector(); dS = self.dS()
         ж, ч = self.ж()
         for j in range(self.N):
-            m_11 += phi_1[j]*normal_vector[0][j]*dS[j]
-            m_22 += phi_2[j]*normal_vector[1][j]*dS[j]
-            m_66 += phi_6[j]*(ж[j]*normal_vector[1][j] - ч[j]*normal_vector[0][j])*dS[j]
+            m_11 += phi_1[j]*nx[j]*dS[j]
+            m_22 += phi_2[j]*ny[j]*dS[j]
+            m_66 += phi_6[j]*(ж[j]*ny[j] - ч[j]*nx[j])*dS[j]
         return m_11, m_22, m_66
     
     def plot_phi(self):
         phi_1, phi_2, phi_6 = self.solve()
         import matplotlib.pyplot as plt
+        plt.rcParams['text.usetex'] = True
         from matplotlib.ticker import MultipleLocator, FuncFormatter
         ax = plt.gca()
         ax.xaxis.set_major_formatter(FuncFormatter(lambda val,pos: '{:.0g}$\pi$'.format(val/pi) if val !=0 else '0'))
         ax.xaxis.set_major_locator(MultipleLocator(base=pi))
         plt.title(f'$N = {self.N}$')
-        dom = linspace(2*pi/self.N, 2*pi, self.N)
+        dom = zeros(self.N); ж, ч = self.ж()
+        #print(f"ж: {ж}"); print(f"ч: {ч}")
+        for n in range(self.N):
+            dom[n] = arctan2(ч[n],ж[n])
         count = 0
         for phi in [phi_1, phi_2, phi_6]:
             count += 1
@@ -130,3 +135,13 @@ class IntegralEquation:
             plt.legend()
             plt.savefig(f"phi{count}_N{self.N}.pdf", transparent = True, format = "pdf")
             plt.show()
+
+    def normal_plot(self):
+        import matplotlib.pyplot as plt
+        nx, ny = self.normal_vector(); ж, ч = self.ж()
+        x_p, x_m = self.x[0]; y_p, y_m = self.x[1]
+        for n in range(self.N):
+            plt.plot((ж[n], nx[n]+ж[n]), (ч[n], ny[n]+ч[n]))
+            plt.plot((x_p[n], x_m[n]), (y_p[n], y_m[n]))
+        plt.plot(ж, ч, 'x')
+        plt.show()
