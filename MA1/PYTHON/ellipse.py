@@ -3,14 +3,22 @@ import matplotlib.pyplot as plt
 from solve.integralequation import IntegralEquation
 from solve.arguments import parse_args
 
+def radius(a, b, θ):
+    denominator = sqrt(b**2 * (cos(θ)**2) + a**2 * (sin(θ)**2))
+    radius = a*b/denominator
+    return radius
+
 def ellipse(a, b, N):
     θ_p = linspace(2*pi/N, 2*pi, N)
     θ_m = linspace(0, 2*pi*(N - 1)/N, N)
     x_p = zeros_like(θ_p); y_p = zeros_like(θ_p)
     x_m = zeros_like(θ_m); y_m = zeros_like(θ_m)
+    r_p = radius(a,b,θ_p); r_m = radius(a,b,θ_m)
     for n in range(N):
-        x_p[n], y_p[n] = a*cos(θ_p[n]), b*sin(θ_p[n])
-        x_m[n], y_m[n] = a*cos(θ_m[n]), b*sin(θ_m[n])
+        x_p[n], y_p[n] = r_p[n]*cos(θ_p[n]), r_p[n]*sin(θ_p[n])
+        x_m[n], y_m[n] = r_m[n]*cos(θ_m[n]), r_m[n]*sin(θ_m[n])
+        # x_p[n], y_p[n] = a*cos(θ_p[n]), b*sin(θ_p[n])
+        # x_m[n], y_m[n] = a*cos(θ_m[n]), b*sin(θ_m[n])
     return (x_p, x_m), (y_p, y_m)
 
 def test_convergence():
@@ -24,23 +32,29 @@ def test_convergence():
         print(f'm_11: {m_11[i]/(pi*b**2)}'); print(f'm_22: {m_22[i]/(pi*a**2)}')
         if a == b:
             print(f'm_66: {1 - m_66[i]}')
+            print(f'|phi_1|_L2 = {L2[0]}'); print(f'|phi_2|_L2 = {L2[1]}')
         else:
             print(f'm_66: {m_66[i]/(.125*pi*(a**2 - b**2)**2)}')
-        print(f'|phi_1|_L2 = {L2[0]}'); print(f'|phi_2|_L2 = {L2[1]}')
         print('------------------------------')
-    plt.loglog(abscissa, m_11/(pi*b**2), '*', color = 'k', label = r'${m}_{11}$')
-    plt.loglog(abscissa, m_22/(pi*a**2), 'x', color = 'k', label = r'${m}_{22}$')
-    plt.xlabel(r'$\frac{1}{N}$'); plt.title('Added mass')
-    if a == b:
-        plt.loglog(abscissa, 1 - m_66, '.', color = 'k', label = r'${m}_{66}$')
-        plt.legend()
-        plt.savefig(f"addedmass_circle_N{N*number}.pdf", transparent = True, format = "pdf")
-    else:
-        plt.loglog(abscissa, m_66/(.125*pi*(a**2 - b**2)**2), '.', color = 'k', label = r'${m}_{66}$')
-        plt.legend()
-        plt.savefig(f"addedmass_a{a}_b{b}_N{N*number}.pdf", transparent = True, format = "pdf")
-    plt.show()
-    init.plot_phi()
+    # plt.xlim(left = 0)
+    # plt.loglog(abscissa, m_11/(pi*b**2), '*', color = 'k', label = r'${m}_{11}$')
+    # plt.loglog(abscissa, m_22/(pi*a**2), 'x', color = 'k', label = r'${m}_{22}$')
+    # plt.xlabel(r'$\frac{1}{N}$'); plt.title('Added mass')
+    # if a == b:
+    #     plt.loglog(abscissa, 1 - m_66, '.', color = 'k', label = r'${m}_{66}$')
+    #     plt.legend()
+    #     plt.savefig(f"addedmass_circle_N{N*number}.pdf", transparent = True, format = "pdf")
+    # else:
+    #     plt.loglog(abscissa, m_66/(.125*pi*(a**2 - b**2)**2), '.', color = 'k', label = r'${m}_{66}$')
+    #     plt.legend()
+    #     plt.savefig(f"addedmass_a{a}_b{b}_N{N*number}.pdf", transparent = True, format = "pdf")
+    # plt.show()
+    # init.plot_phi()
+    ax = plt.gca(); ax.set_aspect('equal')
+    ж, ч = init.ж()
+    for n in range(len(ж)):
+        print(arctan2(ж[n], ч[n]) - arctan2(ж[n-1], ч[n-1]))
+    plt.plot(init.ж()[0], init.ж()[1], 'x'); plt.show()
     
 if __name__ == "__main__":
     plt.rcParams['text.usetex'] = True
