@@ -7,7 +7,7 @@ class Box:
         self.L = L
         self.D = D
     
-    def x_p(self):
+    def x_p(self) -> array:
         x = Chebyshov(linspace(-self.L/2, self.L/2, self.Nx)).inverse_map()
         y_r = Chebyshov(linspace(0, -self.D, self.Ny)).inverse_map()
         y_l = y_r[1:]
@@ -20,7 +20,7 @@ class Box:
             x_p[self.Nx + self.Ny + n - 3] = [x[-1], y_r[-(n+1)]]
         return x_p
     
-    def x_m(self):
+    def x_m(self) -> array:
         x = Chebyshov(linspace(-self.L/2, self.L/2, self.Nx)).inverse_map()
         y_l = Chebyshov(linspace(0, -self.D, self.Ny)).inverse_map()
         y_r = y_l[1:]
@@ -33,13 +33,11 @@ class Box:
             x_m[self.Nx + self.Ny + n - 2] = [x[-1], y_r[-(n+1)]]
         return x_m
 
-    def box(self, Nx, Ny) -> array:
-        x = linspace(-self.L/2, self.L/2, Nx)
-        y = linspace(0, -self.D, Ny)
-        box = zeros((Nx + 2*Ny, 2))
-        for n in range(Ny):
-            box[n] = [x[0],y[n]]
-            box[Nx + Ny + n] = [x[-1], y[-(n+1)]]
-        for n in range(Nx):
-            box[n + Ny] = [x[n], y[-1]]
+    def box(self) -> array:
+        x_p = self.x_p()
+        x_m = self.x_m()
+        M = self.Nx + 2*self.Ny - 3
+        box = zeros((M, 2))
+        for n in range(M):
+            box[n] = [.5*(x_p[n][0] + x_m[n][0]),.5*(x_p[n][1] + x_m[n][1])]
         return box
