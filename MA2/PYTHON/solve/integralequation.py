@@ -126,4 +126,5 @@ class IntegralEquation(Box):
         import matplotlib.pyplot as plt
         n = linspace(0, self.N, self.N)
         plt.plot(n, phi.real, label = 'real')
-        plt.plot(n, phi.imag, label = 'imaginary'); plt.show()
+        plt.plot(n, phi.imag, label = 'imaginary')
+        plt.legend(); plt.show()
