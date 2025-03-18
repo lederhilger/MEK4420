@@ -44,7 +44,6 @@ class IntegralEquation(Box):
         return phi_0
     
     def phi_0_n(self) -> array:
-        ж, ч = self.ж
         nx, ny = self.normal_vector()
         phi_0 = self.phi_0()
         phi_0_n = zeros(len(phi_0), dtype = 'complex_')
@@ -86,7 +85,7 @@ class IntegralEquation(Box):
                     argument_1 = log((a_x + 1j*a_y)/(b_x + 1j*b_y)).imag
                 c_1 = y_m[m] - ч[n]
                 c_2 = y_p[m] - ч[n]
-                argument_2 = log((a_x + 1j*c_1)/(b_x + 1j*c_2))
+                argument_2 = log((a_x + 1j*c_1)/(b_x + 1j*c_2)).imag
                 з = self.κ*(ч[m] + ч[n] - 1j*(ж[m] - ж[n]))
                 argument_3 = (nx[m]*(self.f_1(з).imag + 1j*(self.f_2(з).imag)) + ny[m]*(self.f_1(з).real + 1j*(self.f_2(з).real)))*self.κ*dS[m]
                 dΘ[n,m] = argument_1 + argument_2 + argument_3
@@ -116,9 +115,9 @@ class IntegralEquation(Box):
                     argument_1 = pi
                 else:
                     argument_1 = log((a_x + 1j*a_y)/(b_x + 1j*b_y)).imag
-                c_1 = y_m[m] - ч[n]
-                c_2 = y_p[m] - ч[n]
-                argument_2 = log((a_x + 1j*c_1)/(b_x + 1j*c_2))
+                c_1 = y_m[m] + ч[n]
+                c_2 = y_p[m] + ч[n]
+                argument_2 = log((a_x + 1j*c_1)/(b_x + 1j*c_2)).imag
                 з = self.κ*(ч[m] + ч[n] - 1j*(ж[m] - ж[n]))
                 argument_3 = (nx[m]*(self.f_1(з).imag + 1j*(self.f_2(з).imag)) + ny[m]*(self.f_1(з).real + 1j*(self.f_2(з).real)))*self.κ*dS[m]
                 dΘ[n,m] = argument_1 + argument_2 + argument_3
@@ -193,11 +192,11 @@ class IntegralEquation(Box):
         phi_0_n = self.phi_0_n()
         lhs = self.lhs_0()
         rhs = self.rhs_k()
-        plt.plot(n, (lhs@phi_0_n).real, '*', label = 'lhs')
-        plt.plot(n, (rhs@phi_0).real, label = 'rhs')
+        plt.plot(n, (lhs@phi_0).real, '*', label = 'lhs')
+        plt.plot(n, (rhs@phi_0_n).real, label = 'rhs')
         plt.legend(); plt.show()
-        plt.plot(n, (lhs@phi_0_n).imag, '*', label = 'lhs')
-        plt.plot(n, (rhs@phi_0).imag, label = 'rhs')
+        plt.plot(n, (lhs@phi_0).imag, '*', label = 'lhs')
+        plt.plot(n, (rhs@phi_0_n).imag, label = 'rhs')
         plt.legend(); plt.show()
 
     def plot_added_mass(self, phi: array):
