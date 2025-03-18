@@ -133,19 +133,30 @@ class IntegralEquation(Box):
         elif mode == 2:
             rhs = self.rhs_k()@ny
         else:
-            raise ValueError("Choose modes 1 or 2.")
+            raise ValueError("Choose mode 1 or 2.")
         phi_k = linalg.solve(lhs,rhs)
         return phi_k
+
+    def assemble_D(self, mode: int = 1) -> array:
+        lhs = self.lhs_k(mode); rhs = -2*pi*self.phi_0()
+        phi_D = linalg.solve(lhs, rhs)
     
-    def added_mass_y(self, phi: array) -> array:
+    def added_mass(self, mode: int) -> array:
+        phi = self.assemble_k(mode)
         nx, ny = self.normal_vector()
         dS = self.dS()
         a = zeros(len(phi)); b = zeros(len(phi))
-        a[0] = (phi[0]*ny[0]*dS[0]).real
-        b[0] = (phi[0]*ny[0]*dS[0]).imag
+        if mode == 1:
+            nhat = nx
+        elif mode == 2:
+            nhat = ny
+        else:
+            raise ValueError("Choose mode 1 or 2.")
+        a[0] = (phi[0]*nhat[0]*dS[0]).real
+        b[0] = -(phi[0]*nhat[0]*dS[0]).imag
         for n in range(1, len(phi)):
-            a[n] = a[n-1] + (phi[n]*ny[n]*dS[n]).real
-            b[n] = b[n-1] + (phi[n]*ny[n]*dS[n]).imag
+            a[n] = a[n-1] + (phi[n]*nhat[n]*dS[n]).real
+            b[n] = b[n-1] - (phi[n]*nhat[n]*dS[n]).imag
         return a, b
     
     def plot_phi_k(self, phi: array):
@@ -169,12 +180,12 @@ class IntegralEquation(Box):
         plt.plot(n, (rhs@phi_0_n).imag, label = 'rhs')
         plt.legend(); plt.show()
 
-    def plot_added_mass(self, phi: array):
+    def plot_added_mass(self, mode: int):
         '''
             This should be plotted with respect to different κ
-            Move to another module
+            Move to another module?
         '''
         import matplotlib.pyplot as plt
-        a, b = self.added_mass_y(phi)
+        a, b = self.added_mass(mode)
         a = a/(self.D**2); b = b/(self.D**2 * sqrt(9.8*self.κ))
-        return a,b
+        return a, b
