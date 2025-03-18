@@ -9,7 +9,7 @@ class IntegralEquation(Box):
         self.xm = super(IntegralEquation, self).x_m().T
         self.ж = super(IntegralEquation, self).box().T
         self.N = len(self.ж[0])
-        self.κ = 1.2/self.D
+        self.κ = 1.7/self.D
 
     def Δx(self) -> array:
         Δx = zeros(self.N); Δy = zeros(self.N)
@@ -37,6 +37,20 @@ class IntegralEquation(Box):
         for n in range(self.N):
             dS[n] = sqrt(δx[n]**2 + δy[n]**2)
         return dS
+    
+    def phi_0(self) -> array:
+        ж, ч = self.ж
+        phi_0 = exp(self.κ*(ч - 1j*ж))
+        return phi_0
+    
+    def phi_0_n(self) -> array:
+        ж, ч = self.ж
+        nx, ny = self.normal_vector()
+        phi_0 = self.phi_0()
+        phi_0_n = zeros(len(phi_0), dtype = 'complex_')
+        for n in range(len(phi_0)):
+            phi_0_n[n] = self.κ*(ny[n] - 1j*nx[n])*phi_0[n]
+        return phi_0_n
 
     def f_1(self, z):
         f_1 = -2*exp(z) * (special.exp1(z) + log(z) - log(-z))
@@ -78,6 +92,38 @@ class IntegralEquation(Box):
                 dΘ[n,m] = argument_1 + argument_2 + argument_3
         return dΘ
     
+    def lhs_0(self) -> array:
+        '''
+            Assembles the left-hand side of the integral equation
+            pi phi_0 + int_{S_{mathrm{B}}} phi_0 partial_{nhat} green ,dee S
+            = int_{S_{mathrm{B}}} green hat{n}_0 ,dee S
+            This is equation 101
+        '''
+        x_p, y_p = self.xp
+        x_m, y_m = self.xm
+        ж, ч = self.ж
+        nx, ny = self.normal_vector()
+        dS = self.dS()
+        dΘ = zeros((self.N, self.N), dtype = 'complex_')
+        tol = 1e-8
+        for n in range(self.N):
+            for m in range(self.N):
+                a_x = x_m[m] - ж[n]
+                a_y = y_m[m] - ч[n]
+                b_x = x_p[m] - ж[n]
+                b_y = y_p[m] - ч[n]
+                if n == m:
+                    argument_1 = pi
+                else:
+                    argument_1 = log((a_x + 1j*a_y)/(b_x + 1j*b_y)).imag
+                c_1 = y_m[m] - ч[n]
+                c_2 = y_p[m] - ч[n]
+                argument_2 = log((a_x + 1j*c_1)/(b_x + 1j*c_2))
+                з = self.κ*(ч[m] + ч[n] - 1j*(ж[m] - ж[n]))
+                argument_3 = (nx[m]*(self.f_1(з).imag + 1j*(self.f_2(з).imag)) + ny[m]*(self.f_1(з).real + 1j*(self.f_2(з).real)))*self.κ*dS[m]
+                dΘ[n,m] = argument_1 + argument_2 + argument_3
+        return dΘ
+
     def rhs_k(self) -> array:
         '''
             Assembles the laft-hand side of the integral equation
@@ -122,9 +168,44 @@ class IntegralEquation(Box):
         phi_k = linalg.solve(lhs,rhs)
         return phi_k
     
+    def added_mass_y(self, phi: array) -> array:
+        nx, ny = self.normal_vector()
+        dS = self.dS()
+        a = zeros(len(phi)); b = zeros(len(phi))
+        a[0] = (phi[0]*ny[0]*dS[0]).real
+        b[0] = (phi[0]*ny[0]*dS[0]).imag
+        for n in range(1, len(phi)):
+            a[n] = a[n-1] + (phi[n]*ny[n]*dS[n]).real
+            b[n] = b[n-1] + (phi[n]*ny[n]*dS[n]).imag
+        return a, b
+    
     def plot_phi_k(self, phi: array):
         import matplotlib.pyplot as plt
         n = linspace(0, self.N, self.N)
         plt.plot(n, phi.real, label = 'real')
         plt.plot(n, phi.imag, label = 'imaginary')
         plt.legend(); plt.show()
+
+    def plot_phi_0(self):
+        import matplotlib.pyplot as plt
+        n = linspace(0, self.N, self.N)
+        phi_0 = self.phi_0()
+        phi_0_n = self.phi_0_n()
+        lhs = self.lhs_0()
+        rhs = self.rhs_k()
+        plt.plot(n, (lhs@phi_0_n).real, '*', label = 'lhs')
+        plt.plot(n, (rhs@phi_0).real, label = 'rhs')
+        plt.legend(); plt.show()
+        plt.plot(n, (lhs@phi_0_n).imag, '*', label = 'lhs')
+        plt.plot(n, (rhs@phi_0).imag, label = 'rhs')
+        plt.legend(); plt.show()
+
+    def plot_added_mass(self, phi: array):
+        '''
+            This should be plotted with respect to different κ
+            Move to another module
+        '''
+        import matplotlib.pyplot as plt
+        a, b = self.added_mass_y(phi)
+        a = a/(self.D**2); b = b/(self.D**2 * sqrt(9.8*self.κ))
+        return a,b
