@@ -159,6 +159,10 @@ class IntegralEquation(Box):
             b[n] = b[n-1] - (phi[n]*nhat[n]*dS[n]).imag
         return a, b
     
+    def farfield_amplitudes(self, mode: int) -> tuple:
+        phi_0 = self.phi_0()
+
+    
     def plot_phi_k(self, phi: array):
         import matplotlib.pyplot as plt
         n = linspace(0, self.N, self.N)
