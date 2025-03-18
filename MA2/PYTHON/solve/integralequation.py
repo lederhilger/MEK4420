@@ -3,13 +3,13 @@ from scipy import special, exp, log
 from solve.box import Box
 
 class IntegralEquation(Box):
-    def __init__(self, Nx: int, Ny: int, L: float, D: float):
+    def __init__(self, Nx: int, Ny: int, L: float, D: float, kD: float):
         super(IntegralEquation, self).__init__(Nx, Ny, L, D)
         self.xp = super(IntegralEquation, self).x_p().T
         self.xm = super(IntegralEquation, self).x_m().T
         self.ж = super(IntegralEquation, self).box().T
         self.N = len(self.ж[0])
-        self.κ = 1.7/self.D
+        self.κ = kD/self.D
 
     def Δx(self) -> array:
         Δx = zeros(self.N); Δy = zeros(self.N)
@@ -59,7 +59,7 @@ class IntegralEquation(Box):
         f_2 = 2*pi*exp(z)
         return f_2
 
-    def lhs_k(self) -> array:
+    def lhs_k(self, mode: int) -> array:
         '''
             Assembles the left-hand side of the integral equation
             -pi phi_k + int_{S_{mathrm{B}}} phi_k partial_{nhat} green ,dee S
@@ -72,7 +72,6 @@ class IntegralEquation(Box):
         nx, ny = self.normal_vector()
         dS = self.dS()
         dΘ = zeros((self.N, self.N), dtype = 'complex_')
-        tol = 1e-8
         for n in range(self.N):
             for m in range(self.N):
                 a_x = x_m[m] - ж[n]
@@ -80,39 +79,10 @@ class IntegralEquation(Box):
                 b_x = x_p[m] - ж[n]
                 b_y = y_p[m] - ч[n]
                 if n == m:
-                    argument_1 = -pi
-                else:
-                    argument_1 = log((a_x + 1j*a_y)/(b_x + 1j*b_y)).imag
-                c_1 = y_m[m] + ч[n]
-                c_2 = y_p[m] + ч[n]
-                argument_2 = log((a_x + 1j*c_1)/(b_x + 1j*c_2)).imag
-                з = self.κ*(ч[m] + ч[n] - 1j*(ж[m] - ж[n]))
-                argument_3 = (nx[m]*(self.f_1(з).imag + 1j*(self.f_2(з).imag)) + ny[m]*(self.f_1(з).real + 1j*(self.f_2(з).real)))*self.κ*dS[m]
-                dΘ[n,m] = argument_1 + argument_2 + argument_3
-        return dΘ
-    
-    def lhs_0(self) -> array:
-        '''
-            Assembles the left-hand side of the integral equation
-            pi phi_0 + int_{S_{mathrm{B}}} phi_0 partial_{nhat} green ,dee S
-            = int_{S_{mathrm{B}}} green hat{n}_0 ,dee S
-            This is equation 101
-        '''
-        x_p, y_p = self.xp
-        x_m, y_m = self.xm
-        ж, ч = self.ж
-        nx, ny = self.normal_vector()
-        dS = self.dS()
-        dΘ = zeros((self.N, self.N), dtype = 'complex_')
-        tol = 1e-8
-        for n in range(self.N):
-            for m in range(self.N):
-                a_x = x_m[m] - ж[n]
-                a_y = y_m[m] - ч[n]
-                b_x = x_p[m] - ж[n]
-                b_y = y_p[m] - ч[n]
-                if n == m:
-                    argument_1 = pi
+                    if mode == 0:
+                        argument_1 = pi
+                    else:
+                        argument_1 = -pi
                 else:
                     argument_1 = log((a_x + 1j*a_y)/(b_x + 1j*b_y)).imag
                 c_1 = y_m[m] + ч[n]
@@ -155,15 +125,15 @@ class IntegralEquation(Box):
                 dΓ[n,m] = (g_0 + g_1 + g_2)*dS[m]
         return dΓ
 
-    def assemble_k(self, option: str) -> array:
+    def assemble_k(self, mode: int) -> array:
         nx, ny = self.normal_vector()
-        lhs = self.lhs_k()
-        if option == 'x':
+        lhs = self.lhs_k(mode)
+        if mode == 1:
             rhs = self.rhs_k()@nx
-        elif option == 'y':
+        elif mode == 2:
             rhs = self.rhs_k()@ny
         else:
-            raise ValueError("Choose 'x' or 'y'.")
+            raise ValueError("Choose modes 1 or 2.")
         phi_k = linalg.solve(lhs,rhs)
         return phi_k
     
@@ -190,7 +160,7 @@ class IntegralEquation(Box):
         n = linspace(0, self.N, self.N)
         phi_0 = self.phi_0()
         phi_0_n = self.phi_0_n()
-        lhs = self.lhs_0()
+        lhs = self.lhs_k(0)
         rhs = self.rhs_k()
         plt.plot(n, (lhs@phi_0).real, '*', label = 'lhs')
         plt.plot(n, (rhs@phi_0_n).real, label = 'rhs')
