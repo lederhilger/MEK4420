@@ -83,8 +83,8 @@ class IntegralEquation(Box):
                     argument_1 = -pi
                 else:
                     argument_1 = log((a_x + 1j*a_y)/(b_x + 1j*b_y)).imag
-                c_1 = y_m[m] - ч[n]
-                c_2 = y_p[m] - ч[n]
+                c_1 = y_m[m] + ч[n]
+                c_2 = y_p[m] + ч[n]
                 argument_2 = log((a_x + 1j*c_1)/(b_x + 1j*c_2)).imag
                 з = self.κ*(ч[m] + ч[n] - 1j*(ж[m] - ж[n]))
                 argument_3 = (nx[m]*(self.f_1(з).imag + 1j*(self.f_2(з).imag)) + ny[m]*(self.f_1(з).real + 1j*(self.f_2(з).real)))*self.κ*dS[m]
