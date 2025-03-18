@@ -1,4 +1,4 @@
-from numpy import array, zeros_like, zeros, sqrt, pi, arccos
+from numpy import array, linspace, zeros, sqrt, pi, arccos, linalg
 from scipy import special, exp, log
 from solve.box import Box
 
@@ -58,7 +58,7 @@ class IntegralEquation(Box):
         ж, ч = self.ж
         nx, ny = self.normal_vector()
         dS = self.dS()
-        dΘ = zeros((self.N,self.N), dtype = 'complex_')
+        dΘ = zeros((self.N, self.N), dtype = 'complex_')
         tol = 1e-8
         for n in range(self.N):
             for m in range(self.N):
@@ -77,3 +77,53 @@ class IntegralEquation(Box):
                 argument_3 = (nx[m]*(self.f_1(з).imag + 1j*(self.f_2(з).imag)) + ny[m]*(self.f_1(з).real + 1j*(self.f_2(з).real)))*self.κ*dS[m]
                 dΘ[n,m] = argument_1 + argument_2 + argument_3
         return dΘ
+    
+    def rhs_k(self) -> array:
+        '''
+            Assembles the laft-hand side of the integral equation
+            -pi phi_k + int_{S_{mathrm{B}}} phi_k partial_{nhat} green ,dee S
+            = int_{S_{mathrm{B}}} green hat{n}_k ,dee S
+            
+            g_0 is a two point Gauss method
+            g_1 and g_2 is a midpoint method
+
+            The full right-hand side, int green hat{n}_k, is found by multiplying dΓ with nk
+        '''
+        δx, δy = self.Δx()
+        dS = self.dS()
+        ж, ч = self.ж
+        gauss_x_pos = ж + .5*δx/sqrt(3)
+        gauss_x_neg = ж - .5*δx/sqrt(3)
+        gauss_y_pos = ч + .5*δy/sqrt(3)
+        gauss_y_neg = ч - .5*δy/sqrt(3)
+        dΓ = zeros((self.N, self.N), dtype = 'complex_')
+        for n in range(self.N):
+            for m in range(self.N):
+                a_x = gauss_x_neg[m] - ж[n]
+                a_y = gauss_y_neg[m] - ч[n]
+                b_x = gauss_x_pos[m] - ж[n]
+                b_y = gauss_y_pos[m] - ч[n]
+                g_0 = .5*(log(sqrt(a_x**2 + a_y**2)) + log(sqrt(b_x**2 + b_y**2)))
+                g_1 = -log(sqrt((ж[m] - ж[n])**2 + (ч[m] + ч[n])**2))
+                з = self.κ*(ч[m] + ч[n] - 1j*(ж[m] - ж[n]))
+                g_2 = self.f_1(з).real + 1j*(self.f_2(з).real)
+                dΓ[n,m] = (g_0 + g_1 + g_2)*dS[m]
+        return dΓ
+
+    def assemble_k(self, option: str) -> array:
+        nx, ny = self.normal_vector()
+        lhs = self.lhs_k()
+        if option == 'x':
+            rhs = self.rhs_k()@nx
+        elif option == 'y':
+            rhs = self.rhs_k()@ny
+        else:
+            raise ValueError("Choose 'x' or 'y'.")
+        phi_k = linalg.solve(lhs,rhs)
+        return phi_k
+    
+    def plot_phi_k(self, phi: array):
+        import matplotlib.pyplot as plt
+        n = linspace(0, self.N, self.N)
+        plt.plot(n, phi.real, label = 'real')
+        plt.plot(n, phi.imag, label = 'imaginary'); plt.show()
