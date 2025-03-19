@@ -11,8 +11,9 @@ if __name__ == "__main__":
     for i in range(I-2):
         print(i)
         box = Plotting(Nx, Ny, L, D, interval[i])
-        a, b = box.plot_added_mass(2)
+        #a, b = box.plot_added_mass(2)
         #plt.plot(interval[i], a[-1], 'x', color = 'k')
-        plt.plot(interval[i], b[-1], '*', color = 'k')
-        plt.plot(interval[i], box.b_22(), 'o', color = 'k')
+        #plt.plot(interval[i], b[-1], '*', color = 'k')
+        #plt.plot(interval[i], box.b_22(), 'o', color = 'k')
+        plt.plot(interval[i], box.X(2), 'x', color = 'k')
     plt.show()

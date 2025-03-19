@@ -116,6 +116,7 @@ class IntegralEquation(Box):
     def assemble_D(self, mode: int = 1) -> array:
         lhs = self.lhs_k(mode); rhs = -2*pi*self.phi_0()
         phi_D = linalg.solve(lhs, rhs)
+        return phi_D
     
     def added_mass(self, mode: int) -> array:
         phi = self.assemble_k(mode)
@@ -154,3 +155,18 @@ class IntegralEquation(Box):
         A_1 = abs(A_pos[-1])**2; A_2 = abs(A_neg[-1])**2
         b_22 = .5*ω*(A_1 + A_2)/(self.D**2 * sqrt(9.8*self.κ)) # Scaled wrt ω D^2
         return b_22
+    
+    def X(self, mode) -> float:
+        phi_D = self.assemble_D()
+        nx, ny = self.normal_vector
+        if mode == 1:
+            nhat = nx
+        elif mode == 2:
+            nhat = ny
+        else:
+            raise ValueError("Choose mode 1 or 2.")
+        X = 0
+        for n in range(self.N):
+            X += phi_D[n]*nhat[n]*self.dS[n]
+        X = abs(X) # Not scaled: /(9.8*self.D) (?)
+        return X
