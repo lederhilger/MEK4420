@@ -1,4 +1,4 @@
-from numpy import array, linspace, zeros, sqrt, pi, arccos, linalg
+from numpy import array, zeros, sqrt, pi, linalg
 from scipy import special, exp, log
 from solve.box import Box
 
@@ -9,34 +9,10 @@ class IntegralEquation(Box):
         self.xm = super(IntegralEquation, self).x_m().T
         self.ж = super(IntegralEquation, self).box().T
         self.N = len(self.ж[0])
+        self.Δx = super(IntegralEquation, self).Δx(self.N, self.xp, self.xm)
+        self.normal_vector = super(IntegralEquation, self).normal_vector(self.N, self.Δx)
+        self.dS = super(IntegralEquation, self).dS(self.N, self.Δx)
         self.κ = kD/self.D
-
-    def Δx(self) -> array:
-        Δx = zeros(self.N); Δy = zeros(self.N)
-        for n in range(self.N):
-            Δx[n] = self.xp[0][n] - self.xm[0][n]
-            Δy[n] = self.xp[1][n] - self.xm[1][n]
-        return Δx, Δy
-
-    def normal_vector(self) -> array:
-        '''
-        Δx = x_m - x_p, Δy = y_m - y_p
-        nhat = (Δy, -Δx)
-        '''
-        nx = zeros(self.N); ny = zeros(self.N)
-        δx, δy = self.Δx()
-        for n in range(self.N):
-            denominator = sqrt(δx[n]**2 + δy[n]**2)
-            nx[n] = -δy[n]/denominator
-            ny[n] = δx[n]/denominator
-        return nx, ny
-
-    def dS(self) -> array:
-        δx, δy = self.Δx()
-        dS = zeros(self.N)
-        for n in range(self.N):
-            dS[n] = sqrt(δx[n]**2 + δy[n]**2)
-        return dS
     
     def phi_0(self) -> array:
         ж, ч = self.ж
@@ -44,7 +20,7 @@ class IntegralEquation(Box):
         return phi_0
     
     def phi_0_n(self) -> array:
-        nx, ny = self.normal_vector()
+        nx, ny = self.normal_vector
         phi_0 = self.phi_0()
         phi_0_n = zeros(len(phi_0), dtype = 'complex_')
         for n in range(len(phi_0)):
@@ -69,8 +45,8 @@ class IntegralEquation(Box):
         x_p, y_p = self.xp
         x_m, y_m = self.xm
         ж, ч = self.ж
-        nx, ny = self.normal_vector()
-        dS = self.dS()
+        nx, ny = self.normal_vector
+        dS = self.dS
         dΘ = zeros((self.N, self.N), dtype = 'complex_')
         for n in range(self.N):
             for m in range(self.N):
@@ -104,8 +80,8 @@ class IntegralEquation(Box):
 
             The full right-hand side, int green hat{n}_k, is found by multiplying dΓ with nk
         '''
-        δx, δy = self.Δx()
-        dS = self.dS()
+        δx, δy = self.Δx
+        dS = self.dS
         ж, ч = self.ж
         gauss_x_pos = ж + .5*δx/sqrt(3)
         gauss_x_neg = ж - .5*δx/sqrt(3)
@@ -126,7 +102,7 @@ class IntegralEquation(Box):
         return dΓ
 
     def assemble_k(self, mode: int) -> array:
-        nx, ny = self.normal_vector()
+        nx, ny = self.normal_vector
         lhs = self.lhs_k(mode)
         if mode == 1:
             rhs = self.rhs_k()@nx
@@ -143,8 +119,8 @@ class IntegralEquation(Box):
     
     def added_mass(self, mode: int) -> array:
         phi = self.assemble_k(mode)
-        nx, ny = self.normal_vector()
-        dS = self.dS()
+        nx, ny = self.normal_vector
+        dS = self.dS
         a = zeros(len(phi)); b = zeros(len(phi))
         if mode == 1:
             nhat = nx
@@ -161,35 +137,3 @@ class IntegralEquation(Box):
     
     def farfield_amplitudes(self, mode: int) -> tuple:
         phi_0 = self.phi_0()
-
-    
-    def plot_phi_k(self, phi: array):
-        import matplotlib.pyplot as plt
-        n = linspace(0, self.N, self.N)
-        plt.plot(n, phi.real, label = 'real')
-        plt.plot(n, phi.imag, label = 'imaginary')
-        plt.legend(); plt.show()
-
-    def plot_phi_0(self):
-        import matplotlib.pyplot as plt
-        n = linspace(0, self.N, self.N)
-        phi_0 = self.phi_0()
-        phi_0_n = self.phi_0_n()
-        lhs = self.lhs_k(0)
-        rhs = self.rhs_k()
-        plt.plot(n, (lhs@phi_0).real, '*', label = 'lhs')
-        plt.plot(n, (rhs@phi_0_n).real, label = 'rhs')
-        plt.legend(); plt.show()
-        plt.plot(n, (lhs@phi_0).imag, '*', label = 'lhs')
-        plt.plot(n, (rhs@phi_0_n).imag, label = 'rhs')
-        plt.legend(); plt.show()
-
-    def plot_added_mass(self, mode: int):
-        '''
-            This should be plotted with respect to different κ
-            Move to another module?
-        '''
-        import matplotlib.pyplot as plt
-        a, b = self.added_mass(mode)
-        a = a/(self.D**2); b = b/(self.D**2 * sqrt(9.8*self.κ))
-        return a, b

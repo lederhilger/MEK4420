@@ -1,4 +1,4 @@
-from solve.integralequation import IntegralEquation
+from solve.plotting import Plotting
 from solve.arguments import parse_args
 
 if __name__ == "__main__":
@@ -13,7 +13,7 @@ if __name__ == "__main__":
     I = 102; interval = linspace(0, 2, I)[1:-1]
     for i in range(I-2):
         print(i)
-        box = IntegralEquation(Nx, Ny, L, D, interval[i])
+        box = Plotting(Nx, Ny, L, D, interval[i])
         a, b = box.plot_added_mass(2)
         plt.plot(interval[i], a[-1], 'x', color = 'k'); plt.plot(interval[i], b[-1], '*', color = 'k')
     plt.show()

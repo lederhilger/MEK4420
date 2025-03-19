@@ -1,4 +1,4 @@
-from numpy import array, zeros, ones, linspace
+from numpy import array, zeros, ones, linspace, sqrt
 from solve.chebyshov import Chebyshov
 class Box:
     def __init__(self, Nx: int, Ny: int, L: float, D: float):
@@ -41,3 +41,30 @@ class Box:
         for n in range(M):
             box[n] = [.5*(xp[n][0] + xm[n][0]),.5*(xp[n][1] + xm[n][1])]
         return box
+
+    def Δx(self, N, xp, xm) -> array:
+        Δx = zeros(N); Δy = zeros(N)
+        for n in range(N):
+            Δx[n] = xp[0][n] - xm[0][n]
+            Δy[n] = xp[1][n] - xm[1][n]
+        return Δx, Δy
+
+    def normal_vector(self, N, Δx) -> array:
+        '''
+        Δx = x_m - x_p, Δy = y_m - y_p
+        nhat = (Δy, -Δx)
+        '''
+        nx = zeros(N); ny = zeros(N)
+        δx, δy = Δx
+        for n in range(N):
+            denominator = sqrt(δx[n]**2 + δy[n]**2)
+            nx[n] = -δy[n]/denominator
+            ny[n] = δx[n]/denominator
+        return nx, ny
+
+    def dS(self, N, Δx) -> array:
+        δx, δy = Δx
+        dS = zeros(N)
+        for n in range(N):
+            dS[n] = sqrt(δx[n]**2 + δy[n]**2)
+        return dS
