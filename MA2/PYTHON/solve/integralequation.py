@@ -136,4 +136,21 @@ class IntegralEquation(Box):
         return a, b
     
     def farfield_amplitudes(self, mode: int) -> tuple:
-        phi_0 = self.phi_0()
+        phi_0 = self.phi_0(); phi = self.assemble_k(mode)
+        nx, ny = self.normal_vector
+        dS = self.dS
+        A_pos = zeros(len(phi_0), dtype = 'complex_')
+        A_neg = zeros(len(phi_0), dtype = 'complex_')
+        A_pos[0] = 1j*(phi[0]*self.κ*(ny[0] + 1j*nx[0]) - ny[0])*phi_0[0].conjugate()*dS[0]
+        A_neg[0] = 1j*(phi[0]*self.κ*(ny[0] - 1j*nx[0]) - ny[0])*phi_0[0]*dS[0]
+        for n in range(1, len(phi_0)):
+            A_pos[n] = A_pos[n-1] + 1j*(phi[n]*self.κ*(ny[n] + 1j*nx[n]) - ny[n])*phi_0[n].conjugate()*dS[n]
+            A_neg[n] = A_neg[n-1] + 1j*(phi[n]*self.κ*(ny[n] - 1j*nx[n]) - ny[n])*phi_0[n]*dS[n]
+        return A_pos, A_neg
+
+    def b_22(self, mode = 2) -> float:
+        ω = sqrt(9.8*self.κ)
+        A_pos, A_neg = self.farfield_amplitudes(mode)
+        A_1 = abs(A_pos[-1])**2; A_2 = abs(A_neg[-1])**2
+        b_22 = .5*ω*(A_1 + A_2)/(self.D**2 * sqrt(9.8*self.κ)) # Scaled wrt ω D^2
+        return b_22
