@@ -1,5 +1,5 @@
 from numpy import array, zeros, sqrt, pi, linalg
-from scipy import special, exp, log
+from scipy import special, exp, log, sin
 from solve.box import Box
 
 class IntegralEquation(Box):
@@ -156,7 +156,7 @@ class IntegralEquation(Box):
         b_22 = .5*ω*(A_1 + A_2)/(self.D**2 * sqrt(9.8*self.κ)) # Scaled wrt ω D^2
         return b_22
     
-    def X(self, mode) -> float:
+    def X_integral(self, mode) -> float:
         phi_D = self.assemble_D()
         nx, ny = self.normal_vector
         if mode == 1:
@@ -167,6 +167,14 @@ class IntegralEquation(Box):
             raise ValueError("Choose mode 1 or 2.")
         X = 0
         for n in range(self.N):
-            X += phi_D[n]*nhat[n]*self.dS[n]
-        X = abs(X) # Not scaled: /(9.8*self.D) (?)
-        return X
+            X += phi_D[n]*nhat[n]*self.dS[n] # *(-1j)*sqrt(9.8*self.κ) #Eq. 119
+        return X # Not scaled: /(9.8*self.D) (?)
+    
+    def X_haskind(self, mode) -> float:
+        A_neg = self.farfield_amplitudes(mode)[1][-1]
+        X = 1j*9.8*A_neg
+        return X/(9.8*self.D)
+    
+    def X_froudekrylov(self) -> float:
+        X = 9.8*2*self.L*exp(-self.κ*self.D)*sin(.5*self.κ*self.L)/(self.κ*self.L)
+        return X/(9.8*self.D)
