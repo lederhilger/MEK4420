@@ -3,14 +3,14 @@
 
 %%%%%% WRITE COURSE CODE HERE %%%%%%
 \makeatletter
-\edef\headcourse{AT-311}
+\edef\headcourse{MEKSP100}
 \makeatother
 
 %%%%%% FILL OUT TITLE, NAME, AND DATE %%%%%%
-\title{Travel Report from Stay at The Univeristy Centre in Svalbard}
-\subtitle{Floating Wind Turbines in the Arctic}
+\title{The Forces and Response of a Heaving Reactangle}
+\subtitle{\emph{\headcourse}}
 \author{\textsc{Simon Lederhilger}}
-\date{April x\textsuperscript{th} 2025}
+\date{March 20\textsuperscript{th} 2025}
 
 %%%%%% DEFINES THE HEADER TITLE %%%%%%
 \makeatletter
@@ -20,13 +20,17 @@
 \begin{document}
 \maketitle\thispagestyle{fancy}
     \begin{multicols*}{2}
-        \section{Academic Course Content}
-        \subfile{SECTIONS/COURSE_CONTENT/course_content.tex}
+        \section[Heave]{The Heave Problem}
+        \subfile{SECTIONS/HEAVE_PROBLEM/heave_problem.tex}
 
-        \section{The Impact of Sea Ice on Floating Wind Turbines}
-        \subfile{SECTIONS/SEA_ICE/sea_ice.tex}
+        \section[Waves]{Wave Interactions}
+        \subfile{SECTIONS/WAVE_INTERACTIONS/wave_interactions.tex}
 
-        \section{Expenses}
+        \section[Diffraction]{The Diffraction Problem}
+        \subfile{SECTIONS/DIFFRACTION_PROBLEM/diffraction_problem.tex}
+
+        \section[Response]{The Body Response}
+        \subfile{SECTIONS/BODY_RESPONSE/body_response.tex}
         %\printbibliography
     \end{multicols*}
 \end{document}
