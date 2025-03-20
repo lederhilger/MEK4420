@@ -20,11 +20,11 @@ class Plotting(IntegralEquation):
         phi_0_n = self.phi_0_n()
         lhs = self.lhs_k(0)
         rhs = self.rhs_k()
-        plt.plot(n, (lhs@phi_0).real, '*', label = 'lhs')
-        plt.plot(n, (rhs@phi_0_n).real, label = 'rhs')
-        plt.legend(); plt.show()
-        plt.plot(n, (lhs@phi_0).imag, '*', label = 'lhs')
-        plt.plot(n, (rhs@phi_0_n).imag, label = 'rhs')
+        plt.plot(n, (lhs@phi_0).real, '*', label = 'lhs real', color = 'k')
+        plt.plot(n, (rhs@phi_0_n).real, label = 'rhs real', color = 'k')
+        #plt.legend(); plt.show()
+        plt.plot(n, (lhs@phi_0).imag, 'x', label = 'lhs imag', color = 'k')
+        plt.plot(n, (rhs@phi_0_n).imag, '-.', label = 'rhs imag', color = 'k')
         plt.legend(); plt.show()
 
     def plot_added_mass(self, mode: int):
