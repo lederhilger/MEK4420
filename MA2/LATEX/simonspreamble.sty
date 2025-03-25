@@ -1,14 +1,19 @@
 \ProvidesClass{simonspreamble}
 \RequirePackage[utf8]{inputenc}
 
+%%%%%% WARNINGS %%%%%%
+\RequirePackage{silence}
+\WarningFilter{latexfont}{Size substitutions with differences}
+
 %%%%%% LANGUAGE %%%%%%
-\RequirePackage[TS1,T1, T2A]{fontenc}
+\RequirePackage[T2A,TS1,OT1]{fontenc}
 \RequirePackage[russian, english]{babel}
 \RequirePackage{csquotes}
 
 %%%%%% TYPESETTING PRETTIFYING %%%%%%
 \RequirePackage{mathtools}
 \RequirePackage{scalerel}
+\RequirePackage{lmodern}
 %% Scaled down \in symbol for subscripts %%
 \newcommand{\smallerrel}[1]{\mathrel{\mathpalette\smallerrelaux{#1}}}
 \newcommand{\smallerrelaux}[2]{\raisebox{.1ex}{\scalebox{.75}{$#1#2$}}}
@@ -58,6 +63,7 @@
 \renewcommand*{\mkbibnamefamily}[1]{\textsc{#1}}
 \DeclareNameAlias{author}{family-given}
 \addbibresource{bibliography.bib}
+\WarningFilter{biblatex}{Patching footnotes failed}
 
 %%%%%% REFERENCING %%%%%%
 \makeatletter\disable@package@load{auxhook}{}\makeatother
@@ -89,6 +95,11 @@
 \RequirePackage{tikz}
 \usetikzlibrary{patterns, 3d, arrows, perspective, calc, bending, positioning}
 \RequirePackage[outline]{contour}
+
+%%% FIGURES FOR TWO COLUMNS %%%
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
 
 %%%%%% PHYSICS %%%%%%
 \RequirePackage[version=4]{mhchem}
@@ -313,6 +324,13 @@
     {\mbox{$\resizebox{1.26ex}{1.03ex}{\includegraphics{SYMBOLS/Che_bm.pdf}}$}}
     {\scalebox{.7}{\mbox{$\resizebox{1.26ex}{1.03ex}{\includegraphics{SYMBOLS/Che_bm.pdf}}$}}}
     {\scalebox{.5}{\mbox{$\resizebox{1.26ex}{1.03ex}{\includegraphics{SYMBOLS/Che_bm.pdf}}$}}}
+}
+%%%%%%%% DZHE %%%%%%%%
+\newcommand{\Dzhe}{\mathchoice
+    {\raisebox{-.15em}{\mbox{$\resizebox{.649em}{.8em}{\includegraphics{SYMBOLS/Dzhe.pdf}}$}}}
+    {\raisebox{-.15em}{\mbox{$\resizebox{.649em}{.8em}{\includegraphics{SYMBOLS/Dzhe.pdf}}$}}}
+    {\scalebox{.7}{\raisebox{-.15em}{\mbox{$\resizebox{.649em}{.8em}{\includegraphics{SYMBOLS/Dzhe.pdf}}$}}}}
+    {\scalebox{.5}{\raisebox{-.15em}{\mbox{$\resizebox{.649em}{.8em}{\includegraphics{SYMBOLS/Dzhe.pdf}}$}}}}
 }
 %%%%%%%% ZHE %%%%%%%%
 \newcommand{\zhe}{\mathchoice

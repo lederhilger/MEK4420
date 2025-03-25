@@ -1,0 +1,33 @@
+We consider a box floating on the ocean surface, whose motion is described by the radiation potential
+\[
+    \Phi_{\mathrm{R}} (\xvec; t) = \Re{\big( i \omega \phi_2 \hat{\xi}_2 \exp{(i \omega t)} \big)},
+\]
+for which the heave potential $\phi_2$ is determined the conditions of continuity in velocity, incompressibility, and evanescence, and the kinematic bounary condition
+\[
+    \gravity \deey\phi_2 = -\omega^2 \phi_2.
+\]
+The first of the above conditions may be expressed as $\partial_{\nhat} \Phi_{\mathrm{R}} = \uvec_{\mathrm{B}} \cdot \nhat$, or
+\[
+    \partial_{\nhat} \phi_2 = \hat{n}_y \qquad \text{on } S_{\mathrm{B}}.
+\]
+The incompressibility of the fluid yields the \textsc{Laplace} equation
+\[
+    \nabla^2 \phi_2 = 0 \qquad \text{in } \Omega.
+\]
+The condition of evanescence states that the gradient of the velocity potential ought to disappear at infinity, namely
+\[
+    \absl{\phi_2} \to 0 \qquad \text{as } y \to \infty.
+\]
+As for the accompanying \textsc{Green} function,
+\[
+    \Dzhe(\xvec, t) = \Re{\big( \green{(\xvec)} \exp{(i \omega t)} \big)},
+\]
+it must also satisfy the \textsc{Laplace} equation, kinematic boundary condition, and evanescence conditions.
+We are looking for radiating solutions, emanating from the body at the origin such that
+\[
+    \green{(\xvec)} \sim \exp{(\mp i k x)} \qquad \text{as } x \to \pm \infty.
+\]
+The derivation of the integral equation follows from that found in lecture notes from January 21\textsuperscript{st}, yielding
+\[
+    \int_{S_{\mathrm{B}}} \big( \phi_2 \partial_{\nhat} \green - \green \partial_{\nhat} \phi_2 \big) \,\dee S = \pi \phi(\bzhe).
+\]
