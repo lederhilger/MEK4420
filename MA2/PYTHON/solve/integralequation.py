@@ -14,10 +14,11 @@ class IntegralEquation(Box):
         self.dS = super(IntegralEquation, self).dS(self.N, self.Δx)
         self.κ = kD/self.D
         self.g = 9.8
+        self.ω = sqrt(self.g*self.κ)
     
     def phi_0(self) -> array:
         ж, ч = self.ж
-        phi_0 = exp(self.κ*(ч - 1j*ж))
+        phi_0 = 1j*self.g*exp(self.κ*(ч - 1j*ж))/self.ω
         return phi_0
     
     def phi_0_n(self) -> array:
@@ -138,23 +139,23 @@ class IntegralEquation(Box):
         return a, b
     
     def farfield_amplitudes(self, mode: int) -> tuple:
-        phi_0 = self.phi_0(); phi = self.assemble_k(mode)
+        ж, ч = self.ж
+        phi_0 = exp(self.κ*(1j*ж + ч)); phi = self.assemble_k(mode)
         nx, ny = self.normal_vector
         dS = self.dS
         A_pos = zeros(len(phi_0), dtype = 'complex_')
         A_neg = zeros(len(phi_0), dtype = 'complex_')
-        A_pos[0] = 1j*(phi[0]*self.κ*(ny[0] + 1j*nx[0]) - ny[0])*phi_0[0].conjugate()*dS[0]
-        A_neg[0] = 1j*(phi[0]*self.κ*(ny[0] - 1j*nx[0]) - ny[0])*phi_0[0]*dS[0]
+        A_pos[0] = 1j*(phi[0]*self.κ*(ny[0] + 1j*nx[0]) - ny[0])*phi_0[0]*dS[0]
+        A_neg[0] = 1j*(phi[0]*self.κ*(ny[0] - 1j*nx[0]) - ny[0])*phi_0[0].conjugate()*dS[0]
         for n in range(1, len(phi_0)):
-            A_pos[n] = A_pos[n-1] + 1j*(phi[n]*self.κ*(ny[n] + 1j*nx[n]) - ny[n])*phi_0[n].conjugate()*dS[n]
-            A_neg[n] = A_neg[n-1] + 1j*(phi[n]*self.κ*(ny[n] - 1j*nx[n]) - ny[n])*phi_0[n]*dS[n]
+            A_pos[n] = A_pos[n-1] + 1j*(phi[n]*self.κ*(ny[n] + 1j*nx[n]) - ny[n])*phi_0[n]*dS[n]
+            A_neg[n] = A_neg[n-1] + 1j*(phi[n]*self.κ*(ny[n] - 1j*nx[n]) - ny[n])*phi_0[n].conjugate()*dS[n]
         return A_pos, A_neg
 
     def b_22(self, mode = 2) -> float:
-        ω = sqrt(self.g*self.κ)
         A_pos, A_neg = self.farfield_amplitudes(mode)
         A_1 = abs(A_pos[-1])**2; A_2 = abs(A_neg[-1])**2
-        b_22 = .5*ω*(A_1 + A_2)/(self.D**2 * sqrt(self.g*self.κ)) # Scaled wrt ω D^2
+        b_22 = .5*self.ω*(A_1 + A_2)/(self.D**2 * sqrt(self.g*self.κ)) # Scaled wrt ω D^2
         return b_22
     
     def X_integral(self, mode) -> float:
@@ -168,8 +169,8 @@ class IntegralEquation(Box):
             raise ValueError("Choose mode 1 or 2.")
         X = 0
         for n in range(self.N):
-            X += phi_D[n]*nhat[n]*self.dS[n] # *(-1j)*sqrt(self.g*self.κ) #Eq. 119
-        return X # Not scaled: /(self.g*self.D) (?)
+            X += phi_D[n]*nhat[n]*self.dS[n]*(-1j)*self.ω #Eq. 119
+        return X/(self.g*self.D)
     
     def X_haskind1(self, mode: int) -> float:
         phi = self.assemble_k(mode)
@@ -184,7 +185,7 @@ class IntegralEquation(Box):
         X = 0
         for n in range(self.N):
             X += (phi[n]*phi_0_n[n] - phi_0[n]*nhat[n])*self.dS[n]
-        #X *= 1j*sqrt(self.κ*self.g)
+        X *= 1j*self.ω
         return X/(self.g*self.D)
 
     def X_haskind2(self, mode: int) -> float:
@@ -193,7 +194,7 @@ class IntegralEquation(Box):
         return X/(self.g*self.D)
     
     def X_froudekrylov(self) -> float:
-        X = self.g*2*self.L*exp(-self.κ*self.D)*sin(.5*self.κ*self.L)/(self.κ*self.L)
+        X = 2*self.g*exp(-self.κ*self.D)*sin(.5*self.κ*self.L)/self.κ
         return X/(self.g*self.D)
     
     def ξ2_rough(self) -> float:

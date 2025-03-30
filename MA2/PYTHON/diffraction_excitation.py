@@ -8,6 +8,7 @@ if __name__ == "__main__":
     #Ls = [.1, 1, 2, 10]
     Ls = [2]
     for L in Ls:
+        print(f"L: {L}")
         N = 5; i = 0
         kDs = linspace(0, 2, N+2)[1:-1]
         X_integral = []; X_froudekrylov = []
@@ -24,3 +25,4 @@ if __name__ == "__main__":
         plt.plot(kDs, X_haskind1, '--', label = 'haskind 1', color = 'k')
         plt.plot(kDs, X_haskind2, 'x', label = 'haskind 2', color = 'k')
         plt.title('Heave excitation force'); plt.legend(); plt.show()
+        print("--------")
