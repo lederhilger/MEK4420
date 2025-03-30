@@ -5,11 +5,10 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     args = parse_args()
     Nx = args.Nx; Ny = args.Ny; D = args.D
-    #Ls = [.1, 1, 2, 10]
-    Ls = [2]
+    Ls = [.1, 1, 2, 10]
     for L in Ls:
         print(f"L: {L}")
-        N = 5; i = 0
+        N = 100; i = 0
         kDs = linspace(0, 2, N+2)[1:-1]
         X_integral = []; X_froudekrylov = []
         X_haskind1 = []; X_haskind2 = []
