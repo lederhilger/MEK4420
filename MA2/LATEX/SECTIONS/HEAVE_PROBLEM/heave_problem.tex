@@ -16,7 +16,7 @@ The incompressibility of the fluid yields the \textsc{Laplace} equation
 \]
 The condition of evanescence states that the gradient of the velocity potential ought to disappear at infinity, namely
 \[
-    \absl{\phi_2} \to 0 \qquad \text{as } y \to \infty.
+    \absl{\nabla\phi_2} \to 0 \qquad \text{as } y \to \infty.
 \]
 As for the accompanying \textsc{Green} function,
 \[
@@ -29,5 +29,5 @@ We are looking for radiating solutions, emanating from the body at the origin su
 \]
 The derivation of the integral equation follows from that found in lecture notes from January 21\textsuperscript{st}, yielding
 \[
-    \int_{S_{\mathrm{B}}} \big( \phi_2 \partial_{\nhat} \green - \green \partial_{\nhat} \phi_2 \big) \,\dee S = \pi \phi(\bzhe).
+    -\pi \phi_2(\bzhe) + \int_{S_{\mathrm{B}}} \phi_2 \partial_{\nhat} \green \,\dee S = \int_{S_{\mathrm{B}}} \green \partial_{\nhat} \phi_2 \,\dee S.
 \]

@@ -12,7 +12,7 @@ class Chebyshov:
     def chebyshov_map(self) -> array:
         Ч = zeros_like(self.θ); N = len(Ч)
         for n in range(N):
-            Ч[n] = -cos(2*n*pi/(2*(N-1)))
+            Ч[n] = -cos(n*pi/(N-1))
         return Ч
     
     def inverse_map(self) -> array:

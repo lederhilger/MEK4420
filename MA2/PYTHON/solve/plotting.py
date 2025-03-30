@@ -1,4 +1,4 @@
-from numpy import array, linspace, sqrt
+from numpy import linspace
 from solve.integralequation import IntegralEquation
 import matplotlib.pyplot as plt
 
@@ -13,31 +13,26 @@ class Plotting(IntegralEquation):
         plt.show()
 
     def plot_phi_k(self, mode: int):
-        import matplotlib.pyplot as plt
         phi = self.assemble_k(mode)
         n = linspace(0, self.N, self.N)
-        plt.plot(n, phi.real, label = 'real')
-        plt.plot(n, phi.imag, label = 'imaginary')
+        plt.plot(n, phi.real, '.', label = 'real', color = 'k')
+        plt.plot(n, phi.imag, '*', label = 'imaginary', color = 'k')
         plt.legend(); plt.show()
 
     def plot_phi_0(self):
         n = linspace(0, self.N, self.N)
         phi_0 = self.phi_0()
         phi_0_n = self.phi_0_n()
-        lhs = self.lhs_k(0)
-        rhs = self.rhs_k()
+        lhs = self.lhs_k(0); rhs = self.rhs_k()
         plt.plot(n, (lhs@phi_0).real, '*', label = 'lhs real', color = 'k')
         plt.plot(n, (rhs@phi_0_n).real, label = 'rhs real', color = 'k')
-        #plt.legend(); plt.show()
         plt.plot(n, (lhs@phi_0).imag, 'x', label = 'lhs imag', color = 'k')
         plt.plot(n, (rhs@phi_0_n).imag, '-.', label = 'rhs imag', color = 'k')
         plt.legend(); plt.show()
 
-    def plot_added_mass(self, mode: int):
-        '''
-            This should be plotted with respect to different κ
-            Move to another module?
-        '''
-        a, b = self.added_mass(mode)
-        a = a/(self.D**2); b = b/(self.D**2 * sqrt(9.8*self.κ))
-        return a, b
+    def plot_phi_D(self):
+        phi_D = self.assemble_D()
+        n = linspace(0, self.N, self.N)
+        plt.plot(n, phi_D.real, '.', label = 'real', color = 'k')
+        plt.plot(n, phi_D.imag, '*', label = 'imaginary', color = 'k')
+        plt.legend(); plt.show()

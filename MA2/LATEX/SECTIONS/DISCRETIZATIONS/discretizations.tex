@@ -1,11 +1,11 @@
 The logarithm terms are integrated in much the same way they were in the first mandatory assignment.
 The boundary element method assumes the potential is constant, set to the value of the midpoint between nodes.
-Integration of the logarithm terms in the \textsc{Green} function is outlined in the lecture notes from January 28\textsuperscript{st}.
+Integration of the logarithm terms in the \textsc{Green} function is outlined in the lecture notes from January 28\textsuperscript{th}.
 The gradient of the other terms are given to be
 \[
-    \deex\green = \kappa \big( \Im{(f_1)} + i \Im{(f_2)} \big),
+    \deex\green = \kappa \big( \Im{(f_1(\ezh))} + i \Im{(f_2(\ezh))} \big),
 \]\[
-    \deey\green = \kappa \big( \Re{(f_1)} + i\Re{(f_2)} \big),
+    \deey\green = \kappa \big( \Re{(f_1(\ezh))} + i\Re{(f_2(\ezh))} \big),
 \]
 and are treated with a midtpoint rule, setting the complex variable
 \[
@@ -17,5 +17,23 @@ Constructing a partition of the interval whose midpoints forms \textsc{Chebyshov
     \centering
     \captionsetup{type = figure}
     \includegraphics[width = \textwidth]{box_L10.png}
-    \caption{Rectangle with $\sfrac{L}{D} = 10$}
+    \caption{Rectangle with $\sfrac{L}{D} = 10$, $\textit{\texttt{N}}_x = 100$, $\textit{\texttt{N}}_y = 25$.}
+\end{Figure}
+\noindent We may test the numerical scheme by checking that the left-hand side equals the right-hand side of the matrix equation for the real and imaginary parts, using a known function.
+We consider
+\[
+    \phi_0 = e^{\kappa(y-ix)}, \qquad \partial_{\nhat}\phi_0 = \kappa ( \hat{n}_y - i \hat{n}_x ) \phi_0.
+\]
+Plotting the left-hand side against the right-hand side,
+\begin{Figure}
+    \centering
+    \captionsetup{type = figure}
+    \includegraphics[width = \textwidth]{phi0_L2_D1_kD1point2.png}
+    \caption{Left-hand and right-hand side of integral equation with $\phi_0$. Rectangle $\sfrac{L}{D} = 2$.}
+\end{Figure}
+We see that the implementation seems to work, so we may solve for the heave potential.
+\begin{Figure}
+    \centering
+    \captionsetup{type = figure}
+    \includegraphics[width = \textwidth]{heave_L10_D1_kD1p2.png}
 \end{Figure}

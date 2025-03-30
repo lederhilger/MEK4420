@@ -34,12 +34,11 @@ class Box:
         return x_m
 
     def box(self) -> array:
-        xp = self.x_p()
-        xm = self.x_m()
+        xp = self.x_p(); xm = self.x_m()
         M = self.Nx + 2*self.Ny - 3
         box = zeros((M, 2))
         for n in range(M):
-            box[n] = [.5*(xp[n][0] + xm[n][0]),.5*(xp[n][1] + xm[n][1])]
+            box[n] = [.5*(xp[n][0] + xm[n][0]), .5*(xp[n][1] + xm[n][1])]
         return box
 
     def Δx(self, N, xp, xm) -> array:

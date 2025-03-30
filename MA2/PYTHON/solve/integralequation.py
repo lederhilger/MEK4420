@@ -183,8 +183,8 @@ class IntegralEquation(Box):
         phi_0 = self.phi_0(); phi_0_n = self.phi_0_n()
         X = 0
         for n in range(self.N):
-            X += (phi_0[n]*nhat[n] - phi[n]*phi_0_n[n])*self.dS[n]
-        X *= -1j*sqrt(self.κ*self.g)
+            X += (phi[n]*phi_0_n[n] - phi_0[n]*nhat[n])*self.dS[n]
+        #X *= 1j*sqrt(self.κ*self.g)
         return X/(self.g*self.D)
 
     def X_haskind2(self, mode: int) -> float:
@@ -196,11 +196,11 @@ class IntegralEquation(Box):
         X = self.g*2*self.L*exp(-self.κ*self.D)*sin(.5*self.κ*self.L)/(self.κ*self.L)
         return X/(self.g*self.D)
     
-    def ξ2_rough(self):
+    def ξ2_rough(self) -> float:
         ξ = exp(-self.κ*self.D)/(1 - self.κ*self.D + 1j*self.L*self.κ*exp(-2*self.κ*self.D))
         return ξ
     
-    def ξ2_full(self, option: str):
+    def ξ2_full(self, option: str) -> float:
         """
             Equation 128 for ξ_2/A
         """
@@ -210,7 +210,6 @@ class IntegralEquation(Box):
             "haskind2": self.X_haskind2(2),
             "froudekrylov": self.X_froudekrylov()
         }
-        #option = option.text()
         X = options[option]*self.g*self.D; print(f"X: {X}")
         c_22 = self.L; m = c_22
         a, b = self.added_mass(2)
