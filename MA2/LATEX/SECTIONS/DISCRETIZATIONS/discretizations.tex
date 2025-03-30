@@ -22,8 +22,13 @@ Constructing a partition of the interval whose midpoints forms \textsc{Chebyshov
 \noindent We may test the numerical scheme by checking that the left-hand side equals the right-hand side of the matrix equation for the real and imaginary parts, using a known function.
 We consider
 \[
-    \phi_0 = e^{\kappa(y-ix)}, \qquad \partial_{\nhat}\phi_0 = \kappa ( \hat{n}_y - i \hat{n}_x ) \phi_0.
+    \phi_0 = \frac{i \gravity e^{\kappa(y-ix)}}{\omega}, \qquad \partial_{\nhat}\phi_0 = \kappa ( \hat{n}_y - i \hat{n}_x ) \phi_0.
 \]
+We have that
+\[
+    \pi \phi_0 + \int_{S_{\mathrm{B}}} \phi_0 \partial_{\nhat} \green \,\dee S = \int_{S_{\mathrm{B}}} \green \partial_{\nhat} \phi_0 \,\dee S,
+\]
+meaning we may benchmark the implementation of the integral equation by comparison.
 Plotting the left-hand side against the right-hand side,
 \begin{Figure}
     \centering
@@ -31,9 +36,28 @@ Plotting the left-hand side against the right-hand side,
     \includegraphics[width = \textwidth]{phi0_L2_D1_kD1point2.png}
     \caption{Left-hand and right-hand side of integral equation with $\phi_0$. Rectangle $\sfrac{L}{D} = 2$.}
 \end{Figure}
-We see that the implementation seems to work, so we may solve for the heave potential.
+\noindent We see that the implementation seems to work, so we may solve for the heave potential.
+\begin{Figure}
+    \centering
+    \captionsetup{type = figure}
+    \includegraphics[width = \textwidth]{heave_Lp1_D1_kD1p2.png}
+    \caption{Heave potential for $\sfrac{L}{D} = 0.1$, and $\kappa D = 1.2$.}
+\end{Figure}
+\begin{Figure}
+    \centering
+    \captionsetup{type = figure}
+    \includegraphics[width = \textwidth]{heave_L1_D1_kD1p2.png}
+    \caption{Heave potential for $\sfrac{L}{D} = 1$, and $\kappa D = 1.2$.}
+\end{Figure}
+\begin{Figure}
+    \centering
+    \captionsetup{type = figure}
+    \includegraphics[width = \textwidth]{heave_L2_D1_kD1p2.png}
+    \caption{Heave potential for $\sfrac{L}{D} = 2$, and $\kappa D = 1.2$.}
+\end{Figure}
 \begin{Figure}
     \centering
     \captionsetup{type = figure}
     \includegraphics[width = \textwidth]{heave_L10_D1_kD1p2.png}
+    \caption{Heave potential for $\sfrac{L}{D} = 10$, and $\kappa D = 1.2$.}
 \end{Figure}
