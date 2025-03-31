@@ -17,6 +17,8 @@ class Plotting(IntegralEquation):
         n = linspace(0, self.N, self.N)
         plt.plot(n, phi.real, '.', label = 'real', color = 'k')
         plt.plot(n, phi.imag, '*', label = 'imaginary', color = 'k')
+        plt.title(f"L = {self.L}")
+        plt.ylabel(r"$\phi_{\mathrm{2}}$"); plt.xlabel(r"$S_{n}$")
         plt.legend(); plt.show()
 
     def plot_phi_0(self):
@@ -28,6 +30,7 @@ class Plotting(IntegralEquation):
         plt.plot(n, (rhs@phi_0_n).real, label = 'rhs real', color = 'k')
         plt.plot(n, (lhs@phi_0).imag, 'x', label = 'lhs imag', color = 'k')
         plt.plot(n, (rhs@phi_0_n).imag, '-.', label = 'rhs imag', color = 'k')
+        plt.title(f"L = {self.L}"); plt.xlabel(r"$S_{n}$")
         plt.legend(); plt.show()
 
     def plot_phi_D(self):
@@ -35,4 +38,6 @@ class Plotting(IntegralEquation):
         n = linspace(0, self.N, self.N)
         plt.plot(n, phi_D.real, '.', label = 'real', color = 'k')
         plt.plot(n, phi_D.imag, '*', label = 'imaginary', color = 'k')
+        plt.title(f"L = {self.L}")
+        plt.ylabel(r"$\phi_{\mathrm{D}}$"); plt.xlabel(r"$S_{n}$")
         plt.legend(); plt.show()

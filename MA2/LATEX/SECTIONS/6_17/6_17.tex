@@ -1,0 +1,28 @@
+\begin{adjustwidth}{.5in}{.5in}
+    Cylindrical buoy with bouyant center $y_{\mathrm{B}}$ and center of gravity $y_{\mathrm{G}}$, diameter $d$, draft $T$.
+    Displaced volume is $\displacedvolume = S \times T$, $S = \sfrac{\pi d^2}{4}$ waterline area.
+    Hydrostatic restoring forces
+    \[
+        c_{22} = \varrho \gravity S, \qquad c_{44} = \varrho \gravity S_{33} + \varrho \gravity \displacedvolume(y_{\mathrm{B}} - y_{\mathrm{G}}), \qquad c_{66} = \varrho \gravity S_{11} + \varrho \gravity \displacedvolume (y_{\mathrm{B}} - y_{\mathrm{G}})
+    \]
+    Cylinder, $S = \sfrac{\pi d^2}{4}$,
+    \[
+        S_{11} = \int_{S_{\mathrm{B}}} x^2 \,\dee S = \int\limits_{0}^{\sfrac{d}{2}} \int\limits_{0}^{2\pi} r^3 \cos^2{\theta} \,\dee\theta\dee r, \quad S_{33} = \int_{S_{\mathrm{B}}} z^2 \,\dee S = \int\limits_{0}^{\sfrac{d}{2}} \int\limits_{0}^{2\pi} r^3 \sin^2{\theta} \,\dee\theta\dee r.
+    \]
+    As expected, $S_{11} = S_{33}$.
+    We get that
+    \[
+        c_{22} = \frac{\pi \varrho \gravity d^2}{4}, \qquad c_{44} = c_{66} = \frac{\pi \varrho \gravity d^4}{64} + \frac{\pi \varrho \gravity T d^2 (y_{\mathrm{B}} - y_{\mathrm{G}})}{4}
+    \]
+    Units check out, force \SI{}{\kilo\gram\per\second\squared}, moment of inertia \SI{}{\kilo\gram\meter\squared\per\second\squared}.
+    \textsc{Froude}--\textsc{Krylov} force on submerged cylinder:
+    \[
+        X_{2}^{\mathrm{FK}} = -i \omega \varrho \int_{S_{\mathrm{B}}} \phi_0 \hat{n}_2 \,\dee S, \qquad \phi_0 = \frac{i \gravity e^{\kappa( y - ix)}}{\omega}.
+    \]
+    Here $S_{\mathrm{B}}$ is composed of two distinct surface integrals---one over the bottom of the cylinder, and one over the cylinder walls.
+    The component of the normal vector coinciding with the heave motion is zero on the cylinder walls, so there is no contribution, yielding
+    \[
+        X_{2}^{\mathrm{FK}} = -i \omega \varrho e^{-\kappa T} \int\limits_{\absl{\ezh} \leq \sfrac{d}{2}} e^{-i \kappa x} \,\dee \ezh = \frac{\pi \varrho \gravity d^2 e^{-\kappa T}}{4},
+    \]
+    where $\ezh = x + iz$.
+\end{adjustwidth}

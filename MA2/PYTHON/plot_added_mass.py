@@ -20,5 +20,5 @@ if __name__ == "__main__":
         plt.plot(kDs, A, '.', color = 'k', label = 'Added mass')
         plt.plot(kDs, B, '*', color = 'k', label = 'Damping')
         plt.plot(kDs, B_approx, color = 'k', label = 'Approx. damping')
-        plt.title(f"L = {L}")
+        plt.title(f"L = {L}"); plt.xlabel(r"$\kappa D$")
         plt.legend(); plt.show()
