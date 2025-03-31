@@ -155,7 +155,7 @@ class IntegralEquation(Box):
     def b_22(self, mode = 2) -> float:
         A_pos, A_neg = self.farfield_amplitudes(mode)
         A_1 = abs(A_pos[-1])**2; A_2 = abs(A_neg[-1])**2
-        b_22 = .5*self.ω*(A_1 + A_2)/(self.D**2 * sqrt(self.g*self.κ)) # Scaled wrt ω D^2
+        b_22 = .5*self.ω*(A_1 + A_2)/(self.D**2 * self.ω) # Scaled wrt ω D^2
         return b_22
     
     def X_integral(self, mode) -> float:

@@ -15,14 +15,24 @@
         c_{22} = \frac{\pi \varrho \gravity d^2}{4}, \qquad c_{44} = c_{66} = \frac{\pi \varrho \gravity d^4}{64} + \frac{\pi \varrho \gravity T d^2 (y_{\mathrm{B}} - y_{\mathrm{G}})}{4}
     \]
     Units check out, force \SI{}{\kilo\gram\per\second\squared}, moment of inertia \SI{}{\kilo\gram\meter\squared\per\second\squared}.
+    Natural frequency given by the singularity of repsonse amplitude operator,
+    \[
+        \frac{\hat{\xi}_2}{A} = \frac{\absl{X_2}}{c_{22} - \omega^2 (m + m_{22}) + i \omega r_{22}},
+    \]
+    where the $m = \varrho \displacedvolume$ is the mass.
+    That is, $\omega_n = \sqrt{\sfrac{1}{T}}$.
     \textsc{Froude}--\textsc{Krylov} force on submerged cylinder:
     \[
-        X_{2}^{\mathrm{FK}} = -i \omega \varrho \int_{S_{\mathrm{B}}} \phi_0 \hat{n}_2 \,\dee S, \qquad \phi_0 = \frac{i \gravity e^{\kappa( y - ix)}}{\omega}.
+        X_{2}^{\mathrm{\textsc{fk}}} = -i \omega \varrho \int_{S_{\mathrm{B}}} \phi_0 \hat{n}_2 \,\dee S, \qquad \phi_0 = \frac{i \gravity e^{\kappa( y - ix)}}{\omega}.
     \]
     Here $S_{\mathrm{B}}$ is composed of two distinct surface integrals---one over the bottom of the cylinder, and one over the cylinder walls.
     The component of the normal vector coinciding with the heave motion is zero on the cylinder walls, so there is no contribution, yielding
     \[
-        X_{2}^{\mathrm{FK}} = -i \omega \varrho e^{-\kappa T} \int\limits_{\absl{\ezh} \leq \sfrac{d}{2}} e^{-i \kappa x} \,\dee \ezh = \frac{\pi \varrho \gravity d^2 e^{-\kappa T}}{4},
+        X_{2}^{\mathrm{\textsc{fk}}} = -i \omega \varrho e^{-\kappa T} \int\limits_{\absl{\ezh} \leq \sfrac{d}{2}} e^{-i \kappa x} \,\dee \ezh = \frac{\pi \varrho \gravity d^2 e^{-\kappa T}}{4},
     \]
     where $\ezh = x + iz$.
+    Consulting the lecture notes, we know $A_{2}^{\infty} = A_{2}^{-\infty}$, yielding from the second \textsc{Haskind} relation and the \textsc{Froude}--\textsc{Krylov} approximation
+    \[
+        r_{22} = \frac{\omega { \absl{ X_{2}^{ \mathrm{ \textsc{fk} } } } }^2}{\varrho \gravity} = \frac{\pi^2 \omega \varrho d^4 e^{-2\kappa T}}{16}.
+    \]
 \end{adjustwidth}
