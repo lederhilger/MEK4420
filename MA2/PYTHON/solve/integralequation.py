@@ -1,5 +1,5 @@
 from numpy import array, zeros, sqrt, pi, linalg
-from scipy import special, exp, log, sin
+from scipy import special, exp, log
 from solve.box import Box
 
 class IntegralEquation(Box):
@@ -157,64 +157,3 @@ class IntegralEquation(Box):
         A_1 = abs(A_pos[-1])**2; A_2 = abs(A_neg[-1])**2
         b_22 = .5*self.ω*(A_1 + A_2)/(self.D**2 * self.ω) # Scaled wrt ω D^2
         return b_22
-    
-    def X_integral(self, mode) -> float:
-        phi_D = self.assemble_D()
-        nx, ny = self.normal_vector
-        if mode == 1:
-            nhat = nx
-        elif mode == 2:
-            nhat = ny
-        else:
-            raise ValueError("Choose mode 1 or 2.")
-        X = 0
-        for n in range(self.N):
-            X += phi_D[n]*nhat[n]*self.dS[n]*(-1j)*self.ω #Eq. 119
-        return X/(self.g*self.D)
-    
-    def X_haskind1(self, mode: int) -> float:
-        phi = self.assemble_k(mode)
-        nx, ny = self.normal_vector
-        if mode == 1:
-            nhat = nx
-        elif mode == 2:
-            nhat = ny
-        else:
-            raise ValueError("Choose mode 1 or 2.")
-        phi_0 = self.phi_0(); phi_0_n = self.phi_0_n()
-        X = 0
-        for n in range(self.N):
-            X += (phi[n]*phi_0_n[n] - phi_0[n]*nhat[n])*self.dS[n]
-        X *= 1j*self.ω
-        return X/(self.g*self.D)
-
-    def X_haskind2(self, mode: int) -> float:
-        A_neg = self.farfield_amplitudes(mode)[1][-1]
-        X = 1j*self.g*A_neg
-        return X/(self.g*self.D)
-    
-    def X_froudekrylov(self) -> float:
-        X = 2*self.g*exp(-self.κ*self.D)*sin(.5*self.κ*self.L)/self.κ
-        return X/(self.g*self.D)
-    
-    def ξ2_rough(self) -> float:
-        ξ = exp(-self.κ*self.D)/(1 - self.κ*self.D + 1j*self.L*self.κ*exp(-2*self.κ*self.D))
-        return ξ
-    
-    def ξ2_full(self, option: str) -> float:
-        """
-            Equation 128 for ξ_2/A
-        """
-        options = {
-            "integral": self.X_integral(2),
-            "haskind1": self.X_haskind1(2),
-            "haskind2": self.X_haskind2(2),
-            "froudekrylov": self.X_froudekrylov()
-        }
-        X = options[option]*self.g*self.D; print(f"X: {X}")
-        c_22 = self.L; m = c_22
-        a, b = self.added_mass(2)
-        denominator = (c_22 - self.κ*(m + a[-1]) + 1j*self.κ*b[-1])
-        print(f"denominator: {denominator}")
-        ξ = X/denominator
-        return ξ
