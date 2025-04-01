@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 if __name__ == "__main__":
     args = parse_args()
     Nx = args.Nx; Ny = args.Ny; D = args.D
-    Ls = [.1, 1, 2, 10]
+    Ls = [1, 2, 10]
     for L in Ls:
         print(f"L = {L}")
         N = 20; i = 0
@@ -20,10 +20,10 @@ if __name__ == "__main__":
             ξ2_H2.append(init.ξ2_full('haskind2'))
             ξ2_FK.append(init.ξ2_full('froudekrylov'))
             #ξ2_ROUGH.append(init.ξ2_rough())
-            ξ2_ROUGH_CORRECTED.append(init.ξ2_rough_correction())
+            #ξ2_ROUGH_CORRECTED.append(init.ξ2_rough_correction())
             i += 1
         #plt.plot(kDs, ξ2_ROUGH, '--', color = 'k', label = 'Rough')
-        plt.plot(kDs, ξ2_ROUGH_CORRECTED, '-.', color = 'k', label = 'Rough corrected')
+        #plt.plot(kDs, ξ2_ROUGH_CORRECTED, '-.', color = 'k', label = 'Rough corrected')
         plt.plot(kDs, ξ2_INT, '.', color = 'k', label = 'Integral')
         plt.plot(kDs, ξ2_H1, '*', color = 'k', label = 'Haskind 1')
         plt.plot(kDs, ξ2_H2, 'x', color = 'k', label = 'Haskind 2')
