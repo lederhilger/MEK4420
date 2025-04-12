@@ -1,0 +1,5 @@
+main.pdf: simonspreamble.sty main.tex
+	pdflatex LATEX
+
+simonspreamble.sty: ../../simonspreamble.sty
+	cp ../$@ $@

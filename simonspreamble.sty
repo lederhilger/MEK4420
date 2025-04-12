@@ -8,12 +8,13 @@
 %%%%%% LANGUAGE %%%%%%
 \RequirePackage[T2A,TS1,OT1]{fontenc}
 \RequirePackage[russian, english]{babel}
+\RequirePackage{lmodern}
+\DeclareFontFamilySubstitution{T2A}{lmr}{cmr}
 \RequirePackage{csquotes}
 
 %%%%%% TYPESETTING PRETTIFYING %%%%%%
 \RequirePackage{mathtools}
 \RequirePackage{scalerel}
-\RequirePackage{lmodern}
 %% Scaled down \in symbol for subscripts %%
 \newcommand{\smallerrel}[1]{\mathrel{\mathpalette\smallerrelaux{#1}}}
 \newcommand{\smallerrelaux}[2]{\raisebox{.1ex}{\scalebox{.75}{$#1#2$}}}
@@ -312,47 +313,23 @@
     {\scalebox{.5}{\raisebox{-.5ex}{\mbox{$\resizebox{1.29ex}{1.2ex}{\includegraphics{SYMBOLS/De_c.pdf}}$}}}}
 }
 %%%%%%%% CHE %%%%%%%%
-\newcommand{\che}{\mathchoice
-    {\mbox{$\resizebox{1.058ex}{1ex}{\includegraphics{SYMBOLS/Che_it.pdf}}$}}
-    {\mbox{$\resizebox{1.058ex}{1ex}{\includegraphics{SYMBOLS/Che_it.pdf}}$}}
-    {\scalebox{.7}{\mbox{$\resizebox{1.058ex}{1ex}{\includegraphics{SYMBOLS/Che_it.pdf}}$}}}
-    {\scalebox{.5}{\mbox{$\resizebox{1.058ex}{1ex}{\includegraphics{SYMBOLS/Che_it.pdf}}$}}}
-}
+\newcommand{\che}{\foreignlanguage{russian}{\textit{ч}}}
+
 %%%%%%%% BOLD CHE %%%%%%%%
-\newcommand{\bche}{\mathchoice
-    {\mbox{$\resizebox{1.26ex}{1.03ex}{\includegraphics{SYMBOLS/Che_bm.pdf}}$}}
-    {\mbox{$\resizebox{1.26ex}{1.03ex}{\includegraphics{SYMBOLS/Che_bm.pdf}}$}}
-    {\scalebox{.7}{\mbox{$\resizebox{1.26ex}{1.03ex}{\includegraphics{SYMBOLS/Che_bm.pdf}}$}}}
-    {\scalebox{.5}{\mbox{$\resizebox{1.26ex}{1.03ex}{\includegraphics{SYMBOLS/Che_bm.pdf}}$}}}
-}
+\newcommand{\bche}{\foreignlanguage{russian}{\textbf{\textit{ч}}}}
+
 %%%%%%%% DZHE %%%%%%%%
-\newcommand{\Dzhe}{\mathchoice
-    {\raisebox{-.15em}{\mbox{$\resizebox{.649em}{.8em}{\includegraphics{SYMBOLS/Dzhe.pdf}}$}}}
-    {\raisebox{-.15em}{\mbox{$\resizebox{.649em}{.8em}{\includegraphics{SYMBOLS/Dzhe.pdf}}$}}}
-    {\scalebox{.7}{\raisebox{-.15em}{\mbox{$\resizebox{.649em}{.8em}{\includegraphics{SYMBOLS/Dzhe.pdf}}$}}}}
-    {\scalebox{.5}{\raisebox{-.15em}{\mbox{$\resizebox{.649em}{.8em}{\includegraphics{SYMBOLS/Dzhe.pdf}}$}}}}
-}
+\newcommand{\Dzhe}{\foreignlanguage{russian}{\text{Џ}}}
+
 %%%%%%%% ZHE %%%%%%%%
-\newcommand{\zhe}{\mathchoice
-    {\mbox{$\resizebox{2.18ex}{1ex}{\includegraphics{SYMBOLS/Zhe_m.pdf}}$}}
-    {\mbox{$\resizebox{2.18ex}{1ex}{\includegraphics{SYMBOLS/Zhe_m.pdf}}$}}
-    {\scalebox{.7}{\mbox{$\resizebox{2.18ex}{1ex}{\includegraphics{SYMBOLS/Zhe_m.pdf}}$}}}
-    {\scalebox{.5}{\mbox{$\resizebox{2.18ex}{1ex}{\includegraphics{SYMBOLS/Zhe_m.pdf}}$}}}
-}
+\newcommand{\zhe}{\foreignlanguage{russian}{\textit{ж}}}
+
 %%%%%%%% BOLD ZHE %%%%%%%%
-\newcommand{\bzhe}{\mathchoice
-    {\mbox{$\resizebox{2.48ex}{1.03ex}{\includegraphics{SYMBOLS/Zhe_bm.pdf}}$}}
-    {\mbox{$\resizebox{2.48ex}{1.03ex}{\includegraphics{SYMBOLS/Zhe_bm.pdf}}$}}
-    {\scalebox{.7}{\mbox{$\resizebox{2.48ex}{1.03ex}{\includegraphics{SYMBOLS/Zhe_bm.pdf}}$}}}
-    {\scalebox{.5}{\mbox{$\resizebox{2.48ex}{1.03ex}{\includegraphics{SYMBOLS/Zhe_bm.pdf}}$}}}
-}
+\newcommand{\bzhe}{\foreignlanguage{russian}{\textbf{\textit{ж}}}}
+
 %%%%%%%% ZE %%%%%%%%
-\newcommand{\ze}{\mathchoice
-    {\raisebox{-0.07ex}{\mbox{$\resizebox{1ex}{1.1ex}{\includegraphics{SYMBOLS/Ze.pdf}}$}}}
-    {\raisebox{-0.07ex}{\mbox{$\resizebox{1ex}{1.1ex}{\includegraphics{SYMBOLS/Ze.pdf}}$}}}
-    {\raisebox{-0.07ex}{\scalebox{.7}{\mbox{$\resizebox{1ex}{1.1ex}{\includegraphics{SYMBOLS/Ze.pdf}}$}}}}
-    {\raisebox{-0.07ex}{\scalebox{.5}{\mbox{$\resizebox{1ex}{1.1ex}{\includegraphics{SYMBOLS/Ze.pdf}}$}}}}
-}
+\newcommand{\ze}{\foreignlanguage{russian}{\textit{з}}}
+
 %%%%%%%% EZH %%%%%%%%
 \newcommand{\ezh}{\mathchoice
     {\raisebox{-0.4ex}{\mbox{$\resizebox{1ex}{1.445ex}{\includegraphics{SYMBOLS/ezh.pdf}}$}}}
