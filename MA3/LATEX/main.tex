@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage{simonspreamble}
+
+%%%%%% WRITE COURSE CODE HERE %%%%%%
+\makeatletter
+\edef\headcourse{MEKSP100}
+\makeatother
+
+%%%%%% FILL OUT TITLE, NAME, AND DATE %%%%%%
+\title{The Mooring Dynamics of Floating Wind Turbines}
+\subtitle{\emph{\headcourse}}
+\author{\textsc{Simon Lederhilger}}
+\date{April 12\textsuperscript{th} 2025}
+
+%%%%%% DEFINES THE HEADER TITLE %%%%%%
+\makeatletter
+\edef\headtitle{\@title}
+\makeatother
+
+\graphicspath{{../PYTHON/}}
+
+\begin{document}
+\maketitle\thispagestyle{fancy}
+    \begin{multicols*}{2}
+        \section[Mooring]{Mooring systems}
+        %\subfile{SECTIONS/HEAVE_PROBLEM/heave_problem.tex}
+        %\printbibliography
+    \end{multicols*}
+\end{document}
