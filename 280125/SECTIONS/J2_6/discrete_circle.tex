@@ -7,7 +7,7 @@
         \foreach \x in {1,...,12}
         {
             \draw ({cos((\x-1)*\angel)}, {sin((\x-1)*\angel)})--({cos(\x*\angel)}, {sin(\x*\angel)});
-            \node at ({1.125*cos(((2*\x-1)*\angel/2)}, {1.125*sin((2*\x-1)*\angel/2)}) {$S_{\x}$};
+            \node at ({1.125*cos((2*\x-1)*\angel/2)}, {1.125*sin((2*\x-1)*\angel/2)}) {$S_{\x}$};
         }
     \end{scope}
 \end{tikzpicture}
