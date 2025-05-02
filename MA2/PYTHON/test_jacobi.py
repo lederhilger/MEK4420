@@ -2,7 +2,7 @@ from solve.jacobi import Jacobi
 from solve.chebyshov import Chebyshov
 import matplotlib.pyplot as plt
 from scipy.special import ellipj
-from numpy import linspace, zeros_like, ones
+from numpy import linspace, zeros_like, ones, pi, sqrt
 
 domain = linspace(0, 1, 101)
 
@@ -11,6 +11,16 @@ domain = linspace(0, 1, 101)
 
 jacob = Jacobi(domain)
 chebyshov = Chebyshov(domain)
+
+# K = pi/2 F(.5;.5;1;m)
+# F(a;b;.5(a+b+1);.5) = sqrt(pi)/Gamma^2(3/4)
+# K = (pi/2) sqrt(pi) / Gamma^2(3/4)
+# Gamma(3/4) = sqrt( sqrt(pi/2) * AGM(sqrt(2); 1; .5*(sqrt(2)-1)) )
+Kay = .5*pi*sqrt(2)/jacob.AGM(sqrt(2), 1, .5*(sqrt(2)-1))[0][-1]
+K = jacob.K()
+print(f"Difference in K: {abs(K - Kay)}")
+K_MT = 1.854074677
+print(f"Milne-Thomson difference in K: {abs(K - K_MT)}")
 
 x_jac = jacob.inverse_map()
 x_cheb = chebyshov.inverse_map()
