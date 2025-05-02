@@ -1,0 +1,14 @@
+\begin{tikzpicture}
+    \begin{scope}
+        %%% SPAR %%%
+        \def\rad{.5}
+        \draw[pattern = north west lines] (0,0) circle (\rad);
+        %%% MOORING LINES %%%
+        \def\mooringlength{1}
+        \draw[thick] (\rad, 0)--(\rad+\mooringlength, 0) node[midway, above]{$r$};
+        \draw[thick] ({\rad*cos(120)},{\rad*sin(120)})--({(\rad+\mooringlength)*cos(120)},{(\rad+\mooringlength)*sin(120)});
+        \draw[thick] ({\rad*cos(240)},{\rad*sin(240)})--({(\rad+\mooringlength)*cos(240)},{(\rad+\mooringlength)*sin(240)});
+        %%% FORCE %%%
+        \draw[-latex, thick] (-3,0)--(-2,0) node[midway, above]{$\bm{F}$};
+    \end{scope}
+\end{tikzpicture}

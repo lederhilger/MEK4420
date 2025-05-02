@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{simonspreamble}
+\bibliography{bibliography.bib}
 
 %%%%%% WRITE COURSE CODE HERE %%%%%%
 \makeatletter
@@ -21,9 +22,10 @@
 
 \begin{document}
 \maketitle\thispagestyle{fancy}
+%\nocite{*} %NO REFERENCES IN THIS DOCUMENT
     \begin{multicols*}{2}
         \section[Mooring]{Mooring systems}
-        %\subfile{SECTIONS/HEAVE_PROBLEM/heave_problem.tex}
+        \subfile{SECTIONS/MOORING/mooring.tex}
         %\printbibliography
     \end{multicols*}
 \end{document}

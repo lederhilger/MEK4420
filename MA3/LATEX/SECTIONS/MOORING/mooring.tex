@@ -1,0 +1,39 @@
+We wish to model a floating spar wind turbine which is moored by three taut mooring lines equiangularly secured to the seabed of depth $h$.
+Imagining the turbine interacting with the wind whilst neglecting the mooring lines, the net force acting in the direction coinciding with one of the mooring lines, as is shown in figure \ref{fig:topdown}, the two other mooring lines will resist this motion.
+We assume a very simple system, where we imagine the mooring lines being made of a fiber that can be assumed to deform elastically like a spring, with a spring constant
+\[
+    k = \frac{\youngsmodulus A}{L}\cos{\alpha},
+\]
+where $\alpha$ is the angle between the mooring line and plane water surface.
+\begin{Figure}
+    \centering
+    \captionsetup{type = figure}
+    \input{topdown.tex}
+    \caption{Top-down view of wind mooring system.}
+    \label{fig:topdown}
+\end{Figure}
+\noindent
+The net force acting in the direction of that one mooring line will induce a reactionary in the two others, inversely proportional to the cosine of the half angle between them.
+Since the three mooring lines are distributed evenly, this half angle must be $\sfrac{\pi}{3}$, whose cosine is $\sfrac{1}{2}$.
+The inverse proportionality is due to the trigonometry of the problem---the mooring line is the hypotenuse of a right triangle in which the net force is the adjacent side length.
+Thus the effective spring constant is twice that of the value above, considering the horizontal contribution only.
+The resulting resistance from the mooring line will also have to account for the decline at which it works in the transversal direction, yielding another cosine term.
+Finally, the spring constant for the system is given by
+\[
+    k = \frac{2 \youngsmodulus A}{L} \cos^2{\alpha}, \qquad \alpha = \arcsin{(\sfrac{d}{L})}.
+\]
+\begin{Figure}
+    \centering
+    \captionsetup{type = figure}
+    \input{system.tex}
+    \caption{Side view.}
+    \label{fig:side}
+\end{Figure}
+From the theory of differential equations, we know the period of such an oscillation will be
+\[
+    T = 2\pi \sqrt{\frac{m + m_11}{k}}, \qquad m_11 = \pi \varrho r^2,
+\]
+where $m$ is the mass of the tower, $m_11$ is its added mass, and $r$ its radius.
+The spar we use here 
+
+The vertical added mass is 
