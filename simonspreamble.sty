@@ -1,38 +1,47 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% SIMON's preamble %%%%%%%%%%%%%%%%%%%%%%%
 \ProvidesClass{simonspreamble}
-\RequirePackage[utf8]{inputenc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Version 27042025, UiO Oslo, Norway %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%% WARNINGS %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% WARNINGS %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{silence}
 \WarningFilter{latexfont}{Size substitutions with differences}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This warning is a result of the xfrac package, and is ignored%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ErrorFilter{bibtex}{I found no}
 
-%%%%%% LANGUAGE %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% LANGUAGE %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[T2A,TS1,OT1]{fontenc}
 \RequirePackage[russian, english]{babel}
 \RequirePackage{lmodern}
 \DeclareFontFamilySubstitution{T2A}{lmr}{cmr}
-\RequirePackage{csquotes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% For some reason, T2A must be loaded before OT1. lmodern is %%%
+% a better font option than cmodern, but has worse selection. %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%% TYPESETTING PRETTIFYING %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% TYPESETTING PRETTIFYING %%%%%%%%%%%%%%%%%%%%
 \RequirePackage{mathtools}
 \RequirePackage{scalerel}
-%% Scaled down \in symbol for subscripts %%
-\newcommand{\smallerrel}[1]{\mathrel{\mathpalette\smallerrelaux{#1}}}
-\newcommand{\smallerrelaux}[2]{\raisebox{.1ex}{\scalebox{.75}{$#1#2$}}}
+%%%%%%%%%%%% Scaled down \in symbol for subscripts %%%%%%%%%%%%%
+\newcommand{\smallerrel}[1]{%
+    \mathrel{\mathpalette\smallerrelaux{#1}}}
+\newcommand{\smallerrelaux}[2]{%
+    \raisebox{.1ex}{\scalebox{.75}{$#1#2$}}}
 \newcommand{\smallin}{\smallerrel{\in}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%% LAYOUT %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% PAGE LAYOUT SETTINGS %%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{fancyhdr}
-\RequirePackage{lastpage}
-\RequirePackage{enumerate}
-\RequirePackage{listings}
-\RequirePackage{caption}
 \RequirePackage{titling}
-\RequirePackage{floatrow}
-\RequirePackage{sidecap}
-\RequirePackage{subfiles}
-\RequirePackage{multicol}
-
-%%%%%% PAGE LAYOUT SETTINGS %%%%%%
+\RequirePackage{lastpage}
 \RequirePackage{geometry}
 \geometry{a4paper, margin=1in}
 \RequirePackage{changepage}
@@ -40,8 +49,7 @@
   \posttitle{%
     \par\end{center}
     \begin{center}\large#1\end{center}
-    \vskip0.5em}%
-}
+    \vskip .5em}}
 \setcounter{secnumdepth}{0}
 \pagestyle{fancy}
 \cfoot{}
@@ -58,15 +66,70 @@
   \null\vspace{\arabic{WF@wrappedlines}\baselineskip}%
   \WFclear
 \fi}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% OTHER LAYOUT %%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{enumerate}
+\RequirePackage{listings}
+\RequirePackage{caption}
+\RequirePackage{floatrow}
+\RequirePackage{sidecap}
+\RequirePackage{subfiles}
+\RequirePackage{multicol}
+\RequirePackage{csquotes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%% BIBLIOGRAPHY %%%%%%
-\RequirePackage[language = auto, autolang = other, bibencoding = utf8]{biblatex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% MATH TYPESETTING PACKAGES %%%%%%%%%%%%%%%%%%%
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{amsthm}
+\RequirePackage{amssymb}
+\RequirePackage{bm}
+\RequirePackage{xfrac}
+\RequirePackage{tensor}
+\RequirePackage{mathrsfs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% Pi-theorem Matrix %%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{nicematrix}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% PHYSICS %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[version=4]{mhchem}
+\RequirePackage{siunitx}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% GRAPHICS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{graphicx}
+\RequirePackage{subcaption}
+\RequirePackage{tikz}
+\usetikzlibrary{patterns, 3d, arrows, perspective,%
+    calc, bending, positioning}
+\RequirePackage[outline]{contour}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% Figures for two columns %%%%%%%%%%%%%%%%%%%%
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% CODE/PROGRAMMING TYPESETTING (MATLAB) %%%%%%%%%%%%
+\RequirePackage[numbered,framed]{matlab-prettifier}
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAPHY %%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[language = auto,%
+    autolang = other,%
+    bibencoding = utf8,%
+    backend = biber]{biblatex}
 \renewcommand*{\mkbibnamefamily}[1]{\textsc{#1}}
 \DeclareNameAlias{author}{family-given}
 \addbibresource{bibliography.bib}
 \WarningFilter{biblatex}{Patching footnotes failed}
-
-%%%%%% REFERENCING %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% REFERENCING %%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeatletter\disable@package@load{auxhook}{}\makeatother
 \RequirePackage{hyperref}
 \hypersetup{
@@ -76,52 +139,24 @@
     urlcolor={black}
 }
 \RequirePackage{cleveref}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%% MATH TYPESETTING PACKAGES %%%%%%
-\RequirePackage{amsmath}
-\RequirePackage{amsfonts}
-\RequirePackage{amsthm}
-\RequirePackage{amssymb}
-\RequirePackage{bm}
-\RequirePackage{xfrac}
-\RequirePackage{tensor}
-\RequirePackage{mathrsfs}
-
-%%%%%% Pi-theorem matrix %%%%%%
-\RequirePackage{nicematrix}
-
-%%%%%% GRAPHICS %%%%%%
-\RequirePackage{graphicx}
-\RequirePackage{subcaption}
-\RequirePackage{tikz}
-\usetikzlibrary{patterns, 3d, arrows, perspective, calc, bending, positioning}
-\RequirePackage[outline]{contour}
-
-%%% FIGURES FOR TWO COLUMNS %%%
-\newenvironment{Figure}
-  {\par\medskip\noindent\minipage{\linewidth}}
-  {\endminipage\par\medskip}
-
-%%%%%% PHYSICS %%%%%%
-\RequirePackage[version=4]{mhchem}
-\RequirePackage{siunitx}
-
-%%%%%% CODE/PROGRAMMING TYPESETTING (MATLAB) %%%%%%
-\RequirePackage[numbered,framed]{matlab-prettifier}
-\RequirePackage{algorithm}
-\RequirePackage{algpseudocode}
-
-%%%%%%%%%%%%%%%%%%%%%%%% THEOREMS %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% MATHEMATICS %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% THEOREM ENVIRONMENTS %%%%%%%%%%%%%%%%%%%%%
 \newtheorem*{theorem}{Theorem}
 \newtheorem*{proposition}{Proposition}
 \theoremstyle{definition}
 \newtheorem*{definition}{Definition}
 \newtheorem*{corollary}{Corollary}
 \newtheorem*{lemma}{Lemma}
-
-%%%%%%%%%%%%%%%%%%%%%%%% ANALYSIS %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% ANALYSIS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% epsilon %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \let\hideousepsilon\epsilon
 \let\epsilon\varepsilon
+%%%%%%%%%%%%%%%%%%%%%%% differentials %%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\dee}{\mathrm{d}}
 \newcommand{\Dee}{\mathrm{D}}
 \newcommand{\deex}{\partial_x}
@@ -135,6 +170,7 @@
 \newcommand{\deezeta}{\partial_{\zeta}}
 \newcommand{\deexxi}{\partial_{x\xi}}
 \newcommand{\deexz}{\partial_{xz}}
+%%%%%%%%%%%%%%%%% mathrm-type operators %%%%%%%%%%%%%%%%%%%%%%%%
 \DeclareMathOperator{\adv}{adv}
 \DeclareMathOperator{\dive}{div}
 \DeclareMathOperator{\sgn}{sgn}
@@ -147,42 +183,27 @@
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
 \DeclareMathOperator{\Res}{Res}
+%%%%%%%%%%%%%%%%%%%%%% paired delimiters %%%%%%%%%%%%%%%%%%%%%%%
 \DeclarePairedDelimiter\bracc\{\}
 \DeclarePairedDelimiter{\innerprod}{\langle}{\rangle}
 \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 \DeclarePairedDelimiter\absl\lvert\rvert
 \newcommand{\eqdef}{\overset{\mathrm{def}}{=\joinrel=}}
-
-%%%%%%%%%%%%%%%%%% DOUBLE ANLGES %%%%%%%%%%%%%%%%%%
-%https://tex.stackexchange.com/questions/79657/how-to-get-double-angle-bracket-without-using-mnsymbol-package
-%ANSWER PROVIDED BY Miguel
-\makeatletter
-\newsavebox{\@bra}
-\newsavebox{\@brb}
-\DeclarePairedDelimiterX\llrrangle[1]{.}{.}{%
-  \delimsize\langle%
-  \hspace*{0.3mm}\hspace*{0.55mm}\savebox{\@bra}{\(\displaystyle\left\langle\vphantom{#1}\right.\)}\hspace*{-1.035\wd\@bra}%
-  \delimsize\langle%
-  #1% 
-  \delimsize\rangle%
-  \hspace*{0.3mm}\hspace*{0.55mm}\savebox{\@brb}{\(\displaystyle\left.\vphantom{#1}\right\rangle\)}\hspace*{-1.035\wd\@brb}%
-  \delimsize\rangle
-}
-\makeatother
-
-%%%%%%%%%%%%%%%%%%%%%%%% TENSORS & VECTORS %%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%% HANDY %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% TENSORS & VECTORS %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% HANDY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\uvec}{\bm{u}}
 \newcommand{\xvec}{\bm{x}}
 \newcommand{\eye}{\mathfrak{d}}
 \newcommand{\jacobi}[1]{\bm{\mathfrak{J}_{#1}}}
-%%%%%%%%%%%% PHYSICAL %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% PHYSICAL %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\stress}{\bm{\mathfrak{P}}}
 \newcommand{\strain}{\bm{\mathfrak{e}}}
 \newcommand{\addedmass}{\bm{\mathfrak{m}}}
 \newcommand{\gravity}{\mathrm{g}}
 \newcommand{\vgravity}{\mathbf{g}}
-%%%%%%%%%%%% UNIT VECTORS %%%%%%%%%%%%
+\newcommand{\youngsmodulus}{\mathrm{E}}
+%%%%%%%%%%%%%%%%%%%%%%%%% UNIT VECTORS %%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\ihat}{\bm{\hat{\imath}}}
 \newcommand{\jhat}{\bm{\hat{\jmath}}}
 \newcommand{\khat}{\bm{\hat{k}}}
@@ -192,8 +213,8 @@
 \newcommand{\nhat}{\bm{\hat{n}}}
 \newcommand{\rhat}{\boldsymbol{\hat{\kaufmannr}}}
 \newcommand{\tehat}{\boldsymbol{\hat{\vartheta}}}
-
-%%%%%%%%%%%%%%%%%%%%%%%% DISCRETE NOTATION %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% DISCRETE NOTATION %%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\xtt}{{\textit{\texttt{x}}}}
 \newcommand{\ytt}{{\textit{\texttt{y}}}}
 \newcommand{\ztt}{{\textit{\texttt{z}}}}
@@ -202,14 +223,15 @@
 \newcommand{\utt}{\textit{\texttt{u}}}
 \newcommand{\htt}{\textit{\texttt{h}}}
 \newcommand{\naturals}{\mathbb{N}}
-
-%%%%%%%%%%%%%%%%%%%%%%%% DIMONESIONLESS OR OTHERWISE NAMED NUMBERS %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% DIMONESIONLESS OR OTHERWISE NAMED NUMBERS %%%%%%%%%%%
 \newcommand{\Ekman}{\mathrm{Ek}}
 \newcommand{\Euler}{\mathrm{Eu}}
 \newcommand{\Stokes}{\mathrm{Stk}}
 \newcommand{\Reynolds}{\mathrm{Re}}
 \newcommand{\Rossby}{\mathrm{Ro}}
 \newcommand{\Courant}{\mathrm{Co}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%% CUSTOM SYMBOLS %%%%%%%%%%%%%%%%%%%%%%%%
 %%%% POLAR R %%%%
