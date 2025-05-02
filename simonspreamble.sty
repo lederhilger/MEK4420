@@ -2,7 +2,10 @@
 %%%%%%%%%%%%%%%%%%%%%%% SIMON's preamble %%%%%%%%%%%%%%%%%%%%%%%
 \ProvidesClass{simonspreamble}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Version 27042025, UiO Oslo, Norway %%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Version 02052025, UiO Oslo, Norway, for pdfLaTeX %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Since SYMBOLS// are PDF1.6, so must main.pdf be %%%%%%%%%%%%%%
+\pdfminorversion = 6
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -12,17 +15,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This warning is a result of the xfrac package, and is ignored%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ErrorFilter{bibtex}{I found no}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%% LANGUAGE %%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[T2A,TS1,OT1]{fontenc}
+\RequirePackage[X2,TS1,T1]{fontenc}
 \RequirePackage[russian, english]{babel}
 \RequirePackage{lmodern}
-\DeclareFontFamilySubstitution{T2A}{lmr}{cmr}
+\DeclareFontFamilySubstitution{X2}{lmr}{cmr}
+\DeclareFontSubstitution{X2}{cmtt}{m}{it}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% For some reason, T2A must be loaded before OT1. lmodern is %%%
+% T1 main font, so X2&TS1 must be loaded before T1. lmodern is %
 % a better font option than cmodern, but has worse selection. %%
+% I have decided X2 is the better option over T2x encoding. %%%%
+% TS1 is for Chinese & Japanese language support %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -321,19 +326,9 @@
     {\scalebox{.5}{\mbox{$\resizebox{.572em}{.75em}{\includegraphics{SYMBOLS/Thetatt.pdf}}$}}}
 }
 %%%%%%%% de %%%%%%%%
-\newcommand{\rde}{\mathchoice
-    {\raisebox{-.2ex}{\mbox{$\resizebox{1.29ex}{1.2ex}{\includegraphics{SYMBOLS/de.pdf}}$}}}
-    {\raisebox{-.2ex}{\mbox{$\resizebox{1.29ex}{1.2ex}{\includegraphics{SYMBOLS/de.pdf}}$}}}
-    {\scalebox{.7}{\raisebox{-.5ex}{\mbox{$\resizebox{1.29ex}{1.2ex}{\includegraphics{SYMBOLS/de.pdf}}$}}}}
-    {\scalebox{.5}{\raisebox{-.5ex}{\mbox{$\resizebox{1.29ex}{1.2ex}{\includegraphics{SYMBOLS/de.pdf}}$}}}}
-}
+\newcommand{\rde}{\foreignlanguage{russian}{\textit{д}}}
 %%%%%%%% DE %%%%%%%%
-\newcommand{\rDe}{\mathchoice
-    {\raisebox{-.4ex}{\mbox{$\resizebox{.867em}{.85em}{\includegraphics{SYMBOLS/De_c.pdf}}$}}}
-    {\raisebox{-.4ex}{\mbox{$\resizebox{.867em}{.85em}{\includegraphics{SYMBOLS/De_c.pdf}}$}}}
-    {\scalebox{.7}{\raisebox{-.5ex}{\mbox{$\resizebox{1.29ex}{1.2ex}{\includegraphics{SYMBOLS/De_c.pdf}}$}}}}
-    {\scalebox{.5}{\raisebox{-.5ex}{\mbox{$\resizebox{1.29ex}{1.2ex}{\includegraphics{SYMBOLS/De_c.pdf}}$}}}}
-}
+\newcommand{\rDe}{\foreignlanguage{russian}{\text{Д}}}
 %%%%%%%% CHE %%%%%%%%
 \newcommand{\che}{\foreignlanguage{russian}{\textit{ч}}}
 
@@ -349,16 +344,15 @@
 %%%%%%%% BOLD ZHE %%%%%%%%
 \newcommand{\bzhe}{\foreignlanguage{russian}{\textbf{\textit{ж}}}}
 
+%%%%%%%% TELETYPE ZHE %%%%%%%%
+\newcommand{\zhett}{\foreignlanguage{russian}{\texttt{\textit{ж}}}}
+
 %%%%%%%% ZE %%%%%%%%
 \newcommand{\ze}{\foreignlanguage{russian}{\textit{з}}}
 
 %%%%%%%% EZH %%%%%%%%
-\newcommand{\ezh}{\mathchoice
-    {\raisebox{-0.4ex}{\mbox{$\resizebox{1ex}{1.445ex}{\includegraphics{SYMBOLS/ezh.pdf}}$}}}
-    {\raisebox{-0.4ex}{\mbox{$\resizebox{1ex}{1.445ex}{\includegraphics{SYMBOLS/ezh.pdf}}$}}}
-    {\raisebox{-0.4ex}{\scalebox{.7}{\mbox{$\resizebox{1ex}{1.445ex}{\includegraphics{SYMBOLS/ezh.pdf}}$}}}}
-    {\raisebox{-0.4ex}{\scalebox{.5}{\mbox{$\resizebox{1ex}{1.445ex}{\includegraphics{SYMBOLS/ezh.pdf}}$}}}}
-}
+\newcommand{\ezh}{\foreignlanguage{russian}{\textit{ӡ}}}
+
 %%%%%%%% THORN %%%%%%%%
 \newcommand{\thorn}{\mathchoice
     {\raisebox{-0.404ex}{\mbox{$\resizebox{1.1459ex}{1.96ex}{\includegraphics{SYMBOLS/thorn_it.pdf}}$}}}
@@ -443,6 +437,7 @@
     {\scalebox{.7}{\mbox{$\resizebox{1.17ex}{1ex}{\includegraphics{SYMBOLS/ROMAN_III.pdf}}$}}}
     {\scalebox{.5}{\mbox{$\resizebox{1.17ex}{1ex}{\includegraphics{SYMBOLS/ROMAN_III.pdf}}$}}}
 }
+
 %%%% DISPLACED VOLUME %%%%
 \newcommand{\displacedvolume}{\mathchoice
     {\mbox{$\resizebox{.7em}{.75em}{\includegraphics{SYMBOLS/Va.pdf}}$}}
