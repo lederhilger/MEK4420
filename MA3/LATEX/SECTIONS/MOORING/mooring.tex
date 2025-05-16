@@ -18,9 +18,9 @@ Since the three mooring lines are distributed evenly, this half angle must be $\
 The inverse proportionality is due to the trigonometry of the problem---the mooring line is the hypotenuse of a right triangle in which the net force is the adjacent side length.
 Thus the effective spring constant is twice that of the value above, considering the horizontal contribution only.
 The resulting resistance from the mooring line will also have to account for the decline at which it works in the transversal direction, yielding another cosine term.
-Finally, the spring constant for the system is given by
+Finally, the spring constant for the system in the horizontal direction is given by
 \[
-    k = \frac{2 \youngsmodulus A}{L} \cos^2{\alpha}, \qquad \alpha = \arcsin{(\sfrac{d}{L})}.
+    k_{\textsc{h}} = \frac{2 \youngsmodulus A}{L} \cos^2{\alpha}, \qquad \alpha = \arcsin{(\sfrac{h}{L})}.
 \]
 \begin{Figure}
     \centering
@@ -31,9 +31,24 @@ Finally, the spring constant for the system is given by
 \end{Figure}
 From the theory of differential equations, we know the period of such an oscillation will be
 \[
-    T = 2\pi \sqrt{\frac{m + m_11}{k}}, \qquad m_11 = \pi \varrho r^2,
+    T = 2\pi \sqrt{\frac{m + m_{11}}{k_{\textsc{h}}}}, \qquad m_{11} = m,
 \]
-where $m$ is the mass of the tower, $m_11$ is its added mass, and $r$ its radius.
-The spar we use here 
+where $m$ is the mass of the tower, and $m_{11}$ is its added mass.
+The spar we use here floats in the water, meaning the displaced volume of water must weigh the same as the tower, whence the added mass.
 
-The vertical added mass is 
+We now imagine some wave field producing heave motions in the tower.
+From the previous assignment we saw that the restoring forces for heave result in a coefficient $\varrho\gravity S$, where $S$ is the water line area.
+The resulting spring coefficient will then be the sum of this restoring force coefficient and three times the sine of the mooring line spring coefficient,
+\[
+    k_{\textsc{v}} = \frac{3 \youngsmodulus A}{L}\cos{\alpha}\sin{\alpha} + \varrho\gravity S.
+\]
+The factor three here comes from the three mooring lines being spaced equiangularly.
+
+For the determination of the vertical added mass we may assume the tower to be a circular disk whose normal vector coincides with that of the heave.
+We may do this as the added mass is not concerned with the surfaces orthogonal to its mode, meaning the cylindrical shell will not contribute to the added mass.
+This is a simplification, as we suspect the conal shape of the spar may contribute to the added mass.
+Either way, the period will be given in a similar manner as in surge, with the added mass of such a disk, halved, as we only consider half the disk,\footnote{\cite{irrotational1967kennard} \textsc{Kennard}, p.393}
+\[
+    T = 2\pi \sqrt{\frac{m + m_{22}}{k_{\textsc{v}}}}, \qquad m_{22} = \frac{2 \pi {r_2}^3}{3},
+\]
+where $r_2$ is the bottom radius of the spar.

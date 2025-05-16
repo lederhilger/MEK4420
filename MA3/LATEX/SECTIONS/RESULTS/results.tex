@@ -1,0 +1,14 @@
+The specifications for the wind turbine are set to be $r_1 = \SI{5}{\meter}$, $r_2 = \SI{9}{\meter}$, and $m = \SI{2.3846e7}{\kilo\gram}$.
+The axial stiffness is given by $\youngsmodulus A = \SI{6e8}{\kilo\gram\per\second\squared}$, and the depth of the ocean is assumed to be $h = \SI{320}{\meter}$.
+Based on these initial parameters, we want to find an optimal anchor radius $r_{\mathrm{a}}$ such that the periods in heave and surge are less than \SI{20}{\second} and \SI{40}{\second}, respectively.
+To do this, we implement the stiffnesses and periods as methods in the class \texttt{Moor}, and perform a search through different $r_{\mathrm{a}}$.
+As is apparent, we have not chosen an explicit length of the morring lines $L$, since it may be calculated $L = \sqrt{{r_{\mathrm{a}}}^2 + h^2}$, and as such we may search for the anchor radius explicitly.
+\begin{Figure}
+        \centering
+        \captionsetup{type = figure}
+        \scalebox{.45}{\input{../PYTHON/anchor_radius_search.pgf}}
+        \caption{Result from searching in the interval $r_{\mathrm{a}}\in[800,850]$.}
+        \label{fig:anchor_radius}
+\end{Figure}
+When plotting the results, we have normalized the period with respect to the target periods, meaning the search should aim for a normalized period of unity.
+We see above in figure \ref{fig:anchor_radius} that we surpass the \SI{40}{\second} period in surge at about $r_{\mathrm{a}} = \SI{830}{\meter}$.

@@ -22,10 +22,15 @@
 
 \begin{document}
 \maketitle\thispagestyle{fancy}
-%\nocite{*} %NO REFERENCES IN THIS DOCUMENT
-    \begin{multicols*}{2}
-        \section[Mooring]{Mooring systems}
-        \subfile{SECTIONS/MOORING/mooring.tex}
-        %\printbibliography
-    \end{multicols*}
+\begin{multicols*}{2}
+  \section[Introduction]{Introduction}
+  \subfile{SECTIONS/INTRODUCTION/introduction.tex}
+  
+  \section[Mooring]{Mooring systems}
+  \subfile{SECTIONS/MOORING/mooring.tex}
+
+  \section[Results]{Implementation and Results}
+  \subfile{SECTIONS/RESULTS/results.tex}
+  \printbibliography
+\end{multicols*}
 \end{document}
