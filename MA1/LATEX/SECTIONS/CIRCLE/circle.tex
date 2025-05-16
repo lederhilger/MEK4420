@@ -13,7 +13,7 @@ Det er i disse midtpunktene vi vil evaluere $\phi$.
 
 Det er hensiktsmessig å lage en klasse for å løse intergrallikningen, og midtpunktene bør være en metode her.
 Vi definerer dermed klassen \texttt{IntegralEquation} i filen \texttt{integralequation.py}.
-Vi har da metoden \textit{\texttt{ж}} $\rightarrow$ \texttt{tuple}, som er definert ved $\textit{\texttt{ж}} = \sfrac{1}{2}(\textit{\texttt{x}}_{\mathtt{p}} + \textit{\texttt{x}}_{\mathtt{m}})$.
+Vi har da metoden \zhett $\rightarrow$ \texttt{tuple}, som er definert ved $\zhett = \sfrac{1}{2}(\xtt_{\mathtt{p}} + \xtt_{\mathtt{m}})$.
 For å sette sammen venstre side av integrallikningen, trenger vi en metode for å konstruere $\Thetatt \in \mathbb{R}^{\mathtt{N}\times\mathtt{N}}$.
 Vi gjør dette med \texttt{for}-løkker over indeksene \texttt{i} og \texttt{j}.
 \begin{algorithm}[H]
@@ -23,7 +23,7 @@ Vi gjør dette med \texttt{for}-løkker over indeksene \texttt{i} og \texttt{j}.
             \If{$\mathtt{i} = \mathtt{j}$}
                 \State $\Thetatt_{ij} \gets -\pi$
             \Else
-                \State $\textit{\texttt{a}}_{\mathtt{p}}, \textit{\texttt{a}}_{\mathtt{m}} \gets \textit{\texttt{x}}_{\mathtt{p}} - \textit{\texttt{ж}}, \textit{\texttt{x}}_{\mathtt{m}} - \textit{\texttt{ж}}$
+                \State $\textit{\texttt{a}}_{\mathtt{p}}, \textit{\texttt{a}}_{\mathtt{m}} \gets \xtt_{\mathtt{p}} - \zhett, \xtt_{\mathtt{m}} - \zhett$
                 \State $\texttt{argument} \gets \frac{\textit{\texttt{a}}_{\mathtt{p}} \cdot \textit{\texttt{a}}_{\mathtt{m}}}{\absl{\textit{\texttt{a}}_{\mathtt{p}}} \absl{\textit{\texttt{a}}_{\mathtt{m}}}}$
                 \State $\Thetatt_{ij} \gets -\arccos{(\texttt{argument})}$
             \EndIf
@@ -37,12 +37,12 @@ Ved å legge inn en toleranse, unngår vi feilmeldingen, og koden kompilerer.
 Toleransen bør sjekkes slik at man både ser at avviket er mindre enn toleransen \emph{og} at argumentet faktisk er større enn $1$.
 
 For å regne ut høyresiden av integrallikningen, må vi sette sammen matrisen \texttt{h}.
-Den inneholder en tilnærming av integralet til logaritmefunksjonen over sirkelbuen mellom $\textit{\texttt{x}}_{\mathtt{p}}$ og $\textit{\texttt{x}}_{\mathtt{m}}$.
+Den inneholder en tilnærming av integralet til logaritmefunksjonen over sirkelbuen mellom $\xtt_{\mathtt{p}}$ og $\xtt_{\mathtt{m}}$.
 Denne tilnærmingen er gjort med en to-punkts \textsc{Gauss}kvadraturmetode.
 Utledningen og referanser er å finnes i forelesningsnotatene.
 Denne matrisen skal skalarmultipliseres med moden vi er ute etters normalvektor.
 Vi lager en metode som finner normalvektoren.
-Siden alle normalvektorene ligger på todimensjonale linjestykker, vil normalvektoren være gitt ved $\mathtt{\hat{n}} = \absl{(\mathtt{\Delta} \xtt, \mathtt{\Delta} \ytt)}^{-1}(-\mathtt{\Delta}\textit{\texttt{y}}, \mathtt{\Delta}\textit{\texttt{x}})$.
+Siden alle normalvektorene ligger på todimensjonale linjestykker, vil normalvektoren være gitt ved $\mathtt{\hat{n}} = \absl{(\mathtt{\Delta} \xtt, \mathtt{\Delta} \ytt)}^{-1}(-\mathtt{\Delta}\textit{\texttt{y}}, \mathtt{\Delta}\xtt)$.
 Vi lager en metode som setter sammen høyresiden av likningen, slik at løsningen kan finnes med \texttt{numpy.linalg.solve}.
 
 I en ny fil kan vi konstruere koordinatene for en sirkel, og finne addert masse.
