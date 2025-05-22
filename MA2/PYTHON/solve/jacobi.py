@@ -47,11 +47,20 @@ class Jacobi(Chebyshov):
             φ.appendleft(.5*(arcsin((c[N-n]/a[N-n])*sin(φ[0])) + φ[0]))
         return φ
 
-    def K(self):
+    def K(self) -> float:
         # A&S 17.6.3
         a, b, c = self.AGM(1, cos(self.α), sin(self.α))
         K = .5*pi/a[-1]
         return K
+
+    def E(self) -> float:
+        a, b, c = self.AGM(1, cos(self.α), sin(self.α))
+        K = .5*pi/a[-1]
+        e = 0
+        for k in range(len(c)):
+            e += 2**k * c[k]**2
+        E = K*(1-.5*e)
+        return E
 
     def cd(self, x):
         a, b, c = self.AGM(1, sqrt(.5), sqrt(.5))
