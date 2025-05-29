@@ -1,0 +1,13 @@
+Vi kan tilnærme logaritme-integralet på følgende vis.
+\[
+\int_{\xvec_{m-1}}^{\xvec_m} y(x) \,\dee x \approx \sum_{k = 1}^{K} w_k \eta(\xi_k),
+\]
+hvor
+\[
+        x = \frac{\absl{\xvec_m - \xvec_{m-1}}}{2}\xi + \frac{\absl{\xvec_m + \xvec_{m-1}}}{2}, \quad \eta(\xi) = \frac{\absl{\xvec_m - \xvec_{m-1}}}{2}y(x),
+\]
+og
+\[
+        w_k = \frac{2}{\big( 1 - {\xi_k}^2 \big) {\big( \mathrm{P}_{K}^{\prime} (\xi_k) \big)}^2}, \qquad \mathrm{P}_K(\xi_k) = 0.
+\]
+Integralet av logaritmen kaller vi $\mathtt{h}_m$.

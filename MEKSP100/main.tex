@@ -1,0 +1,199 @@
+\documentclass[gray]{beamer}
+\usepackage{simonsbeamer}
+\bibliography{bibliography.bib}
+
+%%%%%% WRITE COURSE CODE HERE %%%%%%
+\makeatletter
+\edef\headcourse{MEKSP100}
+\makeatother
+
+%%%%%% FILL OUT TITLE, NAME, AND DATE %%%%%%
+\title{Vindturbiners respons på bølger}
+\subtitle{\emph{\headcourse}}
+\author{\textsc{Simon Lederhilger}}
+\date{2. juni 2025}
+
+\begin{document}
+\maketitle
+\begin{frame}{Omfang}
+  \input{FRAMES/OMFANG/omfang.tex}
+\end{frame}
+
+\begin{frame}{Potensialteori}
+  \input{FRAMES/1/POTENSIALTEORI/potensialteori.tex}
+\end{frame}
+
+\begin{frame}{Kompleks analyse}
+  \input{FRAMES/1/KOMPLEKS_ANALYSE/kompleks_analyse.tex}
+\end{frame}
+
+\begin{frame}{Addert masse}
+  \input{FRAMES/1/ADDERT_MASSE/addert_masse.tex}
+\end{frame}
+
+\begin{frame}{\textsc{Green}-funksjoner}
+  \input{FRAMES/1/GREEN_FUNKSJON/green_funksjon.tex}
+\end{frame}
+
+\begin{frame}{Randelementmetoden}
+  \input{FRAMES/1/RANDELEMENTMETODEN/randelementmetoden.tex}
+\end{frame}
+
+\begin{frame}{Problemer med randelementmetoden}
+  \input{FRAMES/1/RANDELEMENTMETODEN/continuation.tex}
+\end{frame}
+
+\begin{frame}{Diskretisering av integrallikningen}
+  \input{FRAMES/1/DISCRETIZATION/discretization.tex}
+\end{frame}
+
+\begin{frame}{Logaritmisk gradient}
+  \input{FRAMES/1/DISCRETIZATION/theta.tex}
+\end{frame}
+
+\begin{frame}{\textsc{Gauss}--\textsc{Legendre}-kvadratur}
+  \input{FRAMES/1/DISCRETIZATION/quadrature.tex}
+\end{frame}
+
+\begin{frame}{MA1: Numerisk beregning av addert masse}
+  \input{FRAMES/1/MA1/ma1.tex}
+\end{frame}
+
+\begin{frame}{Sirkelen}
+  \input{FRAMES/1/MA1/circle.tex}
+\end{frame}
+\begin{frame}{Resultat}
+  \input{FRAMES/1/MA1/circle_result.tex}
+\end{frame}
+
+\begin{frame}{Ellipsen}
+  \input{FRAMES/1/MA1/ellipse.tex}
+\end{frame}
+\begin{frame}{Resultat}
+  \input{FRAMES/1/MA1/ellipse_result.tex}
+\end{frame}
+
+\begin{frame}{Kvadratet}
+  \input{FRAMES/1/MA1/square.tex}
+\end{frame}
+
+\begin{frame}{Problemer med naiv diskretisering}
+  \input{FRAMES/1/MA1/square_potential.tex}
+\end{frame}
+
+\begin{frame}{Diskretisering av kvadratet}
+  \input{FRAMES/1/MA1/square_discretization.tex}
+\end{frame}
+
+\begin{frame}{Resultat av \textsc{Jacobi}-noder}
+  \input{FRAMES/1/MA1/square_potential_jacobi.tex}
+\end{frame}
+
+\begin{frame}{Resultat}
+  \input{FRAMES/1/MA1/square_result.tex}
+\end{frame}
+
+\begin{frame}{MA2: Kreftene på og responsen til et rektangel i hiv}
+  \input{FRAMES/2/MA2/ma2.tex}
+\end{frame}
+
+\begin{frame}{Bølgeteori}
+  \input{FRAMES/2/WAVE_THEORY/wave_theory.tex}
+\end{frame}
+
+\begin{frame}{Radiasjonsdemping}
+  \input{FRAMES/2/DAMPING/damping.tex}
+\end{frame}
+
+\begin{frame}{Innkommende, diffraktive, og radiative bølger}
+  \input{FRAMES/2/INCIDENT_DIFFRACTION_RADIATION/incident_diffraction_radiation.tex}
+\end{frame}
+
+\begin{frame}{\textsc{Green}-funksjon}
+  \input{FRAMES/2/GREEN_FUNCTION/green_function.tex}
+\end{frame}
+
+\begin{frame}{Eksitasjon}
+  \input{FRAMES/2/EXCITATION/excitation.tex}
+\end{frame}
+\begin{frame}{Sammenlikning av tilnærmingene}
+  \input{FRAMES/2/EXCITATION_RESULTS/LD_p1.tex}
+\end{frame}
+\begin{frame}{Sammenlikning av tilnærmingene}
+  \input{FRAMES/2/EXCITATION_RESULTS/LD_1.tex}
+\end{frame}
+\begin{frame}{Sammenlikning av tilnærmingene}
+  \input{FRAMES/2/EXCITATION_RESULTS/LD_2.tex}
+\end{frame}
+\begin{frame}{Sammenlikning av tilnærmingene}
+  \input{FRAMES/2/EXCITATION_RESULTS/LD_10.tex}
+\end{frame}
+
+\begin{frame}{Frekvenser}
+  \input{FRAMES/2/FREQUENCY/frequency.tex}
+\end{frame}
+
+\begin{frame}{Resultater, utslag i hiv}
+  \input{FRAMES/2/HEAVE/heave_p1.tex}
+\end{frame}
+
+\begin{frame}{Resultater, utslag i hiv}
+  \input{FRAMES/2/HEAVE/heave_1.tex}
+\end{frame}
+
+\begin{frame}{Resultater, utslag i hiv}
+  \input{FRAMES/2/HEAVE/heave_2.tex}
+\end{frame}
+
+\begin{frame}{Resultater, utslag i hiv}
+  \input{FRAMES/2/HEAVE/heave_10.tex}
+\end{frame}
+
+\begin{frame}{Krefter på en sparbøye}
+  \input{FRAMES/2/6_17/6_17.tex}
+\end{frame}
+\begin{frame}{Hydrostatikk}
+  \input{FRAMES/2/6_17/hydrostatics.tex}
+\end{frame}
+\begin{frame}{Naturlig frekvens}
+  \input{FRAMES/2/6_17/frequency.tex}
+\end{frame}
+\begin{frame}{Eksitasjonskraft og demping}
+  \input{FRAMES/2/6_17/excitation.tex}
+\end{frame}
+
+\begin{frame}{MA3: Forankringsdynamikken til en flytende vindturbin}
+  \input{FRAMES/3/MA3/ma3.tex}
+\end{frame}
+
+\begin{frame}{\textsc{Hooke}s lov}
+  \input{FRAMES/3/HOOKE/hooke.tex}
+\end{frame}
+
+\begin{frame}{Forankringssystemer}
+  \input{FRAMES/3/MOORING/mooring.tex}
+\end{frame}
+
+\begin{frame}{Addert masse}
+  \input{FRAMES/3/ADDED_MASS/added_mass.tex}
+\end{frame}
+
+\begin{frame}{Egenperioder}
+  \input{FRAMES/3/PERIOD/period.tex}
+\end{frame}
+
+\begin{frame}{Første case}
+  \input{FRAMES/3/CASE_1/case.tex}
+\end{frame}
+\begin{frame}{Resultater}
+  \input{FRAMES/3/CASE_1/results.tex}
+\end{frame}
+
+\begin{frame}{Andre case}
+  \input{FRAMES/3/CASE_2/case.tex}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \printbibliography
+\end{frame}
+\end{document}

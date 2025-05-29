@@ -1,0 +1,61 @@
+\begin{figure}[H]
+  \scalebox{1}{%
+    \begin{tikzpicture}
+    \begin{scope}
+        %%% BOTTOM %%%
+        \def\depth{4}\def\floordepth{.2}
+        \def\length{3.7}
+        \fill[pattern = north west lines] (-\length, -\depth-\floordepth) rectangle (\length, -\depth);
+        \draw (-\length, -\depth)--(\length, -\depth);
+        %%% BOX %%%
+        \def\boxlength{.15}\def\boxdepth{.25}
+        \def\sparlength{.25}\def\sparthickness{1}\def\conethickness{.25}
+        \draw[pattern = north west lines] (-\boxlength, \boxdepth)
+            --(-\boxlength, -\boxdepth)
+            --(-\sparlength, {-(\boxdepth+\conethickness)})
+            --(-\sparlength, {-(\boxdepth+\conethickness+\sparthickness)})
+            --(\sparlength, {-(\boxdepth+\conethickness+\sparthickness)})
+            --(\sparlength, {-(\boxdepth+\conethickness)})
+            --(\boxlength, -\boxdepth)
+            --(\boxlength, \boxdepth);
+        %%% WAVES %%%
+        \def\amplitude{.1}
+        \draw plot [domain = -\length:-\boxlength] (\x, {-1*\amplitude*cos((4*pi*\x - pi)/(\length - \boxlength) r)});
+        \draw plot [domain = \length:\boxlength] (\x, {-1*\amplitude*cos((4*pi*\x + pi)/(\length - \boxlength) r)});
+        %%% CHAINS %%%
+        \def\anchorx{2}\def\moorbox{.15}
+        \draw[thick] (-\anchorx,-\depth)--(-\boxlength, 0) node[midway, above left]{$L$};
+        \draw[thick] (\anchorx,-\depth)--(\boxlength, 0);
+        %%% AUXILLIARY %%%
+        \draw ({\anchorx-.2}, 0)--({\anchorx+.2}, 0);
+        \draw[dashed] (\anchorx, 0)--(\anchorx, -\depth) node[midway, right]{$h$};
+        %%% ROD %%%
+        \def\rodwidth{.07}\def\rodlength{.3}
+        \draw[fill = gray, fill opacity = .5] (-\anchorx, -\depth)
+            --({-\anchorx - \rodwidth*sqrt(2)}, -\depth)
+            --({-\anchorx - (\rodwidth+\rodlength)/sqrt(2)}, {-\depth + (\rodlength - \rodwidth)/sqrt(2)})
+            --({-\anchorx - \rodlength/sqrt(2)}, {-\depth + \rodlength/sqrt(2)})--cycle;
+        \draw[fill = gray, fill opacity = .5] (\anchorx, -\depth)
+            --({\anchorx + \rodwidth*sqrt(2)}, -\depth)
+            --({\anchorx + (\rodwidth+\rodlength)/sqrt(2)}, {-\depth + (\rodlength - \rodwidth)/sqrt(2)})
+            --({\anchorx + \rodlength/sqrt(2)}, {-\depth + \rodlength/sqrt(2)})--cycle;
+    \end{scope}
+\end{tikzpicture}}
+\end{figure}
+\begin{figure}[H]
+  \scalebox{1}{%
+    \begin{tikzpicture}
+    \begin{scope}
+        %%% SPAR %%%
+        \def\rad{.5}
+        \draw[pattern = north west lines] (0,0) circle (\rad);
+        %%% MOORING LINES %%%
+        \def\mooringlength{1}
+        \draw[thick] (\rad, 0)--(\rad+\mooringlength, 0) node[midway, above]{$r_{\mathrm{a}}$};
+        \draw[thick] ({\rad*cos(120)},{\rad*sin(120)})--({(\rad+\mooringlength)*cos(120)},{(\rad+\mooringlength)*sin(120)});
+        \draw[thick] ({\rad*cos(240)},{\rad*sin(240)})--({(\rad+\mooringlength)*cos(240)},{(\rad+\mooringlength)*sin(240)});
+        %%% FORCE %%%
+        \draw[-latex, thick] (-3,0)--(-2,0) node[midway, above]{$\bm{X}$};
+    \end{scope}
+\end{tikzpicture}}
+\end{figure}

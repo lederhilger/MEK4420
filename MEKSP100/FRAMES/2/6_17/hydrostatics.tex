@@ -1,0 +1,20 @@
+Si oppdriftssenter og tyngdesenter henholdsvis er $y_{\mathrm{B}}$ og $y_{\mathrm{G}}$.
+Fortrengt volum er gitt ved $\displacedvolume = S \times D$, hvor $S = \pi\sfrac{d^2}{4}$ er vannlinjearealet til bøyen.
+De hydrostatiske gjenopprettende kreftene er gitt ved
+\[
+c_{22} = \varrho\gravity S
+\]
+\[
+c_{44} = \varrho\gravity S_{33} + \varrho \gravity \displacedvolume (y_{\mathrm{B}} - y_{\mathrm{G}}), \qquad c_{66} = \varrho\gravity S_{11} + \varrho\gravity \displacedvolume (y_{\mathrm{B}} - y_{\mathrm{G}}).
+\]
+Her er
+\[
+S_{11} = \int_{S_{\mathrm{B}}} x^2 \,\dee S = \int_{0}^{\sfrac{d}{2}} \int_{0}^{2\pi} r^3 \cos^2{\theta} \,\dee\theta \dee r,
+\]
+\[
+S_{33} = \int_{S_{\mathrm{B}}} z^2 \,\dee S = \int_{0}^{\sfrac{d}{2}} \int_{0}^{2\pi} r^3 \sin^2{\theta} \,\dee\theta \dee r.
+\]
+Vi har altså
+\[
+c_{22} = \frac{\pi\varrho\gravity d^2}{4}, \qquad c_{44} = c_{66} = \frac{\pi\varrho\gravity d^4}{64} + \frac{\pi\varrho\gravity D d^2 (y_{\mathrm{B}} - y_{\mathrm{G}})}{4}.
+\]

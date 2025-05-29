@@ -1,0 +1,13 @@
+\textsc{Froude}--\textsc{Krylov}-kraften får vi som sagt fra
+\[
+Y^{\textsc{FK}} = -i\omega\varrho \int_{S_{\mathrm{B}}} \phi_0 {\hat{n}}_2 \,\dee S, \qquad \phi_0 = i\sfrac{\gravity}{\omega}\exp{\big( \kappa (y - ix) \big)}.
+\]
+Ser vi for oss sparen, innser vi at selv om $S_{\mathrm{B}}$ består av et sylinderskall og en bunnplate, vil normalvektoren kun samsvare med bunnplaten.
+Vi trenger derfor ikke integrere over sylinderskallet:
+\[
+Y^{\textsc{FK}} = -i\varrho e^{-\kappa D} \int_{\absl{\ezh}\leq \sfrac{d}{2}} e^{-i\kappa x}\,\dee\ezh = \frac{\pi\varrho\gravity d^2 e^{-\kappa D}}{4}.
+\]
+Vi kan nå bruke at\footnote{\cite{newman2018marine} \textsc{Newman}, eq.174, p.316}
+\[
+r_{22} = \frac{{\absl{Y^{\mathrm{FK}}}}^2}{2\varrho\gravity c_g} = \frac{\omega \varrho \pi^2 d^4}{16} \exp{(-2\kappa D)}, \qquad c_g = \partial_k \omega.
+\]
