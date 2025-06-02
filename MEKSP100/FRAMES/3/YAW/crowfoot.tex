@@ -1,0 +1,37 @@
+\begin{figure}[H]
+  \scalebox{1}{%
+    \begin{tikzpicture}
+    \begin{scope}
+        %%% SPAR %%%
+        \def\rad{.5}
+        \draw[pattern = north west lines] (0,0) circle (\rad);
+        %%% CROWFOOT %%%
+        %%% 0deg %%%
+        \def\crad{.7}
+        \node (fairlead1) at ({\rad + \crad}, 0) {};
+        \node (C1) at ({\rad*cos(60)}, {\rad*sin(60)}) {};
+        \node (C3) at ({\rad*cos(60)}, {\rad*sin(-60)}) {};
+        \draw[thick] (C1.center)--(fairlead1.center);
+        \draw[thick] (C3.center)--(fairlead1.center);
+        %%% 120deg %%%
+        \node (fairlead2) at ({(\rad + \crad)*cos(120)}, {(\rad + \crad)*sin(120)}) {};
+        \node (C2) at (-\rad, 0) {};
+        \draw[thick] (C1.center)--(fairlead2.center);
+        \draw[thick] (C2.center)--(fairlead2.center);
+        %%% 240deg %%%
+        \node (fairlead3) at ({(\rad + \crad)*cos(240)}, {(\rad + \crad)*sin(240)}) {};
+        \draw[thick] (C2.center)--(fairlead3.center);
+        \draw[thick] (C3.center)--(fairlead3.center);
+        %%% MOORING LINES %%%
+        \def\mooringlength{2}
+        \draw[thick] (fairlead1.center)--({\rad + \crad + \mooringlength}, 0);
+        \draw[thick] (fairlead2.center)--({(\rad + \crad + \mooringlength)*cos(120)}, {(\rad + \crad + \mooringlength)*sin(120)});
+        \draw[thick] (fairlead3.center)--({(\rad + \crad + \mooringlength)*cos(240)}, {(\rad + \crad + \mooringlength)*sin(240)});
+        %%% JOINTS %%%
+        \def\srad{.05}
+        \draw[fill = white] (C1) circle (\srad);
+        \draw[fill = white] (C2) circle (\srad);
+        \draw[fill = white] (C3) circle (\srad);
+    \end{scope}
+\end{tikzpicture}}
+\end{figure}

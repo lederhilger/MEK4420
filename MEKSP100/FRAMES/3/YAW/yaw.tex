@@ -1,0 +1,12 @@
+Kråkefotoppsettet tilsvarer mekanisk et system med bjelker av lengde $r_{\mathrm{f}}$.
+I lina har vi satt en føroppspenningskraft $\bm{F} = \SI{2e6}{\kilo\gram\meter\per\second\squared}$ så den ikke skal være slakk, som vil motvirke vridning i alle tre repene i gir, slik at stivheten blir
+\[
+k_{\mathrm{gir}} = 3\times r_{\mathrm{f}} \times F\cos{\alpha}.
+\]
+Treghetsmomentet $I_y = \SI{2.0496e8}{\kilo\gram\meter\squared}$ finnes ved hjelp av  programvaren 3DFloat.
+Vi får da
+\[
+T_{\mathrm{gir}} = 2\pi\sqrt{\frac{I_y}{k_{\mathrm{gir}}}}.
+\]
+Simuleringer i 3DFloat har vist ustabil oppførsel i gir for små ankerradiuser.
+Liten ankerradius tilsvarer vinkel tilnærmet \SI{90}{\degree}, og nesten ingen stivhet i gir.

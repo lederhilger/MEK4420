@@ -1,0 +1,13 @@
+Vi forenkler veldig, og sier stivheten i stamp er lik $c_{44}$.
+Vi ignorerer altså effekten av linene og den adderte massen.
+Fra 3DFloat får vi at $y_{\mathrm{B}} = \SI{-53.5}{\meter}$ og $y_{\mathrm{G}} = \SI{-65.7}{\meter}$.
+Da har vi
+\[
+k_{\mathrm{stamp}} = m\gravity \big( y_{\mathrm{B}} - y_{\mathrm{G}} \big) + \frac{\pi\varrho\gravity r^4}{4}.
+\]
+Vi finner momentet i 3DFloat, og ved parallellakseteoremet, har vi
+\[
+T_{\mathrm{stamp}} = 2\pi\sqrt{\frac{I_{yy}^{\prime}}{k_{\mathrm{stamp}}}}, \qquad I_{yy}^{\prime} = m {y_{\mathrm{G}}}^2 + 7.3463\times10^{10},
+\]
+som er konstant med hensyn på ankerradius.
+Vi ønsker å bruke momentet ved vannoverflaten, ikke tyngdesenteret.
