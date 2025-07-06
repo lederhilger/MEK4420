@@ -2,45 +2,41 @@ from numpy import *
 import matplotlib.pyplot as plt
 from solve.integralequation import IntegralEquation
 from solve.arguments import parse_args
+from solve.jacobi import Jacobi
 from solve.chebyshov import Chebyshov
+from solve.plot_convergence import PlotConvergence
+from progress.bar import Bar
 
 def square(a: float, N: int) -> ndarray:
-    x = Chebyshov(linspace(-a, a, N//4 + 1)).inverse_map()
-    x_p = ones(N); x_m = ones(N); y_p = ones(N); y_m = ones(N)
-    x_p[:N//4] *= a; y_p[:N//4] = x[:N//4]
-    x_p[N//4:int(N//4 * 2)] *= flip(x)[:N//4]; y_p[N//4:int(N//4 * 2)] *= a
-    x_p[int(N//4 * 2):int(N//4 * 3)] *= -a; y_p[int(N//4 * 2):int(N//4 * 3)] = flip(x)[:N//4]
-    x_p[int(N//4 * 3):N] = x[:N//4]; y_p[int(N//4 * 3):N] *= -a
-    x_m[:N//4] *= a; y_m[:N//4] = x[1:N//4+1]
-    x_m[N//4:int(N//4 * 2)] *= flip(x)[1:N//4+1]; y_m[N//4:int(N//4 * 2)] *= a
-    x_m[int(N//4 * 2):int(N//4 * 3)] *= -a; y_m[int(N//4 * 2):int(N//4 * 3)] = flip(x)[1:N//4+1]
-    x_m[int(N//4 * 3):N] = x[1:N//4+1]; y_m[int(N//4 * 3):N] *= -a
+    #x = Jacobi(linspace(-a, a, N + 1)).inverse_map()
+    x = linspace(-a, a, N + 1)
+    x_p = ones(4*N); x_m = ones(4*N); y_p = ones(4*N); y_m = ones(4*N)
+    x_p[:N-1] *= a; y_p[:N-1] = x[1:N]
+    x_p[N-1:2*N - 1] = flip(x)[:N]; y_p[N-1:2*N-1] *= a
+    x_p[2*N - 1:3*N - 1] *= -a; y_p[2*N - 1:3*N - 1] = flip(x)[:N]
+    x_p[3*N-1:4*N] = x; y_p[3*N-1:4*N] *= -a
+    x_m[:N] *= a; y_m[:N] = x[:N]
+    x_m[N:2*N] = flip(x)[:N]; y_m[N:2*N] *= a
+    x_m[2*N:3*N] *= -a; y_m[2*N:3*N] = flip(x)[:N]
+    x_m[3*N:4*N] = x[:N]; y_m[3*N:4*N] *= -a
     return (x_p, x_m), (y_p, y_m)
 
-def test_square():
+def test_square(N: int):
+    M = 4*N
     abscissa = zeros(number)
     m_11 = zeros(number); m_22 = zeros(number); m_66 = zeros(number)
+    k = 4*(2*Jacobi(None).K()**2/pi - 1)
+    bar = Bar('Calculating', max = number, fill='#', suffix='%(percent)d%% %(elapsed)ds')
     for i in range(number):
-        abscissa[i] = 1/(N*(i+1))
-        init = IntegralEquation((i+1)*N, square(a, (i+1)*N))
+        abscissa[i] = M*(i+1)
+        init = IntegralEquation((i+1)*M, square(a, (i+1)*N))
         m_11[i], m_22[i], m_66[i] = init.added_mass()
-        print(f'N = {N*(i+1)}')
-        print(f'm_11 = {m_11[i]/(4.754*(a)**2)}'); print(f'm_22 = {m_22[i]/(4.754*(a)**2)}'); print(f'm_66 = {m_66[i]/(.725*(a)**4)}')
-        print('------------------------------')
-    plt.loglog(abscissa, m_11/(4.754*a**2), '*', color = 'k', label = r'${m}_{11}$')
-    plt.loglog(abscissa, m_22/(4.754*a**2), 'x', color = 'k', label = r'${m}_{22}$')
-    plt.loglog(abscissa, m_66/(.725*a**4), '.', color = 'k', label = r'${m}_{66}$')
-    plt.xlabel(r'$\frac{1}{N}$')
-    plt.title('Added mass'); plt.legend()
-    plt.savefig(f"addedmass_square_N{N*number}.pdf", transparent = True, format = "pdf")
-    plt.show()
-    init.plot_phi()
-    init.normal_plot()
+        bar.next()
+    bar.finish()
+    PlotConvergence('square', a, a, M, number, abscissa, m11 = m_11, m22 = m_22, m66 = m_66).plot_added_mass()
 
 if __name__ == "__main__":
     plt.rcParams['text.usetex'] = True
     args = parse_args()
     a = args.a; N = args.N; number = args.number
-    if N%8 != 0:
-        raise ValueError("N must be divisible by 8.")
-    test_square()
+    test_square(N)
