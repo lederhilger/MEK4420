@@ -2,6 +2,8 @@ from numpy import *
 import matplotlib.pyplot as plt
 from solve.integralequation import IntegralEquation
 from solve.arguments import parse_args
+from solve.plot_convergence import PlotConvergence
+from progress.bar import Bar
 
 def radius(a, b, θ):
     denominator = sqrt(b**2 * (cos(θ)**2) + a**2 * (sin(θ)**2))
@@ -24,38 +26,23 @@ def ellipse(a, b, N):
 def test_convergence():
     abscissa = zeros(number)
     m_11 = zeros(number); m_22 = zeros(number); m_66 = zeros(number)
+    bar = Bar('Calculating', max = number, fill='#', suffix='%(percent)d%% %(elapsed)ds')
     for i in range(number):
-        abscissa[i] = 1/(N*(i+1))
+        abscissa[i] = N*(i+1)
         init = IntegralEquation((i+1)*N, ellipse(a,b,(i+1)*N))
-        m_11[i], m_22[i], m_66[i] = init.added_mass(); L2 = init.L2_norm()
-        print(f'N = {N*(i+1)}')
-        print(f'm_11: {m_11[i]/(pi*b**2)}'); print(f'm_22: {m_22[i]/(pi*a**2)}')
-        if a == b:
-            print(f'm_66: {1 - m_66[i]}')
-            print(f'|phi_1|_L2 = {L2[0]}'); print(f'|phi_2|_L2 = {L2[1]}')
-        else:
-            print(f'm_66: {m_66[i]/(.125*pi*(a**2 - b**2)**2)}')
-        print('------------------------------')
-    # plt.xlim(left = 0)
-    # plt.loglog(abscissa, m_11/(pi*b**2), '*', color = 'k', label = r'${m}_{11}$')
-    # plt.loglog(abscissa, m_22/(pi*a**2), 'x', color = 'k', label = r'${m}_{22}$')
-    # plt.xlabel(r'$\frac{1}{N}$'); plt.title('Added mass')
-    # if a == b:
-    #     plt.loglog(abscissa, 1 - m_66, '.', color = 'k', label = r'${m}_{66}$')
-    #     plt.legend()
-    #     plt.savefig(f"addedmass_circle_N{N*number}.pdf", transparent = True, format = "pdf")
-    # else:
-    #     plt.loglog(abscissa, m_66/(.125*pi*(a**2 - b**2)**2), '.', color = 'k', label = r'${m}_{66}$')
-    #     plt.legend()
-    #     plt.savefig(f"addedmass_a{a}_b{b}_N{N*number}.pdf", transparent = True, format = "pdf")
-    # plt.show()
+        m_11[i], m_22[i], m_66[i] = init.added_mass()
+        bar.next()
+    bar.finish()
+    if a == b: shape = 'circle'
+    else: shape = 'ellipse'
+    PlotConvergence(shape, a, b, N, number, abscissa, m11 = m_11, m22 = m_22, m66 = m_66).plot_added_mass()
     # init.plot_phi()
-    ax = plt.gca(); ax.set_aspect('equal')
-    ж, ч = init.ж()
-    for n in range(len(ж)):
-        print(arctan2(ж[n], ч[n]) - arctan2(ж[n-1], ч[n-1]))
-    plt.plot(init.ж()[0], init.ж()[1], 'x'); plt.show()
-    
+    # ax = plt.gca(); ax.set_aspect('equal')
+    # ж, ч = init.ж()
+    # for n in range(len(ж)):
+    #     print(arctan2(ч[n], ж[n]) - arctan2(ч[n-1], ж[n-1]))
+    # plt.plot(init.ж()[0], init.ж()[1], 'x'); plt.show()
+
 if __name__ == "__main__":
     plt.rcParams['text.usetex'] = True
     args = parse_args()
