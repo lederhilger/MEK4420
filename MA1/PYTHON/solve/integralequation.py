@@ -44,21 +44,22 @@ class IntegralEquation:
         y_p, y_m = self.x[1]
         ж, ч = self.ж()
         dΘ = zeros((self.N,self.N))
-        tol = 1e-8
         for i in range(self.N):
             for j in range(self.N):
                 if i == j:
-                    dΘ[i,j] = -1*pi
+                    dΘ[i,j] = -pi
                 else:
-                    a_x = x_m[j] - ж[i]
-                    a_y = y_m[j] - ч[i]
-                    b_x = x_p[j] - ж[i]
-                    b_y = y_p[j] - ч[i]
-                    argument = (a_x*b_x + a_y*b_y)/sqrt((a_x**2 + a_y**2)*(b_x**2 + b_y**2))
-                    if argument > 1 and abs(argument - 1) < tol:
-                        dΘ[i,j] = -1*arccos(1)
-                    else:
-                        dΘ[i,j] = -1*arccos(argument)
+                    dΘ[i,j] = -angle(complex(x_p[j]-ж[i], y_p[j]-ч[i])/complex(x_m[j]-ж[i], y_m[j]-ч[i]))
+                    # dΘ[i,j] = arctan2((y_m[j]-ч[i]), (x_m[j]-ж[i])) - arctan2((y_p[j]-ч[i]), (x_p[j]-ж[i]))
+                    # a_x = x_m[j] - ж[i]
+                    # a_y = y_m[j] - ч[i]
+                    # b_x = x_p[j] - ж[i]
+                    # b_y = y_p[j] - ч[i]
+                    # argument = (a_x*b_x + a_y*b_y)/sqrt((a_x**2 + a_y**2)*(b_x**2 + b_y**2))
+                    # if argument > 1 and abs(argument - 1) < 1e-8:
+                    #     dΘ[i,j] = -1*arccos(1)
+                    # else:
+                    #     dΘ[i,j] = -1*arccos(argument)
         return dΘ
     
     def assemble_h(self) -> ndarray:
@@ -92,9 +93,10 @@ class IntegralEquation:
         return right_hs
     
     def solve(self):
-        phi_1 = linalg.solve(self.assemble(), self.right_hs(1))
-        phi_2 = linalg.solve(self.assemble(), self.right_hs(2))
-        phi_6 = linalg.solve(self.assemble(), self.right_hs(6))
+        assemble = self.assemble()
+        phi_1 = linalg.solve(assemble, self.right_hs(1))
+        phi_2 = linalg.solve(assemble, self.right_hs(2))
+        phi_6 = linalg.solve(assemble, self.right_hs(6))
         return phi_1, phi_2, phi_6
     
     def L2_norm(self):
@@ -121,11 +123,10 @@ class IntegralEquation:
         plt.rcParams['text.usetex'] = True
         from matplotlib.ticker import MultipleLocator, FuncFormatter
         ax = plt.gca()
-        ax.xaxis.set_major_formatter(FuncFormatter(lambda val,pos: '{:.0g}$\pi$'.format(val/pi) if val !=0 else '0'))
+        ax.xaxis.set_major_formatter(FuncFormatter(lambda val,pos: r'{:.0g}$\pi$'.format(val/pi) if val !=0 else '0'))
         ax.xaxis.set_major_locator(MultipleLocator(base=pi))
         plt.title(f'$N = {self.N}$')
         dom = zeros(self.N); ж, ч = self.ж()
-        #print(f"ж: {ж}"); print(f"ч: {ч}")
         for n in range(self.N):
             dom[n] = arctan2(ч[n],ж[n])
         count = 0
@@ -133,7 +134,7 @@ class IntegralEquation:
             count += 1
             plt.plot(dom, phi, 'x', color = 'k', markersize = 2, label = r'$\phi_j$')
             plt.legend()
-            plt.savefig(f"phi{count}_N{self.N}.pdf", transparent = True, format = "pdf")
+            plt.savefig(f"phi{count}_N{self.N}.pgf", transparent = True, format = "pgf")
             plt.show()
 
     def normal_plot(self):
