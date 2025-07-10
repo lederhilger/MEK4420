@@ -8,7 +8,7 @@ from solve.plot_convergence import PlotConvergence
 from progress.bar import Bar
 
 def square(a: float, N: int) -> ndarray:
-    #x = Jacobi(linspace(-a, a, N + 1)).inverse_map()
+    # x = Jacobi(linspace(-a, a, N + 1)).inverse_map()
     x = linspace(-a, a, N + 1)
     x_p = ones(4*N); x_m = ones(4*N); y_p = ones(4*N); y_m = ones(4*N)
     x_p[:N-1] *= a; y_p[:N-1] = x[1:N]
