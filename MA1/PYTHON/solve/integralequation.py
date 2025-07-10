@@ -59,7 +59,6 @@ class IntegralEquation:
         ж = self.ж()
         dS = self.dS()
         quad = Quadrature(self.N, δx, ж, 'Lagrange', 2).quad()
-        # h = Quadrature(self.N, δx, ж, 'Lagrange', 2).h()
         return quad
     
     def right_hs(self, assemble_h, mode: int) -> ndarray:
