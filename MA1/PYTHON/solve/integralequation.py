@@ -1,5 +1,6 @@
 from numpy import *
 from solve.chebyshov import Chebyshov
+from solve.quadrature import Quadrature
 
 class IntegralEquation:
     def __init__(self, N, coordinates):
@@ -51,32 +52,17 @@ class IntegralEquation:
                 else:
                     dΘ[i,j] = -angle(complex(x_p[j]-ж[i], y_p[j]-ч[i])/complex(x_m[j]-ж[i], y_m[j]-ч[i]))
                     # dΘ[i,j] = arctan2((y_m[j]-ч[i]), (x_m[j]-ж[i])) - arctan2((y_p[j]-ч[i]), (x_p[j]-ж[i]))
-                    # a_x = x_m[j] - ж[i]
-                    # a_y = y_m[j] - ч[i]
-                    # b_x = x_p[j] - ж[i]
-                    # b_y = y_p[j] - ч[i]
-                    # argument = (a_x*b_x + a_y*b_y)/sqrt((a_x**2 + a_y**2)*(b_x**2 + b_y**2))
-                    # if argument > 1 and abs(argument - 1) < 1e-8:
-                    #     dΘ[i,j] = -1*arccos(1)
-                    # else:
-                    #     dΘ[i,j] = -1*arccos(argument)
         return dΘ
     
     def assemble_h(self) -> ndarray:
-        δx, δy = self.Δx()
-        ж, ч = self.ж()
+        δx = self.Δx()
+        ж = self.ж()
         dS = self.dS()
-        h = zeros((self.N,self.N))
-        for i in range(self.N):
-            for j in range(self.N):
-                x_m1, y_m1 = .5*δx[j]/sqrt(3) + ж[j], .5*δy[j]/sqrt(3) + ч[j]
-                x_m2, y_m2 = -.5*δx[j]/sqrt(3) + ж[j], -.5*δy[j]/sqrt(3) + ч[j]
-                h[i,j] = log((x_m1 - ж[i])**2 + (y_m1 - ч[i])**2)
-                h[i,j] += log((x_m2 - ж[i])**2 + (y_m2 - ч[i])**2)
-                h[i,j] *= .25*dS[j]
-        return h
+        quad = Quadrature(self.N, δx, ж, 'Lagrange', 2).quad()
+        # h = Quadrature(self.N, δx, ж, 'Lagrange', 2).h()
+        return quad
     
-    def right_hs(self, mode: int) -> ndarray:
+    def right_hs(self, assemble_h, mode: int) -> ndarray:
         n_x, n_y = self.normal_vector()
         ж, ч = self.ж()
         if mode == 1:
@@ -89,14 +75,15 @@ class IntegralEquation:
                 n_i[n] = ж[n]*n_y[n] - ч[n]*n_x[n]
         else:
             raise ValueError("Choose mode: 1, 2, 6")
-        right_hs = dot(self.assemble_h(), n_i)
+        right_hs = dot(assemble_h, n_i)
         return right_hs
     
     def solve(self):
         assemble = self.assemble()
-        phi_1 = linalg.solve(assemble, self.right_hs(1))
-        phi_2 = linalg.solve(assemble, self.right_hs(2))
-        phi_6 = linalg.solve(assemble, self.right_hs(6))
+        h = self.assemble_h()
+        phi_1 = linalg.solve(assemble, self.right_hs(h, 1))
+        phi_2 = linalg.solve(assemble, self.right_hs(h, 2))
+        phi_6 = linalg.solve(assemble, self.right_hs(h, 6))
         return phi_1, phi_2, phi_6
     
     def L2_norm(self):
