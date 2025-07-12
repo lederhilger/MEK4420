@@ -1,4 +1,4 @@
-from numpy import *
+from numpy import linspace, ones, zeros, flip, pi
 import matplotlib.pyplot as plt
 from solve.integralequation import IntegralEquation
 from solve.arguments import parse_args
@@ -7,19 +7,17 @@ from solve.chebyshov import Chebyshov
 from solve.plot_convergence import PlotConvergence
 from progress.bar import Bar
 
-def square(a: float, N: int) -> ndarray:
-    # x = Jacobi(linspace(-a, a, N + 1)).inverse_map()
-    x = linspace(-a, a, N + 1)
-    x_p = ones(4*N); x_m = ones(4*N); y_p = ones(4*N); y_m = ones(4*N)
-    x_p[:N-1] *= a; y_p[:N-1] = x[1:N]
-    x_p[N-1:2*N - 1] = flip(x)[:N]; y_p[N-1:2*N-1] *= a
-    x_p[2*N - 1:3*N - 1] *= -a; y_p[2*N - 1:3*N - 1] = flip(x)[:N]
-    x_p[3*N-1:4*N] = x; y_p[3*N-1:4*N] *= -a
-    x_m[:N] *= a; y_m[:N] = x[:N]
-    x_m[N:2*N] = flip(x)[:N]; y_m[N:2*N] *= a
-    x_m[2*N:3*N] *= -a; y_m[2*N:3*N] = flip(x)[:N]
-    x_m[3*N:4*N] = x[:N]; y_m[3*N:4*N] *= -a
-    return (x_p, x_m), (y_p, y_m)
+def square(a: float, N: int) -> tuple:
+    # line = Jacobi(linspace(-a, a, N + 1)).inverse_map()
+    line = Chebyshov(linspace(-a, a, N + 1)).inverse_map()
+    # line = linspace(-a, a, N + 1)
+    x = ones(4*N + 1); y = ones(4*N + 1)
+    x[:N] *= a; y[:N] = line[:N]
+    x[N:2*N] = flip(line)[:N]; y[N:2*N] *= a
+    x[2*N:3*N] *= -a; y[2*N:3*N] = flip(line)[:N]
+    x[3*N:4*N] = line[:N]; y[3*N:4*N] *= -a
+    x[-1] = x[0]; y[-1] = y[0]
+    return x, y
 
 def test_square(N: int):
     M = 4*N
@@ -29,11 +27,15 @@ def test_square(N: int):
     bar = Bar('Calculating', max = number, fill='#', suffix='%(percent)d%% %(elapsed)ds')
     for i in range(number):
         abscissa[i] = M*(i+1)
-        init = IntegralEquation((i+1)*M, square(a, (i+1)*N))
-        m_11[i], m_22[i], m_66[i] = init.added_mass()
+        geometry = square(a, (i+1)*N)
+        init = IntegralEquation((i+1)*M, geometry)
+        phi = init.solve()
+        m_11[i], m_22[i], m_66[i] = init.added_mass(phi)
         bar.next()
     bar.finish()
-    PlotConvergence('square', a, a, M, number, abscissa, m11 = m_11, m22 = m_22, m66 = m_66).plot_added_mass()
+    init_plot = PlotConvergence('square', a, a, M, number, abscissa, phi, m11 = m_11, m22 = m_22, m66 = m_66)
+    init_plot.plot_added_mass()
+    init_plot.plot_phi(init.ж())
 
 if __name__ == "__main__":
     plt.rcParams['text.usetex'] = True

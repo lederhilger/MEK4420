@@ -1,28 +1,31 @@
-from numpy import *
+from numpy import (ndarray, linalg, sqrt, pi,
+                    zeros, angle, linspace, trapz)
 from solve.chebyshov import Chebyshov
 from solve.quadrature import Quadrature
+from solve.potentials import Potentials
 
 class IntegralEquation:
     def __init__(self, N, coordinates):
         self.N = N
-        self.x = coordinates
+        self.x = coordinates[0]
+        self.y = coordinates[1]
 
     def ж(self) -> ndarray:
         ж = zeros((2,self.N))
         for n in range(self.N):
-            ж[0][n], ж[1][n] = .5*(self.x[0][0][n]+self.x[0][1][n]), .5*(self.x[1][0][n]+self.x[1][1][n])
+            ж[0][n], ж[1][n] = .5*(self.x[n+1]+self.x[n]), .5*(self.y[n+1]+self.y[n])
         return ж
     
     def Δx(self) -> ndarray:
         Δx = zeros(self.N); Δy = zeros(self.N)
         for n in range(self.N):
-            Δx[n] = self.x[0][0][n] - self.x[0][1][n]
-            Δy[n] = self.x[1][0][n] - self.x[1][1][n]
+            Δx[n] = self.x[n+1] - self.x[n]
+            Δy[n] = self.y[n+1] - self.y[n]
         return Δx, Δy
 
     def normal_vector(self) -> ndarray:
         '''
-        Δx = x_m - x_p, Δy = y_m - y_p
+        Δx = x_m+1 - x_m, Δy = y_m+1 - y_m
         nhat = (Δy, -Δx)
         '''
         nx = zeros(self.N); ny = zeros(self.N)
@@ -41,8 +44,6 @@ class IntegralEquation:
         return dS
     
     def assemble(self) -> ndarray:
-        x_p, x_m = self.x[0]
-        y_p, y_m = self.x[1]
         ж, ч = self.ж()
         dΘ = zeros((self.N,self.N))
         for i in range(self.N):
@@ -50,16 +51,16 @@ class IntegralEquation:
                 if i == j:
                     dΘ[i,j] = -pi
                 else:
-                    dΘ[i,j] = -angle(complex(x_p[j]-ж[i], y_p[j]-ч[i])/complex(x_m[j]-ж[i], y_m[j]-ч[i]))
-                    # dΘ[i,j] = arctan2((y_m[j]-ч[i]), (x_m[j]-ж[i])) - arctan2((y_p[j]-ч[i]), (x_p[j]-ж[i]))
+                    dΘ[i,j] = -angle(complex(self.x[j+1]-ж[i], self.y[j+1]-ч[i])/complex(self.x[j]-ж[i], self.y[j]-ч[i]))
+                    # dΘ[i,j] = arctan2((self.y[j]-ч[i]), (self.x[j]-ж[i])) - arctan2((self.y[j+1]-ч[i]), (self.x[j+1]-ж[i]))
         return dΘ
     
     def assemble_h(self) -> ndarray:
         δx = self.Δx()
         ж = self.ж()
         dS = self.dS()
-        quad = Quadrature(self.N, δx, ж, 'Lagrange', 2).quad()
-        return quad
+        h = Quadrature(self.N, δx, ж, 'Lagrange', 4).quad()
+        return h
     
     def right_hs(self, assemble_h, mode: int) -> ndarray:
         n_x, n_y = self.normal_vector()
@@ -74,7 +75,7 @@ class IntegralEquation:
                 n_i[n] = ж[n]*n_y[n] - ч[n]*n_x[n]
         else:
             raise ValueError("Choose mode: 1, 2, 6")
-        right_hs = dot(assemble_h, n_i)
+        right_hs = assemble_h @ n_i
         return right_hs
     
     def solve(self):
@@ -88,13 +89,14 @@ class IntegralEquation:
     def L2_norm(self):
         phi_1, phi_2, phi_6 = self.solve()
         theta = linspace(2*pi/self.N, 2*pi, self.N)
-        mode_1 = sqrt(trapz(((phi_1 + cos(theta))**2), theta))
-        mode_2 = sqrt(trapz(((phi_2 + sin(theta))**2), theta))
+        init = Potentials(self.a, self.b, self.N, theta)
+        mode_1 = sqrt(trapz(((phi_1 + init.circle_1())**2), theta))
+        mode_2 = sqrt(trapz(((phi_2 + init.circle_2())**2), theta))
         return mode_1, mode_2
 
-    def added_mass(self):
+    def added_mass(self, phi):
         m_11 = 0; m_22 = 0; m_66 = 0
-        phi_1, phi_2, phi_6 = self.solve()
+        phi_1, phi_2, phi_6 = phi
         nx, ny = self.normal_vector(); dS = self.dS()
         ж, ч = self.ж()
         for j in range(self.N):
@@ -102,33 +104,12 @@ class IntegralEquation:
             m_22 += phi_2[j]*ny[j]*dS[j]
             m_66 += phi_6[j]*(ж[j]*ny[j] - ч[j]*nx[j])*dS[j]
         return m_11, m_22, m_66
-    
-    def plot_phi(self):
-        phi_1, phi_2, phi_6 = self.solve()
-        import matplotlib.pyplot as plt
-        plt.rcParams['text.usetex'] = True
-        from matplotlib.ticker import MultipleLocator, FuncFormatter
-        ax = plt.gca()
-        ax.xaxis.set_major_formatter(FuncFormatter(lambda val,pos: r'{:.0g}$\pi$'.format(val/pi) if val !=0 else '0'))
-        ax.xaxis.set_major_locator(MultipleLocator(base=pi))
-        plt.title(f'$N = {self.N}$')
-        dom = zeros(self.N); ж, ч = self.ж()
-        for n in range(self.N):
-            dom[n] = arctan2(ч[n],ж[n])
-        count = 0
-        for phi in [phi_1, phi_2, phi_6]:
-            count += 1
-            plt.plot(dom, phi, 'x', color = 'k', markersize = 2, label = r'$\phi_j$')
-            plt.legend()
-            plt.savefig(f"phi{count}_N{self.N}.pgf", transparent = True, format = "pgf")
-            plt.show()
 
     def normal_plot(self):
         import matplotlib.pyplot as plt
         nx, ny = self.normal_vector(); ж, ч = self.ж()
-        x_p, x_m = self.x[0]; y_p, y_m = self.x[1]
         for n in range(self.N):
             plt.plot((ж[n], nx[n]+ж[n]), (ч[n], ny[n]+ч[n]))
-            plt.plot((x_p[n], x_m[n]), (y_p[n], y_m[n]))
+            plt.plot((self.x[n+1], self.x[n]), (self.y[n+1], self.y[n]))
         plt.plot(ж, ч, 'x')
         plt.show()
