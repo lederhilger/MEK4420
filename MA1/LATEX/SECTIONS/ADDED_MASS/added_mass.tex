@@ -1,18 +1,35 @@
-Vi har sett at ved å linearisere \textsc{Bernoulli}s likning, kan vi skrive om kreftene på en geometri til en akselerasjon ganger en addert masse, som representerer fortrengt fluidvolum grunnet geometriens bevegelse,
+To gain insight into what \emph{added mass} actually represents, the reader is highly encouraged to read the 1953 paper of Charles G. \textsc{Darwin} \emph{Note on Hydrodynamics}.\footnote{\cite{darwin1953note} \textsc{Darwin} (1953)}
+Therein it is demonstrated that bodies moving in an ideal flow cause drift of the fluid, and that the drift volume is equivalent to the added mass.
+Authors in older works usually provide the kinetic energy of the system instead of the added mass, as the added mass may be inferred.
+Consider a body in an unbounded fluid being accelerated such that its energy is $T_{\mathrm{body}}$.
+We know this induces a drift in the fluid, whose energy we shall label $T_{\mathrm{fluid}}$, and that the total energy then is $T = T_{\mathrm{body}} + T_{\mathrm{fluid}}$.
+Consider now a fluid flow with potential $\Phi$.
+Letting $\varrho$ denote the fluid density, the kinetic energy of the fluid is then
 \[
-    \bm{F} = \int_{\partial\Omega} p \nhat \,\dee S = - \deet \bm{U} \colon \varrho\int_{\partial\Omega} \bm{\phi}\otimes\nhat \,\dee S.
+T_{\mathrm{fluid}} = \frac{\varrho}{2} \int_{\Omega} q^2 \,\dee\Omega, \quad q = \absl{\nabla\Phi} = \partial_{\ezh^{\ast}} w \partial_{\ezh^{\ast}} w^{\ast},
 \]
-Her er $\bm{U}$ geometriens hastighet, og $\nhat = \hat{n}_{i}$ er normalvektoren langs alle frihetsgrader.
-$\bm{\phi}$ er en vektorisering av fluidpotensialet i to dimensjoner:
+integrating in the entire fluid domain $\Omega$, excluding the body.
+The complex formulation will be necessary later, but we pay no attention to it for the time being.
+The speed $q$ may be related to the velocity magnitude $U$ by assuming the modal superposition $\Phi(t;\xvec) = \bm{U}(t) \cdot \bm{\phi}(\xvec)$.
+It is apparent that in general, the energy may be expressed as
+\[
+T = \frac{(m + m^{\prime}) U^2}{2}, \qquad m^{\prime} = \varrho k A,
+\]
+where we note the added mass $m^{\prime}$ depends on the area of the body $A$, and an inertia coefficient $k$.
+This coefficient indicates the orientation of the body in relation to the direction of motion---we can imagine an ellipse moving parallel to its major axis will cause less drift in the fluid than it would moving perpendicular to it.
+That will at least that will be shown to be the case, mathematically.
+One may confirm the dependency on orientation readily in one's own kitchen---if imagination does not satisfy---by filling a container with water, and holding a spoon so that the bowl is submerged, moving it every which way.
+One shall find that moving the spoon with the bowl perpendicular to the direction of motion requires more work than moving it with the bowl parallel to the direction of motion.
+In fact, maintaining such work with a force $F$, we have that $F U = \deet T_{\mathrm{fluid}}$, and extending \textsc{Blasius}' theorem,\footnote{\cite{milne1968theoretical} \textsc{Milne--Thomson}, pp.255--256} we have that
+\[
+\bm{F} = -\deet\bm{U}\colon\varrho\int_{\partial\Omega} \bm{\phi}\otimes\nhat \,\dee S,
+\]
+where $S$ is the contour of the body.
+$\bm{\phi}$ is a vector containing the modes of translation,
 \[
     \bm{\phi}(\xvec, t) = \phi_1 \ihat + \phi_2 \jhat + \phi_6 \bm{\hat{\omega}}_{\khat}.
 \]
-Den symmetriske tensoren for addert masse er da i tensorsubskript gitt ved
+This same formulation is found in the lecture notes, yielding the added mass tensor in terms of the following integral, which will be used for the numerical calculation.
 \[
-    \addedmass = \varrho \int_{\partial\Omega} \phi_j \hat{n}_{i} \,\dee S.
+    \addedmass = \varrho \int_{\partial\Omega} \bm{\phi} \otimes \nhat \,\dee S
 \]
-Vi har også sett at følgende gjelder for det todimensjonale tilefellet $r = \absl{\xvec - \bzhe}$.
-\[
-    \int_{\partial\Omega} \big( \phi \partial_n \ln{r} - \ln{r} \partial_n \phi \big) \,\dee S = \pi \phi(\bzhe),
-\]
-når $\bzhe$ ligger på randa til geometrien.

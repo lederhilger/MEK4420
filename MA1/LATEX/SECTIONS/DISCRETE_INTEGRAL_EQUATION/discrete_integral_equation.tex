@@ -1,3 +1,29 @@
+Since the fluid is ideal, we may reduce the incompressibility condition to the \textsc{Laplace} equation,
+\[
+\nabla^2\phi = 0, \qquad \text{in } \Omega.
+\]
+It may be shown with the product rule that for any harmonic functions $\phi,\psi \in \Omega$,
+\[
+\nabla\cdot \big( \phi\nabla\psi - \psi\nabla\phi \big) \equiv 0,
+\]
+which upon being integrated over $\Omega$ and applying \textsc{Gauss}' divergence theorem, yields
+\[
+\int_{\partial\Omega} \big( \phi\nabla\psi - \psi\nabla\phi \big) \,\dee S = 0.
+\]
+Since we only need the values of the potential on the contour $\partial\Omega$ to calculate the added mass, we look to \textsc{Green} functions, which are defined through the property that they satisfy some differential operator except at some point $\bzhe \in \Othal$, where $\Othal = \Omega \cup \partial\Omega$, such that
+\[
+\nabla^2 \green = \delta(\xvec - \bzhe), \qquad \xvec\in\Othal.
+\]
+The \textsc{Green} function for the \textsc{Laplace} operator is the natural logarithm,
+\[
+\green(\xvec) = \ln{r}, \qquad r = \absl{\xvec - \bzhe},
+\]
+which has a pole at $\bzhe$.
+Now, by placing $\bzhe\in\partial\Omega$, we find by the \textsc{Cauchy} principal value, that
+\[
+-\pi\phi(\bzhe) + \int_{\partial\Omega} \phi \partial_{\nhat}\green \,\dee S = \int_{\partial\Omega} \partial_{\nhat}\phi \green \,\dee S.
+\]
+
 Integrallikningen har vi vist kan skrives på diskret form
 \[
     -\pi\phi_n - \sum_{m = 1}^{N} \phi_m \Thetatt_{n,m} = \sum_{m = 1}^{N} \partial_{\nhat} \phi_m \mathtt{h}_{m,n},
