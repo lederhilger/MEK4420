@@ -58,7 +58,6 @@ class IntegralEquation:
     def assemble_h(self) -> ndarray:
         δx = self.Δx()
         ж = self.ж()
-        dS = self.dS()
         h = Quadrature(self.N, δx, ж, 'Lagrange', 4).quad()
         return h
     

@@ -1,18 +1,18 @@
-from numpy import zeros, arctan2, cos, sin, sqrt
-# Plots (-pi,pi) for polar coordinates
+from numpy import zeros, arctan2, cos, sin, sqrt, pi
+# Plots (0, 2pi) for polar coordinates
 class Potentials:
     def __init__(self, a: float, b: float, N: int, domain: tuple):
         self.a = a
         self.b = b
         self.N = N
-        self.domain = domain
+        self.domain = [domain[n]-pi for n in range(len(domain))]
 
     def circle_1(self):
-        phi = -self.a**2 * cos(self.domain)
+        phi = cos(self.domain)
         return phi
 
     def circle_2(self):
-        phi = -self.b**2 * sin(self.domain)
+        phi = sin(self.domain)
         return phi
     
     def ellipse_1(self):

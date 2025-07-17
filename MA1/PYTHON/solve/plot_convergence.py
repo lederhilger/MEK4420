@@ -46,6 +46,7 @@ class PlotConvergence:
         N = int(self.abscissa[-1])
         plt.rcParams['text.usetex'] = True
         plt.title(f'$N = {self.N}$')
+        # arctan2 \in (-pi, pi). Therefore domain -> domain-pi in potentials.py
         domain = zeros(N)
         for n in range(N):
             domain[n] = arctan2(ж[1][n], ж[0][n]) + pi
@@ -70,7 +71,7 @@ class PlotConvergence:
                 if count == 1:
                     if self.shape == 'ellipse': call = init.ellipse_1()
                     else: call = init.circle_1()
-                    plt.plot(sorted_domain, init.ellipse_1(), color = 'k', label = r'$\phi_1$')
+                    plt.plot(sorted_domain, call, color = 'k', label = r'$\phi_1$')
                 elif count == 2:
                     if self.shape == 'ellipse': call = init.ellipse_2()
                     else: call = init.circle_2()
