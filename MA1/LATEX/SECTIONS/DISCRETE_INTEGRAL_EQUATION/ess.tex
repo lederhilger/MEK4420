@@ -1,0 +1,24 @@
+\begin{tikzpicture}
+    \begin{scope}[scale = 2.5]
+        \def\r{1}\def\smallr{.2}
+        \def\thetai{-45}\def\thetaf{0}\def\thetam{180}
+        \draw
+            (
+                {(1-\smallr)*\r*cos(\thetam) + \smallr*\r*cos(\thetaf)},
+                {(1-\smallr)*\r*sin(\thetam) + \smallr*\r*sin(\thetaf)}
+            ) arc (\thetaf:\thetai:\smallr) node[midway, right]{\scalebox{.75}{$\Thetatt_{m,n}$}};
+        \draw[cap = round]
+            ({\r*cos(\thetaf)}, {\r*sin(\thetaf)})--
+            ({\r*cos(\thetam)}, {\r*sin(\thetam)})--
+            ({\r*cos(\thetai)}, {\r*sin(\thetai)})--cycle;
+        \draw[thick] ({\r*cos(\thetai)}, {\r*sin(\thetai)}) arc (\thetai:\thetaf:\r) node[midway, right]{$S$};
+        \draw[fill = black] ({\r*cos(\thetaf)}, {\r*sin(\thetaf)}) circle (.01) node[right]{$\xvec_n$};
+        \draw[fill = black] ({\r*cos(\thetai)}, {\r*sin(\thetai)}) circle (.01) node[below right]{$\xvec_{n-1}$};
+        \draw[fill = black] ({\r*cos(\thetam)}, {\r*sin(\thetam)}) circle (.01) node[left]{$\bzhe_m$};
+        \draw[fill = black]
+            (
+                {.5*\r*cos(\thetaf) + .5*\r*cos(\thetai)},
+                {.5*\r*sin(\thetaf) + .5*\r*sin(\thetai)}
+            ) circle (.01) node[left]{$\bzhe_n$};
+    \end{scope}
+\end{tikzpicture}
