@@ -62,7 +62,7 @@ Now, for a curve parametrized by $\lambda(s)$, the normal vector $\nhat$ may be 
 The inner product may be defined such that $\uvec\cdot\nhat = \Re{(\uvec^{\ast} \nu(s))}$.
 We then have that
 \[
-\partial_{\nhat}\ln{r} = \Re{\left( -i\frac{\dee \ezh}{\dee s} \frac{\dee}{\dee \ezh} \Log{(\ezh - \bzhe_m)} \right)}.
+\partial_{\nhat}\ln{r} = \Re{\left( -i\frac{\dee \ezh}{\dee s} \partial_{\ezh} \Log{(\ezh - \bzhe_m)} \right)}.
 \]
 Since the line segment is parameterized by $s$, the differential element may then be taken over $\ezh$.
 By the linearity of the $\Re{(\star)}$ operator, we have that
@@ -75,8 +75,34 @@ This is just the angle between $\xvec_n$, $\bzhe_m$, and $\xvec_{n-1}$.
   \centering
   \input{ess.tex}
   \captionsetup{type = figure}
-  \caption{Visualization of $\Thetatt_{m,n}$. Here $S$ denotes the segment along $\partial\Omega$ between $\xvec_{n}$ and $\xvec_{n-1}$.}
+  \caption{Visualization of $\Thetatt_{m,n}$. Here ${\partial\Omega}_{n}$ denotes the segment along $\partial\Omega$ between $\xvec_{n}$ and $\xvec_{n-1}$.}
 \end{Figure}
+
+If $\xtt$ then is the array of the $N$ nodes $x_n$, we can fill the matrix $\Thetatt$ with the arguments with \texttt{for}-loops, which is implemented in the \texttt{assemble} method in the \texttt{IntegralEquation} class, found in \texttt{integralequation.py}.
+The class variable $\zhett = \sfrac{1}{2}(\xvec_{n} + \xvec_{n-1})$, containing the aforementioned midpoints is created upon initialization of the class, since multiple methods make use of it.
+\begin{algorithm}[H]
+    \caption{Assemble $\Thetatt$}\label{alg:theta}
+    \begin{algorithmic}
+        \For{$\mathtt{i},\mathtt{j} \leq \mathtt{N}$}
+            \If{$\mathtt{i} = \mathtt{j}$}
+                \State $\Thetatt_{ij} \gets -\pi$
+            \Else
+                \State $\Thetatt_{ij} \gets \mathtt{angle}{\left( \frac{\xtt[j-1] - \zhett[i]}{\xtt[j] - \zhett[i]} \right)}$
+            \EndIf
+        \EndFor
+    \end{algorithmic}
+\end{algorithm}
+This method essentially assembles the entire left-hand side, so that we may simply solve $\phi = \Thetatt^{-1}\mathtt{h}$.
+
+\subsection{\textsc{Gauss}--\textsc{Legendre} quadrature}
+To construct $\mathtt{h}$, we evaluate the integral of the logarithm using quadrature.
+Quadrature is given by blah blah blah
+
+We may parametrize the variable of integration by writing that the line segment $S_n$ is given by $\ezh(t) = t\xvec_{n} + (1 - t)\xvec_{n-1}$ for $t \in [0,1]$, so that
+\[
+\int_{S_n} f(\ezh) \,\dee S = \int_{0}^{1} f\big( \ezh(t) \big) \absl{\ezh^{\prime}(t)} \,\dee t.
+\]
+For brevity, we write that $\absl{\ezh^{\prime}(t)} = \absl{\xvec_{n} - \xvec_{n-1}} = \delta S_n$.
 
 \subsection{Approximated added mass}
 Let $\delta S_{n} = \absl{\xvec_{n} - \xvec_{n - 1}}$.
