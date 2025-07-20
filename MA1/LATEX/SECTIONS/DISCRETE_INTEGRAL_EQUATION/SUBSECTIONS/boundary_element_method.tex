@@ -1,0 +1,16 @@
+To implement the integral equation numerically, we utilize the boundary element method.
+In essence, we distribute a number of nodes along the boundary on which we would like to solve the integral equation, and linearily interpolate the points to approximate boundary.
+If the number of nodes is $N$, then we have $\partial\Omega \sim S = \{S_n \colon n \leq N, \, n \in \mathbb{Z}^{+}\}$.
+We then assume the potential is constant on each of $S_n$, equal to the potential evaluated at the midpoint, labelling this ${\phi_j}^{n} \equiv \phi_j(\zhett_n)$.
+Now, since the normal derivative of the potential also must be zero on the line segments, the integrals in the integral equation may be approximated by the sum of the integrals evaluated over wach of the line segments as follows.
+\begin{equation}\label{eq:deen_log_integral}
+\int_{\partial\Omega} \phi \partial_{\nhat} \ln{r} \,\dee S \approx \sum_{n = 1}^{N} \phi^{n} \int_{S_n} \partial_{\nhat} \ln{r} \,\dee S
+\end{equation}
+\begin{equation}\label{eq:log_integral}
+\int_{\partial\Omega} \ln{r} \partial_{\nhat} \phi \,\dee S \approx \sum_{n = 1}^{N} \nhat^{n} \int_{S_n} \ln{r} \,\dee S
+\end{equation}
+It should be quite clear that the integral equation may then be written as the matrix equation
+\[
+-\pi\phi^{n} + \sum_{n = 1}^{N} \phi^{n} \Thetatt_{m,n} = \sum_{n = 1}^{N} \nhat^{n} \mathtt{h}_{m,n},
+\]
+where we have set $\Thetatt_{m,n}$ and $\mathtt{h}_{m,n}$ to be approximations of equations \eqref{eq:deen_log_integral} and \eqref{eq:log_integral}, respectively.

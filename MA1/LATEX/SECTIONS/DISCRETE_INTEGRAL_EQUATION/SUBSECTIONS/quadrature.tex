@@ -1,0 +1,36 @@
+To construct $\mathtt{h}$, we evaluate the integral of the logarithm using quadrature.
+For an integral on the real line, Gaussian quadrature approximates it by transforming it to the unit ball,
+\[
+\int_{a}^{b} y(x) \,\dee x \mapsto \int_{-1}^{1} \eta(\xi) \,\dee\xi,
+\]
+where $\eta(\xi) \equiv y\big( x(\xi) \big) \partial_{\xi}x$, a change of variables such that $x(-1) = a$ and $x(1) = b$.
+\textsc{Gauss}--\textsc{Legendre} quadrature of order $K$ has us approximating this integral by
+\[
+\sum_{k = 1}^{K} w_k \eta(\xi_k), \quad w_k = \frac{2}{\big( 1 - {\xi_k}^2 \big) {\big( {\legendre_K^{\prime}(\xi_k)} \big)}^2},
+\]
+where $\legendre_K$ is the $K$\textsuperscript{th} \textsc{Legendre} polynomial, $\xi_k$ is its $k$\textsuperscript{th} zero, and $w_k$ is the corresponding weight.
+The \textsc{Legendre} polynomials are given by the recursion formula\footnote{\cite{abramowitz1965handbook} \textsc{Abramowitz} \& \textsc{Stegun}, 22.7.10, p.782}
+\[
+(n + 1) \legendre_{n+1}(x) = (2n + 1) x \legendre_{n}(x) - n\legendre_{n-1}(x),
+\]
+where we have defined $\legendre_0(x) = 1$, $\legendre_1(x) = x$.
+From the recurrence relation we find the 2\textsuperscript{nd} order \textsc{Legendre} polynomial, its zeros, and its weights:
+\[
+\legendre_2(x) = \frac{3x^2 - 1}{2}, \quad \xi_k = {(-1)}^k \frac{\sqrt{3}}{3}, \quad w_k = 1
+\]
+We find below that we have no use for the 3\textsuperscript{rd} polynomial, but we may use the 4\textsuperscript{th}, for which we have
+\[
+\legendre_4(x) = \frac{105x^4 - 90x^2 + 9}{24}
+\]
+
+We may parametrize the variable of integration by writing that the line segment $S_n$ is given by
+\[
+\ezh(\xi) = \left( \frac{\xvec_n - \xvec_{n-1}}{2} \right)\xi + \left( \frac{\xvec_{n} + \xvec_{n-1}}{2} \right),
+\]
+where $\xi \in [-1,1]$.
+We recognize the right-most term above as $\zhett_n$, and for brevity, we write that $\xvec_{n} - \xvec_{n-1} = \dxtt$, which is implemented as the method \texttt{IntegralEquation.\textDelta{x}}.
+Now $\ln{\absl{\ezh(\xi)}}$ clearly is a function from the real numbers into the real numbers, so we may use the fact that for any real valued function over the complex plane,
+\[
+\int_{C} f(\ezh) \,\dee S = \int_{a}^{b} f\big( \ezh(\xi) \big) \absl{\ezh^{\prime}(\xi)} \,\dee\xi.
+\]
+We calculate that $\absl{\ezh^{\prime}(\xi)} = \sfrac{1}{2}\absl{\dxtt}$, which is implemented as the class variable $\mathtt{dS}$ in the \texttt{Quadrature} class of \texttt{quadrature.py}.
