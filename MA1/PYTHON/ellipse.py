@@ -34,7 +34,7 @@ def test_convergence():
     else: shape = 'ellipse'
     init_plot = PlotConvergence(shape, a, b, N, number, abscissa, phi, m11 = m_11, m22 = m_22, m66 = m_66)
     init_plot.plot_added_mass()
-    init_plot.plot_phi(init.ж())
+    init_plot.plot_phi(init.ж)
 
 if __name__ == "__main__":
     plt.rcParams['text.usetex'] = True
