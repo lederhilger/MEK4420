@@ -35,7 +35,7 @@ class Quadrature:
                 sum = 0
                 for k in range(self.order):
                     sum += w[k]*log(.5*self.δx[j]*ξ[k] + self.ж[j] - self.ж[i])
-                quad[i,j] = real(.5*self.dS[j]*sum)
+                quad[i,j] = .5*self.dS[j]*real(sum)
         return quad
 
     def quad(self):
