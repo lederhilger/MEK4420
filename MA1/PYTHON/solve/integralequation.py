@@ -9,12 +9,10 @@ class IntegralEquation:
         self.N = N
         self.x = coordinates[0]
         self.y = coordinates[1]
-
-    def ж(self) -> ndarray:
         ж = zeros((2,self.N))
         for n in range(self.N):
             ж[0][n], ж[1][n] = .5*(self.x[n+1]+self.x[n]), .5*(self.y[n+1]+self.y[n])
-        return ж
+        self.ж = ж
     
     def Δx(self) -> ndarray:
         Δx = zeros(self.N); Δy = zeros(self.N)
@@ -44,7 +42,7 @@ class IntegralEquation:
         return dS
     
     def assemble(self) -> ndarray:
-        ж, ч = self.ж()
+        ж, ч = self.ж
         dΘ = zeros((self.N,self.N))
         for i in range(self.N):
             for j in range(self.N):
@@ -57,13 +55,13 @@ class IntegralEquation:
     
     def assemble_h(self) -> ndarray:
         δx = self.Δx()
-        ж = self.ж()
+        ж = self.ж
         h = Quadrature(self.N, δx, ж, 'Lagrange', 4).quad()
         return h
     
     def right_hs(self, assemble_h, mode: int) -> ndarray:
         n_x, n_y = self.normal_vector()
-        ж, ч = self.ж()
+        ж, ч = self.ж
         if mode == 1:
             n_i = n_x
         elif mode == 2:
@@ -97,7 +95,7 @@ class IntegralEquation:
         m_11 = 0; m_22 = 0; m_66 = 0
         phi_1, phi_2, phi_6 = phi
         nx, ny = self.normal_vector(); dS = self.dS()
-        ж, ч = self.ж()
+        ж, ч = self.ж
         for j in range(self.N):
             m_11 += phi_1[j]*nx[j]*dS[j]
             m_22 += phi_2[j]*ny[j]*dS[j]
