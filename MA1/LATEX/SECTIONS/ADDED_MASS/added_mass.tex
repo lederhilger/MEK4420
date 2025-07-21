@@ -1,5 +1,5 @@
 To gain insight into what \emph{added mass} actually represents, the reader is highly encouraged to read the 1953 paper of Charles G. \textsc{Darwin} \emph{Note on Hydrodynamics}.\footnote{\cite{darwin1953note} \textsc{Darwin} (1953)}
-Therein it is demonstrated that bodies moving in an ideal flow cause drift of the fluid, and that the drift volume is equivalent to the added mass.
+It is therein demonstrated that bodies moving in an ideal fluid cause drift of the fluid, and that the drift volume is equivalent to the added mass.
 Authors in older works usually provide the kinetic energy of the system instead of the added mass, as the added mass may be inferred.
 Consider a body in an unbounded fluid being accelerated such that its energy is $T_{\mathrm{body}}$.
 We know this induces a drift in the fluid, whose energy we shall label $T_{\mathrm{fluid}}$, and that the total energy then is $T = T_{\mathrm{body}} + T_{\mathrm{fluid}}$.
@@ -30,6 +30,6 @@ $\bm{\phi}$ is a vector containing the modes of translation,
     \bm{\phi}(\xvec, t) = \phi_1 \ihat + \phi_2 \jhat + \phi_6 \bm{\hat{\omega}}_{\khat}.
 \]
 This same formulation is found in the lecture notes, yielding the added mass tensor in terms of the following integral, which will be used for the numerical calculation.
-\[
+\begin{equation}\label{eq:added_mass}
     \addedmass = \varrho \int_{\partial\Omega} \bm{\phi} \otimes \nhat \,\dee S
-\]
+\end{equation}
