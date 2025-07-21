@@ -11,13 +11,13 @@ def square(a: float, N: int) -> tuple:
     # line = Jacobi(linspace(-a, a, N + 1)).inverse_map()
     line = Chebyshov(linspace(-a, a, N + 1)).inverse_map()
     # line = linspace(-a, a, N + 1)
-    x = ones(4*N + 1); y = ones(4*N + 1)
-    x[:N] *= a; y[:N] = line[:N]
-    x[N:2*N] = flip(line)[:N]; y[N:2*N] *= a
-    x[2*N:3*N] *= -a; y[2*N:3*N] = flip(line)[:N]
-    x[3*N:4*N] = line[:N]; y[3*N:4*N] *= -a
-    x[-1] = x[0]; y[-1] = y[0]
-    return x, y
+    x = ones(4*N + 1); z = ones(4*N + 1)
+    x[:N] *= a; z[:N] = line[:N]
+    x[N:2*N] = flip(line)[:N]; z[N:2*N] *= a
+    x[2*N:3*N] *= -a; z[2*N:3*N] = flip(line)[:N]
+    x[3*N:4*N] = line[:N]; z[3*N:4*N] *= -a
+    x[-1] = x[0]; z[-1] = z[0]
+    return x, z
 
 def test_square(N: int):
     M = 4*N

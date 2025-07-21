@@ -13,10 +13,10 @@ def radius(a, b, θ):
 def ellipse(a, b, N):
     θ = linspace(0, 2*pi, N+1)
     r = radius(a, b, θ)
-    x = zeros(N+1); y = zeros(N+1)
+    x = zeros(N+1); z = zeros(N+1)
     for n in range(N+1):
-        x[n], y[n] = r[n]*cos(θ[n]), r[n]*sin(θ[n])
-    return x, y
+        x[n], z[n] = r[n]*cos(θ[n]), r[n]*sin(θ[n])
+    return x, z
 
 def test_convergence():
     abscissa = zeros(number)
