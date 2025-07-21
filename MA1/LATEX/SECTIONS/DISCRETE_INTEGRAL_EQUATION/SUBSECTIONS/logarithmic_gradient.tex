@@ -7,9 +7,9 @@ Considering now an analytic function $\uvec = u + iv$, its complex derivative is
 We recall that the principal value of the complex logarithm is given by $\log{(\ezh)} = \ln{\absl{\ezh}} + i\Arg{(\ezh)}$,\footnote{\cite{lavrentev1967methoden} \textsc{Lavrentev} \& \textsc{\v{S}abat}, p.30} so that $\partial_{\ezh} \log{(\ezh)} = {\nabla\ln{\absl{\ezh}}}^{\ast}.$
 
 Now, for a curve parametrized by $\lambda(s)$, the normal vector $\nhat$ may be represented by\footnote{\cite{markusevic1965theoryII} \textsc{Marku\v{s}evi\v{c}}, p.175}
-\[
+\begin{equation}\label{eq:normal_curve}
 \nu(s) = -i \lambda^{\prime}(s) = \frac{\dee z}{\dee s} - i\frac{\dee x}{\dee s} = -i\frac{\dee \ezh}{\dee s}.
-\]
+\end{equation}
 The inner product may be defined such that $\uvec\cdot\nhat = \Re{(\uvec^{\ast} \nu(s))}$.
 We then have that
 \[
@@ -34,11 +34,11 @@ The class variable $\zhett = \sfrac{1}{2}(\xvec_{n} + \xvec_{n-1})$, containing 
 \begin{algorithm}[H]
     \caption{Assemble $\Thetatt$}\label{alg:theta}
     \begin{algorithmic}
-        \For{$\mathtt{i},\mathtt{j} \leq \mathtt{N}$}
-            \If{$\mathtt{i} = \mathtt{j}$}
-                \State $\Thetatt_{ij} \gets -\pi$
+        \For{$\mathtt{m},\mathtt{n} \leq \mathtt{N}$}
+            \If{$\mathtt{m} = \mathtt{n}$}
+                \State $\Thetatt_{\mathtt{m}\mathtt{n}} \gets -\pi$
             \Else
-                \State $\Thetatt_{ij} \gets \mathtt{angle}{\left( \frac{\xtt[j-1] - \zhett[i]}{\xtt[j] - \zhett[i]} \right)}$
+                \State $\Thetatt_{\mathtt{m}\mathtt{n}} \gets \mathtt{angle}{\left( \frac{\xtt[\mathtt{n}-1] - \zhett[\mathtt{m}]}{\xtt[\mathtt{n}] - \zhett[\mathtt{m}]} \right)}$
             \EndIf
         \EndFor
     \end{algorithmic}

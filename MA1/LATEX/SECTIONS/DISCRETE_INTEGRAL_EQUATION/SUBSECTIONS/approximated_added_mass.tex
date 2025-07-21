@@ -1,4 +1,6 @@
-Let $\delta S_{n} = \absl{\xvec_{n} - \xvec_{n - 1}}$.
+Now having an approximation of $\bm{\phi}$, we may now approximate the integral in equation \eqref{eq:added_mass} as follows.
 \[
-    \addedmass = [m_{ij}] \approx \varrho \sum_{n = 1}^{N} {\phi_{j}}^{n} {\hat{n}}_{i}{}^{n} \delta S_{n}.
+    \addedmass = [m_{ij}] \approx \varrho \sum_{n = 1}^{N} {\phi_{j}}^{n} {\hat{n}}_{i}{}^{n} \delta S_{n}
 \]
+We are only interested in the substantive added mass, so we implement unit density.
+The added mass is then implemented as the \texttt{added\_mass} method in the \texttt{IntegralEquation} class.

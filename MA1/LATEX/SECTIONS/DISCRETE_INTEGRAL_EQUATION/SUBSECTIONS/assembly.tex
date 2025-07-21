@@ -1,0 +1,17 @@
+Recalling now our assumed property of independence of modes in the potential, that we may write it as the superposition $\Phi(t;\xvec) = \bm{U}(t)\cdot\bm{\phi}(\xvec)$, we impose the boundary condition of impermeability---no fluid shall cross the boundary $\partial\Omega$.
+In other words, the fluid displaced by the movement of the body, must at the boundary itself move with that velocity, so that
+\[
+\nhat \cdot \nabla \Phi = \bm{U} \cdot \nhat, \qquad \text{on } \partial\Omega.
+\]
+By the product rule, and by virtue of $\bm{U}$ not being a function of the spatial variable, we have through the commutativity of the inner product that $\bm{U} \cdot \big( \nhat \cdot \nabla\bm{\phi}(\xvec) \big) = \bm{U} \cdot \nhat.$
+In other words, we have the boundary condition that for each mode $j$ of the potential,
+\[
+\nhat \cdot \nabla \phi_j \equiv \partial_{\nhat}\phi_j = {\hat{n}}_j, \qquad \text{on } \partial\Omega,
+\]
+whence the normal vector in \eqref{eq:log_integral}.
+As is clear from equation \eqref{eq:normal_curve}, we may approximate get the normal vector on a straight line segment from implementing $\nhat^{n} = (\delta z_n - i\delta x_n)\mathtt{\absl{\dxtt}}^{-1}$, where $\dxtt = \delta x_n + i\delta z_n$, as is done in the \texttt{normal\_vector} method in the \texttt{IntegralEquation} class.
+The sixth normal vector, coinciding with rotation about the $y$-axis, is given by ${\hat{n}}_{6}{}^n = \bzhe_n \times \nhat^{n}$, where the multiplication sign here indicates the cross product.
+The method \texttt{assemble\_h} constructs the matrix representing the integral of the logarithm with a call to the \texttt{quad} method in the \texttt{Quadrature} class.
+The actual right-hand side of the integral equation is then calculated with a call to the method \texttt{right\_hs}, choosing a mode, returning $\mathtt{right\_hs} = \mathtt{assemble\_h} \mathtt{@} \mathtt{n\_i}$.
+Importing \texttt{linalg} from \texttt{numpy}, we may solve $\phitt_j = \Thetatt^{-1} \mathtt{h}$ for each of the modes.
+This is implemented in the \texttt{solve} method, constructing $\Thetatt$ and $\mathtt{h}$ only once, then calling \texttt{right\_hs} three times, to return the tuple $[ \phitt_1, \phitt_2, \phitt_3]$.
