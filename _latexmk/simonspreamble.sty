@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%% SIMON's preamble %%%%%%%%%%%%%%%%%%%%%%%
 \ProvidesClass{simonspreamble}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Version 21062025, UiO Oslo, Norway, for pdfLaTeX %%%%%%%%%%%%%
+% Version 21072025, UiO Oslo, Norway, for pdfLaTeX %%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Since SYMBOLS// are PDF1.6, so must main.pdf be %%%%%%%%%%%%%%
 \pdfminorversion = 6
@@ -19,10 +19,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%% LANGUAGE %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[X2,TS1,T1]{fontenc}
-\RequirePackage[russian, english]{babel}
+\RequirePackage[russian, greek, english]{babel}
 \RequirePackage{lmodern}
 \DeclareFontFamilySubstitution{X2}{lmr}{cmr}
 \DeclareFontSubstitution{X2}{cmtt}{m}{it}
+\RequirePackage{textalpha}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T1 main font, so X2&TS1 must be loaded before T1. lmodern is %
 % a better font option than cmodern, but has worse selection. %%
@@ -188,6 +189,8 @@
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
 \DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Arg}{Arg}
 %%%%%%%%%%%%%%%%%%%%%% paired delimiters %%%%%%%%%%%%%%%%%%%%%%%
 \DeclarePairedDelimiter\bracc\{\}
 \DeclarePairedDelimiter{\innerprod}{\langle}{\rangle}
@@ -227,6 +230,7 @@
 \newcommand{\deltt}{{\mathtt{{\Delta t}}}}
 \newcommand{\utt}{\textit{\texttt{u}}}
 \newcommand{\htt}{\textit{\texttt{h}}}
+\newcommand{\nhattt}{\hat{\texttt{\textit{n}}}}
 \newcommand{\naturals}{\mathbb{N}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%% DIMONESIONLESS OR OTHERWISE NAMED NUMBERS %%%%%%%%%%%
@@ -254,16 +258,12 @@
           \includegraphics{SYMBOLS/Kaufmann_r_bold.pdf}}$}}}
 }
 %%%% THETA TYPEWRITER %%%%
-\newcommand{\Thetatt}{\mathchoice
-  {\mbox{$\resizebox{.572em}{.75em}{%
-        \includegraphics{SYMBOLS/Thetatt.pdf}}$}}
-  {\mbox{$\resizebox{.572em}{.75em}{%
-        \includegraphics{SYMBOLS/Thetatt.pdf}}$}}
-  {\scalebox{.7}{\mbox{$\resizebox{.572em}{.75em}{%
-          \includegraphics{SYMBOLS/Thetatt.pdf}}$}}}
-  {\scalebox{.5}{\mbox{$\resizebox{.572em}{.75em}{%
-          \includegraphics{SYMBOLS/Thetatt.pdf}}$}}}
-}
+\newcommand{\Thetatt}{\texttt{\textTheta}}
+%%%% phi TYPEWRITER %%%%
+\newcommand{\phitt}{\texttt{\textit{\textphi}}}
+%%%% delta TELETYPE %%%%
+\newcommand{\deltatt}{\texttt{\textit{\textdelta}}}
+\newcommand{\dxtt}{\texttt{\textit{\textdelta{x}}}}
 %%%% DISPLACED VOLUME %%%%
 \newcommand{\displacedvolume}{\mathchoice
   {\mbox{$\resizebox{.7em}{.75em}{%
