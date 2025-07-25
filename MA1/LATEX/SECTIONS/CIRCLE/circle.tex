@@ -4,12 +4,12 @@ We then have that its potential as a result of horizontal translation is given b
 w = a^2 U\ezh^{-1} = \Phi + i\Psi, \quad \ezh = x + iz.
 \]
 We see that
-\[
+\begin{equation}\label{eq:circle_phi1}
 \phi_1 = \Re{\left( a^2 U\ezh^{-1} \right)} = \frac{a^2 U \cos{\theta}}{r^2};
-\]
-\[
+\end{equation}
+\begin{equation}\label{eq:circle_phi2}
 \phi_2 = \Re{\left( a^2 U i \ezh^{-1} \right)} = \frac{a^2 U \sin{\theta}}{r^2}.
-\]
+\end{equation}
 By calculating the gradient of $\phi$ and transforming into polar coordinates, we find that
 \[
 q_{r} = \frac{a^2 U \cos{\theta}}{r^2}, \quad q_{\theta} = \frac{a^2 U \sin{\theta}}{r^2}, \quad q^2 = \frac{a^4 U^2}{r^4}.
@@ -27,8 +27,70 @@ Because of the rotational symmetry of the circle, we must have that
            0 & 0 & 0
 \end{bmatrix}.
 \]
-
 We discretize the circle by defining
 \[
 \thetatt = \mathtt{linspace}(0, 2\pi, \mathtt{N}+1), \quad \xtt = a\cos{\thetatt} + ia\sin{\thetatt}.
 \]
+Implementing the potentials described in equation \eqref{eq:circle_phi1} and \eqref{eq:circle_phi2} in the \texttt{Potentials} class of \texttt{potentials.py}, we compare the numerical solution to the analytical potentials.
+In figures \ref{fig:circle_phi1} and \ref{fig:circle_phi2}, we have used a fourth order quadrature scheme, and we see that there is seemingly negligible difference in the numerical solution and the theory.
+\begin{Figure}
+  \centering
+  \resizebox{\textwidth}{!}{\input{phi_1_N160.pgf}}
+  \captionsetup{type = figure}
+  \caption{First mode of the potential for a circle using a fourth order quadrature scheme.}
+  \label{fig:circle_phi1}
+\end{Figure}
+\begin{Figure}
+  \centering
+  \resizebox{\textwidth}{!}{\input{phi_2_N160.pgf}}
+  \captionsetup{type = figure}
+  \caption{Second mode of the potential for a circle using a fourth order quadrature scheme.}
+  \label{fig:circle_phi2}
+\end{Figure}
+
+\noindent
+The difference in accuracy for 2\textsuperscript{nd} and 4\textsuperscript{th} order quadrature schemes seems to be negligible.
+The $L^2$ error in the potentials is tabulated below in table \ref{tab:L2_circle}, showing that the difference is at most in the thousandths.
+\begin{Figure}
+  \centering
+  \resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|}
+    \hline
+     & 2\textsuperscript{nd} & 4\textsuperscript{th} \rule{0pt}{2.6ex}\\
+    \begin{tabular}{c}
+      $N$\\\hline
+      32\\
+      64\\
+      96\\
+      128\\
+      160
+    \end{tabular} & \begin{tabular}{c c}
+      $\phi_1$ & $\phi_2$\\\hline
+      0.1777 & 0.1727\\
+      0.0897 & 0.0884\\
+      0.0599 & 0.0594\\
+      0.0450 & 0.0447\\
+      0.0360 & 0.0358
+    \end{tabular} & \begin{tabular}{c c}
+      $\phi_1$ & $\phi_2$\\\hline
+      0.1743 & 0.1690\\
+      0.0876 & 0.0862\\
+      0.0584 & 0.0579\\
+      0.0439 & 0.0435\\
+      0.0351 & 0.0349
+    \end{tabular}\\\hline
+  \end{tabular}}
+  \captionsetup{type = table}
+  \caption{$L^2$ error differences in potential functions of a circle between second and fourther order \textsc{Gauss}--\textsc{Lagrange} quadrature.}
+  \label{tab:L2_circle}
+\end{Figure}
+
+\noindent
+We measure the error in the added mass absolutely, so that we just measure the absolute difference in the added mass.
+Since we set the the radius of the circle to be 1, a maximal difference of less than 0.05, as is indicated in figure \ref{fig:added_mass_circle}, is fine, considering the added mass would simply be $\pi$.
+\begin{Figure}
+  \centering
+  \resizebox{\textwidth}{!}{\input{addedmass_circle_N160.pgf}}
+  \captionsetup{type = figure}
+  \caption{Absolute difference between the theoretical added mass $m_{\mathrm{theory}}$ and the calculated added mass $m_{\mathrm{num}}$}
+  \label{fig:added_mass_circle}
+\end{Figure}
