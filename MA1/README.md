@@ -1,10 +1,9 @@
 # First assignment for MEKSP100
-Assignment consists of problem 2.6.1 in John's lecture notes.
 
 ## To do
-- Fix labeling on figures
-- Correctly implement Chebyshov nodes for the square
+- Write about Fredholm integral equations
 - Derive added mass coefficients for ellipse and square
-  * Use /Kennard/
-- Correct typos and fix typesetting, write more in depth
-- Make presentation
+- Write about elliptic integrals
+- Discuss discretizing the ellipse
+- Explain Chebyshov nodes, illustrate new idea about Jacobi nodes
+- Translate, write more in depth
