@@ -1,0 +1,22 @@
+There are multiple ways to approach discretizing the ellipse, the most apparent of which being
+\begin{equation}\label{eq:parametric_ellipse}
+  \xtt = a\cos{t} + b\sin{t}, \qquad t \in [0, 2\pi),
+\end{equation}
+where the parameter is \emph{not} a polar variable.
+It is indeed related, as will be shown.
+\begin{Figure}
+  \centering
+  \scalebox{1}{%
+    \input{figure_ellipse_polar.tex}
+  }
+  \captionsetup{type = figure}
+  \caption{Ellipse parametrized with equidistant spacing in the perimeter.}
+\end{Figure}
+\begin{Figure}
+  \centering
+  \scalebox{1}{%
+    \input{figure_ellipse.tex}
+  }
+  \captionsetup{type = figure}
+  \caption{Ellipse parametrized with equiangular spacing.}
+\end{Figure}
