@@ -1,7 +1,7 @@
 \begin{tikzpicture}
   \begin{scope}[scale = 2.5]
     \def\majradius{1}
-    \def\minradius{.5}
+    \def\minradius{0.5}
     \def\slingringsmonn{.25}
     \draw[-latex, thick] ({-\majradius - \slingringsmonn}, 0)--({\majradius + \slingringsmonn}, 0);
     \draw[-latex, thick] (0, {-\minradius - \slingringsmonn})--(0, {\minradius + \slingringsmonn});
@@ -10,7 +10,9 @@
     \draw[thick] (.05, {\minradius})--(-.05, {\minradius}) node[above = 1.5ex, left]{$b$};
     \draw[thick] (.05, {-\minradius})--(-.05, {-\minradius}) node[below = 1.5ex, left]{$-b$};
     \def\numbernodes{64}
-    \foreach \i in {1, ..., \numbernodes}
-      \draw[fill = black] ({\majradius*cos(2*\i*pi/\numbernodes r)}, {\minradius*sin(2*\i*pi/\numbernodes r)}) circle (.01);
+    \foreach \i in {0, ..., \numbernodes}
+      \pgfmathsetmacro\teta{2 *\i * pi / \numbernodes}
+      \def\radius{(\majradius*\minradius)/sqrt(\minradius^2 * (cos(\teta r))^2 + \majradius^2 * (sin(\teta r))^2)}
+      \draw[fill = white] ({\radius*cos(\teta r)}, {\radius*sin(\teta r)}) circle (.01);
   \end{scope}
 \end{tikzpicture}

@@ -1,0 +1,36 @@
+Consider the \textsc{\v{Z}ukovsky} transform\footnote{\cite{kennard1967irrotational} \textsc{Kennard}, p.173}
+\begin{equation}\label{eq:zukovsky_transform}
+  \ezh = \ezh^{\prime} + \frac{c^2}{\ezh^{\prime}}, \qquad \ezh^{\prime} = x^{\prime} + iz^{\prime},
+\end{equation}
+so that $x^{\prime} = r\cos{\theta}$, $z^{\prime} = r\sin{\theta}$.
+Here the prime just denotes an alternative transformed complex variable.
+We now have for the complex variable $\ezh = x + iz = r\exp{(i\theta)} + c^2 r^{-1} \exp{(-i\theta)}$,\footnote{\cite{kennard1967irrotational} \textsc{Kennard}, pp.190--192}
+\[
+x = \left( r + \frac{c^2}{r} \right)\cos{\theta}, \qquad z =  \left( r - \frac{c^2}{r} \right)\sin{\theta}.
+\]
+This is indeed an ellipse, as upon squaring both terms and adding them, we get that
+\[
+\frac{x^2}{a^2} + \frac{z^2}{b^2} = 1, \quad a = r + \frac{c^2}{r}, \quad b = \left\vert r - \frac{c^2}{r} \right\vert.
+\]
+We call $a$ and  $b$ the major and minor semiaxes, corresponding to the longest and shortest semidiameters of the ellipse, respectively.
+Introducing now the elliptic complex variable $\zeta$, defined by
+\[
+\ezh^{\prime} = c e^{\zeta}, \qquad \zeta = \xi + i\eta,
+\]
+where $\xi = \ln{(\sfrac{r}{c})}$ and $\eta = \theta$, we may now express our complex number $\ezh$ of this elliptic complex variable such that
+\[
+\ezh = c\cosh{\zeta} = c \big( \cosh{\xi} \cos{\eta} + i \sinh{\xi} \sin{\eta} \big).
+\]
+In other words, cricles in $\ezh^{\prime}$ are ellipses in $\ezh$.
+Lines of constant $\xi$ constitute ellipses, parametrized with $\eta$.
+It is then apparent that the potential for a circle, described in equation \eqref{eq:potential_circle}, may be transformed to give
+\begin{equation}\label{eq:potential_ellipse}
+w = U\sqrt{\frac{a + b}{a - b}} (b \cos{\alpha} + i a \sin{\alpha}) e^{-\zeta},
+\end{equation}
+where $\alpha$ is the inclination of the ellipse relative to the direction of motion.
+That is, an angle $\alpha = 0$ corresponds to motion along $x$, and $\alpha = \sfrac{\pi}{2}$ corresponds to motion along $z$.
+Clearly, by virtue of the above discussion, the real part of the potential is given by
+\[
+\Phi(\zeta; \alpha) = U \sqrt{\frac{a + b}{a - b}} (b\cos{\alpha} \cos{\eta} + a \sin{\alpha} \sin{\eta}) e^{-\xi},
+\]
+so that $\phi_1 (\zeta) = \Phi(\zeta; 0)$ and $\phi_2 (\zeta) = \Phi(\zeta; \sfrac{\pi}{2})$.

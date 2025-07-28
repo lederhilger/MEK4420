@@ -1,0 +1,15 @@
+\begin{tikzpicture}
+  \begin{scope}[scale = 5]
+    \def\slingringsmonn{.2}
+    \def\majorradius{1}
+    \def\minorradius{.5}
+    \draw[thick, -latex] ({-\slingringsmonn}, 0)--({\majorradius + \slingringsmonn}, 0);
+    \draw[thick, -latex] (0, {-\slingringsmonn})--(0, {\minorradius + \slingringsmonn});
+    \draw[thick] (\majorradius, .05)--(\majorradius, -.05) node[below]{$a$};
+    \draw[thick] (.05, \minorradius)--(-.05, \minorradius) node[left]{$b$};
+    \foreach \i in {0, ..., 4}
+      \pgfmathsetmacro\teta{\i * pi / 8}
+      \def\radius{(\majorradius*\minorradius)/sqrt(\minorradius^2 * (cos(\teta r))^2 + \majorradius^2 * (sin(\teta r))^2)}
+      \draw[fill = white] ({\radius*cos(\teta r)}, {\radius*sin(\teta r)}) circle (.01);
+  \end{scope}
+\end{tikzpicture}

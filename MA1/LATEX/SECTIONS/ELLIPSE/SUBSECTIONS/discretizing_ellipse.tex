@@ -1,22 +1,47 @@
 There are multiple ways to approach discretizing the ellipse, the most apparent of which being
 \begin{equation}\label{eq:parametric_ellipse}
-  \xtt = a\cos{t} + b\sin{t}, \qquad t \in [0, 2\pi),
+  \xtt = a\cos{t} + ib\sin{t}, \qquad t \in [0, 2\pi),
 \end{equation}
-where the parameter is \emph{not} a polar variable.
-It is indeed related, as will be shown.
+where the parameter is \emph{not} a polar variable, instead being denoted the \emph{eccentric} variable.
+It is indeed related, as is clear upon considering $\tan{t}$.
+This value is equal to $\sfrac{az}{bx}$, by the geometric interpretation of the tangent, where $\xtt = x + iz$.
+For a polar representation
+\begin{equation}\label{eq:polar_ellipse}
+\xtt = r\cos{\theta} + ir\sin{\theta}, \qquad \theta \in [0, 2\pi),
+\end{equation}
+we find that
+\[
+\tan{t} = \sfrac{a}{b} \tan{\theta}, \quad r(\theta) = \frac{ab}{\sqrt{b^2 \cos^2{\theta} + a^2 \sin^2{\theta}}}.
+\]
+We may discretize $\theta$ into a \texttt{linspace}, an array of equally spaced points of the interval $[0, 2\pi)$, and plot the coordinates of the ellipse according to equation \eqref{eq:polar_ellipse}, as is done in figure \ref{fig:polar_ellipse} below.
 \begin{Figure}
   \centering
   \scalebox{1}{%
     \input{figure_ellipse_polar.tex}
   }
   \captionsetup{type = figure}
-  \caption{Ellipse parametrized with equidistant spacing in the perimeter.}
+  \caption{Ellipse parametrized with the polar variable $\theta$, according to equation \eqref{eq:polar_ellipse}.}
+  \label{fig:polar_ellipse}
 \end{Figure}
+We see that the points tend to accumulate at the top of the ellipse, which indeed makes sense.
+As we change the polar angle by an equal amount counter-clockwise, the arc length drawn out between points will diminish towards $\sfrac{\pi}{2}$.
+This is illustrated in figure \ref{fig:polar_arc_length_ellipse} below, where points on the ellipse for integer multiples of $\sfrac{\pi}{8}$ are plotted in the first quadrant.
 \begin{Figure}
   \centering
   \scalebox{1}{%
-    \input{figure_ellipse.tex}
+    \input{polar_arc_length_ellipse.tex}
   }
   \captionsetup{type = figure}
-  \caption{Ellipse parametrized with equiangular spacing.}
+  \caption{Demonstration that the arc length between points decreases clockwise in the first quadrant as the polar angle $\theta$ approaches $\sfrac{\pi}{2}$.}
+  \label{fig:polar_arc_length_ellipse}
+\end{Figure}
+This is not the case for the ellipse discretized according to equation \eqref{eq:parametric_ellipse}, using the eccentric variable $t$, as is seen in figure \ref{fig:eccentric_ellipse} below.
+\begin{Figure}
+  \centering
+  \scalebox{1}{%
+    \input{figure_ellipse_eccentric.tex}
+  }
+  \captionsetup{type = figure}
+  \caption{Ellipse parametrized with the eccentric variable $t$, according to equation \eqref{eq:parametric_ellipse}.}
+  \label{fig:eccentric_ellipse}
 \end{Figure}
