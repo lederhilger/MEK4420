@@ -2,7 +2,8 @@
 
 ## To do
 - Write about Fredholm integral equations
-- Derive added mass coefficients for ellipse and square
+- Write better for section on ellipses
+- Derive added mass coefficients for square
 - Write about elliptic integrals
 - Discuss discretizing the ellipse
 - Explain Chebyshov nodes, illustrate new idea about Jacobi nodes
