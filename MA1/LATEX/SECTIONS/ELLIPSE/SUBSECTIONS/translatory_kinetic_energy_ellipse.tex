@@ -1,0 +1,27 @@
+The scale factor of the elliptic coordinate system can be shown to be equal to
+\[
+h_{\xi} = c\sqrt{\sinh^2{\xi} + \sin^2{\eta}} = \sqrt{{b^{\prime}}^2 + c^2 \sin^2{\eta}}.
+\]
+Since $q_{\xi} = -{h_{\xi}}^{-1} \partial_{\xi}\Phi = {h_{\xi}}^{-1}\Phi$, and that change in $\xi$ corresponds to a change in $\nhat$, we must have that $q_{\xi} = q_{\nhat}$, where $q_{\nhat} = -{h_{\xi}}^{-1}\partial_{\nhat}\Phi$.
+In turn, we have that
+\[
+q_{\xi} = U \left( \frac{a + b}{a^{\prime} + b^{\prime}} \right) \frac{b \cos{\alpha} \cos{\eta} + a \sin{\alpha} \sin{\eta}}{h_{\xi}}.
+\]
+Considering the kinetic energy of the fluid, using \textsc{Gauss}' divergence theorem, and using the product rule, we find that
+\begin{equation}\label{eq:kinetic_energy_gauss}
+T_{\mathrm{fluid}} = \frac{\varrho}{2} \int_{\Omega} q^2 \,\dee V = -\frac{\varrho}{2} \int_{\partial\Omega} \Phi q_{\nhat} \,\dee S.
+\end{equation}
+Letting $\xi_0$ denote the value of which $\xi$ lies on the ellipse, we assert that such points be represented by $\ezh_0 = a\cos{\eta} + ib\sin{\eta}$.
+We then have from equation \eqref{eq:elliptic_xi} that $a^{\prime} = a$ and $b^{\prime} = b$ on the ellipse, and that
+\[
+\exp{(\xi_0)} = \frac{a + b}{c} = \frac{a + b}{a - b}, \quad \exp{(-\xi_0)} = \frac{a - b}{a + b}.
+\]
+From the relation that $q_{\nhat} = \partial_s \Psi$,\footnote{\cite{lavrentev1967methoden} \textsc{Lavrentev} \& \textsc{\v{S}abat}, p.233} and that $\dee\Psi = -\partial_{\xi}\Phi\dee\eta$,
+\[
+T_{\mathrm{fluid}} = \frac{\varrho U^2}{2} \int_{0}^{2\pi} {(b \cos{\alpha} \cos{\eta} + a \sin{\alpha} \sin{\eta})}^2 \,\dee\eta
+\]
+Calculating the integral, we find that the kinetic energy is given by
+\[
+T_{\mathrm{fluid}} = \frac{\varrho \pi U^2}{2} (b^2 \cos^2{\alpha} + a^2 \sin^2{\alpha}).
+\]
+When $a = b$, the ellipse is a circle, and we observe the kintetic energy is what we got for the circle.
