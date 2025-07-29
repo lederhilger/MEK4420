@@ -1,8 +1,8 @@
 Let $a$ be the radius of the circle.
 We then have that its potential as a result of horizontal translation is given by
-\[
+\begin{equation}\label{eq:potential_circle}
 w = a^2 U\ezh^{-1} = \Phi + i\Psi, \quad \ezh = x + iz.
-\]
+\end{equation}
 We see that
 \begin{equation}\label{eq:circle_phi1}
 \phi_1 = \Re{\left( a^2 U\ezh^{-1} \right)} = \frac{a^2 U \cos{\theta}}{r^2};
@@ -94,3 +94,5 @@ Since we set the the radius of the circle to be 1, a maximal difference of less 
   \caption{Absolute difference between the theoretical added mass $m_{\mathrm{theory}}$ and the calculated added mass $m_{\mathrm{num}}$}
   \label{fig:added_mass_circle}
 \end{Figure}
+
+\noindent We see that the convergence is pretty rapid, and that the code is performant.
