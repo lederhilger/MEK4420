@@ -66,3 +66,11 @@ This is not the case for the ellipse discretized according to equation \eqref{eq
 \end{Figure}
 Of interest to investigate is how these distributions of nodes impact the convergence of the software---one thought is that performance of tendency for nodes to concentrate towards either of the semiaxes will positively impact the accuracy for the corresponding mode.
 To be investigated is also whether a distribution such that arc lengths between nodes remain constant over the whole ellipse will perform better than either the eccentric or polar representation.
+
+We wish to find a set of $N$ points on the ellipse such that the arc length between successive points is constant.
+The arc length of a curve parametrized with $\bm{y}(x)$ is given by
+\[
+\ell(a;b) = \int_{a}^{b} \absl{\bm{y}^{\prime}(x)} \,\dee x, \qquad 0 \leq a \leq b,
+\]
+where $a$ and $b$ are the start and end points of the parametrization, and their ordering is convention for the sake of clarity.
+Note that we may write $\ell(a;b) = \ell(0;b) - \ell(0;a)$.
