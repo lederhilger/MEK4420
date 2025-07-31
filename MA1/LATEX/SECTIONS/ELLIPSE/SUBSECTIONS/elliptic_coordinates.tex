@@ -1,10 +1,10 @@
-Consider the \textsc{\v{Z}ukovsky} transform\footnote{\cite{kennard1967irrotational} \textsc{Kennard}, p.173}
+To study ellipses in the complex plane, we consider the \textsc{\v{Z}ukovsky} transform\footnote{\cite{kennard1967irrotational} \textsc{Kennard}, p.173}
 \begin{equation}\label{eq:zukovsky_transform}
   \ezh = \ezh^{\prime} + \frac{c^2}{\ezh^{\prime}}, \qquad \ezh^{\prime} = x^{\prime} + iz^{\prime},
 \end{equation}
 so that $x^{\prime} = r\cos{\theta}$, $z^{\prime} = r\sin{\theta}$.
-Here the prime just denotes an alternative transformed complex variable.
-We now have for the complex variable $\ezh = x + iz = r\exp{(i\theta)} + c^2 r^{-1} \exp{(-i\theta)}$,\footnote{\cite{kennard1967irrotational} \textsc{Kennard}, pp.190--192}
+Here the prime is no more than a decorator to differentiate the preimage of the \textsc{\v{Z}ukovsky} transform from the complex numbers we will use.
+We now have for the complex variable $\ezh = x + iz$, whereupon using \textsc{Euler}'s formula,\footnote{\cite{kennard1967irrotational} \textsc{Kennard}, pp.190--192}
 \[
 x = \left( r + \frac{c^2}{r} \right)\cos{\theta}, \qquad z =  \left( r - \frac{c^2}{r} \right)\sin{\theta}.
 \]
@@ -13,18 +13,18 @@ This is indeed an ellipse, as upon squaring both terms and adding them, we get t
 \frac{x^2}{a^2} + \frac{z^2}{b^2} = 1, \quad a = r + \frac{c^2}{r}, \quad b = \left\vert r - \frac{c^2}{r} \right\vert.
 \]
 We call $a$ and  $b$ the major and minor semiaxes, corresponding to the longest and shortest semidiameters of the ellipse, respectively.
-The number $c = \sqrt{a^2 - b^2}$ is called the focus.
+The parameter $c = \sqrt{a^2 - b^2}$ is called the focus.
 Introducing now the elliptic complex variable $\zeta$, defined by
 \[
 \ezh^{\prime} = c e^{\zeta}, \qquad \zeta = \xi + i\eta,
 \]
-where $\xi = \ln{(\sfrac{r}{c})}$ and $\eta = \theta$, we may now express our complex number $\ezh$ of this elliptic complex variable such that
+where $\xi = \ln{(\sfrac{r}{c})}$ and $\eta = \theta$, we may express the complex number $\ezh$ in terms of this elliptic complex variable such that
 \begin{equation}\label{eq:elliptic_ezh}
 \ezh = c\cosh{\zeta} = c \big( \cosh{\xi} \cos{\eta} + i \sinh{\xi} \sin{\eta} \big).
 \end{equation}
-In other words, cricles in $\ezh^{\prime}$ are ellipses in $\ezh$.
-Lines of constant $\xi$ constitute ellipses, parametrized with $\eta$.
-Here we may eliminate either $\xi$ or $\eta$ to find that the major and minor semiaxes are respectively given by
+We now clearly see that cricles in $\ezh^{\prime}$ are ellipses in $\ezh$.
+Lines of constant $\xi$ constitute confocal ellipses, parametrized with $\eta$, whilst lines of constant $\eta$ are confocal hyperbolas in $\xi$.
+We may eliminate either $\xi$ or $\eta$ in equation \eqref{eq:elliptic_ezh} to find that the major and minor semiaxes are respectively given by
 \begin{equation}\label{eq:aprime_and_bprime}
 a^{\prime} = c\cosh{\xi}, \qquad b^{\prime} = c\absl{\sinh{\xi}}.
 \end{equation}
@@ -32,8 +32,7 @@ Combining now equations \eqref{eq:elliptic_ezh} and \eqref{eq:aprime_and_bprime}
 \begin{equation}\label{eq:elliptic_xi}
 \xi = \ln{\left( \frac{a^{\prime} + b^{\prime}}{c} \right)}, \qquad \xi \geq 0.
 \end{equation}
-We will use this convention, that $\xi$ be strictly non-negative.
-More discussion is to be found in \textsc{Kennard}'s work.\footnote{\cite{kennard1967irrotational} \textsc{Kennard} sect.82, pp.192--196}
+We will use this convention, that $\xi$ be strictly non-negative, though more discussion on this is to be found in \textsc{Kennard}'s work.\footnote{\cite{kennard1967irrotational} \textsc{Kennard} sect.82, pp.192--196}
 It is then apparent that the potential for a circle, described in equation \eqref{eq:potential_circle}, may be transformed to give
 \begin{equation}\label{eq:potential_ellipse}
 w = U\sqrt{\frac{a + b}{a - b}} (b \cos{\alpha} + i a \sin{\alpha}) e^{-\zeta},

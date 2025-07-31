@@ -1,9 +1,9 @@
 There are multiple ways to approach discretizing the ellipse, the most apparent of which being
 \begin{equation}\label{eq:parametric_ellipse}
-  \xtt = a\cos{t} + ib\sin{t}, \qquad t \in [0, 2\pi),
+  \xtt = a\cos{\eta} + ib\sin{\eta}, \qquad \eta \in [0, 2\pi),
 \end{equation}
-where the parameter $t$ is the very same as $\eta$, called the \emph{eccentric} variable.
-It is indeed related, as is clear upon considering $\tan{t}$.
+where the parameter $\eta$ is the very same as the elliptic coordinate, called the \emph{eccentric} variable.
+It is indeed related, as is clear upon considering $\tan{\eta}$.
 This value is equal to $\sfrac{az}{bx}$, by the geometric interpretation of the tangent, where $\xtt = x + iz$.
 For a polar representation
 \begin{equation}\label{eq:polar_ellipse}
@@ -11,8 +11,19 @@ For a polar representation
 \end{equation}
 we find that
 \[
-\tan{t} = \sfrac{a}{b} \tan{\theta}, \quad r(\theta) = \frac{ab}{\sqrt{b^2 \cos^2{\theta} + a^2 \sin^2{\theta}}}.
+\tan{\eta} = \sfrac{a}{b} \tan{\theta}, \quad r(\theta) = \frac{ab}{\sqrt{b^2 \cos^2{\theta} + a^2 \sin^2{\theta}}}.
 \]
+For the circle, when $a = b$, the eccentric and polar angles are of course equal.
+We plot the relationship between the eccentric and polar variables, illustrated in figure \ref{fig:eccentric_versus_polar}.
+\begin{Figure}
+  \centering
+  \scalebox{1}{%
+    \input{eccentric_versus_polar.tex}
+  }
+  \captionsetup{type = figure}
+  \caption{Relationship between the eccentric variable $\eta$ and polar variable $\theta$. Dashed line is $b = \sfrac{a}{10}$, whole line is $b = \sfrac{a}{2}$.}
+  \label{fig:eccentric_versus_polar}
+\end{Figure}
 We may discretize $\theta$ into a \texttt{linspace}, an array of equally spaced points of the interval $[0, 2\pi)$, and plot the coordinates of the ellipse according to equation \eqref{eq:polar_ellipse}, as is done in figure \ref{fig:polar_ellipse} below.
 \begin{Figure}
   \centering
@@ -32,16 +43,26 @@ This is illustrated in figure \ref{fig:polar_arc_length_ellipse} below, where po
     \input{polar_arc_length_ellipse.tex}
   }
   \captionsetup{type = figure}
-  \caption{Demonstration that the arc length between points decreases clockwise in the first quadrant as the polar angle $\theta$ approaches $\sfrac{\pi}{2}$.}
+  \caption{Demonstration that the arc length between points decreases counter-clockwise in the first quadrant as the polar angle $\theta$ approaches $\sfrac{\pi}{2}$.}
   \label{fig:polar_arc_length_ellipse}
 \end{Figure}
-This is not the case for the ellipse discretized according to equation \eqref{eq:parametric_ellipse}, using the eccentric variable $t$, as is seen in figure \ref{fig:eccentric_ellipse} below.
+This is not the case for the ellipse discretized according to equation \eqref{eq:parametric_ellipse}, using the eccentric variable $\eta$, as is seen in figure \ref{fig:eccentric_ellipse} below.
 \begin{Figure}
   \centering
   \scalebox{1}{%
     \input{figure_ellipse_eccentric.tex}
   }
   \captionsetup{type = figure}
-  \caption{Ellipse parametrized with the eccentric variable $t$, according to equation \eqref{eq:parametric_ellipse}.}
+  \caption{Ellipse parametrized with the eccentric variable $\eta$, according to equation \eqref{eq:parametric_ellipse}.}
   \label{fig:eccentric_ellipse}
 \end{Figure}
+\begin{Figure}
+  \centering
+  \scalebox{1}{%
+    \input{eccentric_arc_length_ellipse.tex}
+  }
+  \captionsetup{type = figure}
+  \caption{Arc length increases counter-clockwise in the first quadrant as the eccentric variable $\eta$ approaches $\sfrac{\pi}{2}$.}
+\end{Figure}
+Of interest to investigate is how these distributions of nodes impact the convergence of the software---one thought is that performance of tendency for nodes to concentrate towards either of the semiaxes will positively impact the accuracy for the corresponding mode.
+To be investigated is also whether a distribution such that arc lengths between nodes remain constant over the whole ellipse will perform better than either the eccentric or polar representation.

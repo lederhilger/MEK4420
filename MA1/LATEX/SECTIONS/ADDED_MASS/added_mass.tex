@@ -5,13 +5,13 @@ Consider a body in an unbounded fluid being accelerated such that its energy is 
 We know this induces a drift in the fluid, whose energy we shall label $T_{\mathrm{fluid}}$, and that the total energy then is $T = T_{\mathrm{body}} + T_{\mathrm{fluid}}$.
 Consider now a fluid flow with potential $\Phi$.
 Letting $\varrho$ denote the fluid density, the kinetic energy of the fluid is then
-\[
+\begin{equation}\label{eq:kinetic_energy_integral}
 T_{\mathrm{fluid}} = \frac{\varrho}{2} \int_{\Omega} q^2 \,\dee V, \quad q = \absl{\nabla\Phi} = \frac{\dee w}{\dee \ezh} \frac{\dee w^{\ast}}{\dee \ezh^{\ast}},
-\]
-integrating in the entire fluid domain $\Omega$, excluding the body.
+\end{equation}
+integrating over the entire fluid domain $\Omega$, excluding the body.
 The complex formulation will be necessary later, but we pay no attention to it for the time being.
 The speed $q$ may be related to the velocity magnitude $U$ by assuming the modal superposition $\Phi(t;\xvec) = \bm{U}(t) \cdot \bm{\phi}(\xvec)$.
-It is apparent that in general, the energy may be expressed as
+Drawing upon the physical interpretation of kinetic energy, it is apparent that in general, it may be expressed as
 \[
 T = \frac{(m + m^{\prime}) U^2}{2}, \qquad m^{\prime} = \varrho k A,
 \]
@@ -24,12 +24,13 @@ In fact, maintaining such work with a force $F$, we have that $F U = \deet T_{\m
 \[
 \bm{F} = -\deet\bm{U}\colon\varrho\int_{\partial\Omega} \bm{\phi}\otimes\nhat \,\dee S,
 \]
-where $S$ is the contour of the body.
+where $S$ is the contour of the body, and $\otimes$ denotes the outer product.
 $\bm{\phi}$ is a vector containing the modes of translation,
 \[
     \bm{\phi}(\xvec, t) = \phi_1 \ihat + \phi_2 \jhat + \phi_6 \bm{\hat{\omega}}_{\khat}.
 \]
-This same formulation is found in the lecture notes, yielding the added mass tensor in terms of the following integral, which will be used for the numerical calculation.
+It will be shown later that this formulation is indeed equivalent to the complex variable formulation of equation \eqref{eq:kinetic_energy_integral}, and not just some heuristic deduction from the oughts of Newtonian physics.
+This is the very same formulation found in the lecture notes, yielding---what heusristically ought to be named---the \emph{added mass} tensor in terms of the following integral, which will be used for the numerical calculation.
 \begin{equation}\label{eq:added_mass}
     \addedmass = \varrho \int_{\partial\Omega} \bm{\phi} \otimes \nhat \,\dee S
 \end{equation}
