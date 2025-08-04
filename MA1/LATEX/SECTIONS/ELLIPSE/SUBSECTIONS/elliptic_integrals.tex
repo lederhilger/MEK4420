@@ -1,22 +1,21 @@
 To carry on with the analysis, we will need to introduce the elliptic integrals.
 Although it will seem unmotivated to introduce them without much explanation as to what they represent, their applications will become clear in the following sections.
-With that said, we introduce the incomplete elliptic integral of the first kind,\footnote{\cite{abramowitz1965handbook} \textsc{Abramowitz} \& \textsc{Stegun}, eq.17.2.6, p.589}
+With that said, we introduce the incomplete elliptic integral of the first kind,%
+\footnote{\cite{abramowitz1965handbook} \textsc{Abramowitz} \& \textsc{Stegun}, eq.17.2.6, p.589}
 \begin{equation}\label{eq:incomplete_elliptic_integral_first}
-  \ellF(\varphi \vert k) = \int_{0}^{\varphi} \frac{1}{\sqrt{1 - k \sin^2{\theta}}}\,\dee\theta
+  \ellF(\varphi \vert k) = \int_{0}^{\varphi} \frac{1}{\sqrt{1 - k^2 \sin^2{\theta}}}\,\dee\theta
 \end{equation}
 The \emph{incomplete} denomination refers to the amplitude $\varphi$.
 By setting $\varphi = \sfrac{\pi}{2}$, we have complete elliptic integral of the first kind,
 \begin{equation}\label{eq:complete_elliptic_integral_first}
-  \ellK(k) = \ellF(\sfrac{\pi}{2} \vert k) = \int_{0}^{\sfrac{\pi}{2}} \frac{1}{\sqrt{1 - k\sin^2{\theta}}} \,\dee\theta
+  \ellK(k) = \ellF(\sfrac{\pi}{2} \vert k) = \int_{0}^{\sfrac{\pi}{2}} \frac{1}{\sqrt{1 - k^2 \sin^2{\theta}}} \,\dee\theta
 \end{equation}
 We also have the incomplete elliptic integral of the second kind,
 \begin{equation}\label{eq:incomplete_elliptic_integral_second}
-  \ellE(\varphi \vert k) = \int_{0}^{\varphi} \sqrt{1 - k \sin^2{\theta}}\,\dee\theta,
+  \ellE(\varphi \vert k) = \int_{0}^{\varphi} \sqrt{1 - k^2 \sin^2{\theta}}\,\dee\theta,
 \end{equation}
 and the complete variant, which we will simply label $\ellE(k) \equiv \ellE(\sfrac{\pi}{2} \vert k)$.
-We call $k$ the parameter, and introduce the complementary parameter $k^{\prime} = 1 - k$, and with it the notation that $\ellK^{\prime}(k) = \ellK(k^{\prime})$, and $\ellE^{\prime}(k) = \ellE(k^{\prime})$.
-Be wary of this notation, as other authors may denote what in this text is the parameter $k$, the modulus of an elliptic integral, equal to the square of $k$.\footnote{\cite{abramowitz1965handbook} \textsc{Abramowitz} \& \textsc{Stegun}, ch.17. Therein, $m$ is the parameter, and $k = \sqrt{m}$ is the modulus.}
-We choose not to use this notation, as such conformity to other authors' really rather arbitrary notation will limit the available glyphs in this text unecessarily.
+We call $\kappa = k^2$ the parameter, and introduce the complementary parameter ${\kappa}^{\prime} = 1 - \kappa$---with it the notation that $\ellK^{\prime}(k) = \ellK(k^{\prime})$, and $\ellE^{\prime}(k) = \ellE(k^{\prime})$---$k$ is named the parameter and $k^{\prime} = \sqrt{\kappa^{\prime}}$ is its complement.
 
 \textsc{Jacobi} introduced the following set of equations, upon writing $x = \ellF(\varphi \vert k)$ and $\varphi = \amplitudinis(x)$.
 \begin{equation}\label{eq:jacobi_sn_cn}
