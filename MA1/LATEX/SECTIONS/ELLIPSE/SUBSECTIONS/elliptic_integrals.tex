@@ -1,12 +1,29 @@
-The incomplete elliptic integral of the first kind
+To carry on with the analysis, we will need to introduce the elliptic integrals.
+Although it will seem unmotivated to introduce them without much explanation as to what they represent, their applications will become clear in the following sections.
+With that said, we introduce the incomplete elliptic integral of the first kind,\footnote{\cite{abramowitz1965handbook} \textsc{Abramowitz} \& \textsc{Stegun}, eq.17.2.6, p.589}
 \begin{equation}\label{eq:incomplete_elliptic_integral_first}
-  \ellF(\phi \vert k) = \int_{0}^{\phi} \frac{1}{\sqrt{1 - k \sin^2{\theta}}}\,\dee\theta
+  \ellF(\varphi \vert k) = \int_{0}^{\varphi} \frac{1}{\sqrt{1 - k \sin^2{\theta}}}\,\dee\theta
 \end{equation}
-The complete elliptic integral of the first kind
+The \emph{incomplete} denomination refers to the amplitude $\varphi$.
+By setting $\varphi = \sfrac{\pi}{2}$, we have complete elliptic integral of the first kind,
 \begin{equation}\label{eq:complete_elliptic_integral_first}
   \ellK(k) = \ellF(\sfrac{\pi}{2} \vert k) = \int_{0}^{\sfrac{\pi}{2}} \frac{1}{\sqrt{1 - k\sin^2{\theta}}} \,\dee\theta
 \end{equation}
-The incomplete elliptic integral of the second kind
+We also have the incomplete elliptic integral of the second kind,
 \begin{equation}\label{eq:incomplete_elliptic_integral_second}
-  \ellE(\phi \vert k) = \int_{0}^{\phi} \sqrt{1 - k \sin^2{\theta}}\,\dee\theta
+  \ellE(\varphi \vert k) = \int_{0}^{\varphi} \sqrt{1 - k \sin^2{\theta}}\,\dee\theta,
 \end{equation}
+and the complete variant, which we will simply label $\ellE(k) \equiv \ellE(\sfrac{\pi}{2} \vert k)$.
+We call $k$ the parameter, and introduce the complementary parameter $k^{\prime} = 1 - k$, and with it the notation that $\ellK^{\prime}(k) = \ellK(k^{\prime})$, and $\ellE^{\prime}(k) = \ellE(k^{\prime})$.
+Be wary of this notation, as other authors may denote what in this text is the parameter $k$, the modulus of an elliptic integral, equal to the square of $k$.\footnote{\cite{abramowitz1965handbook} \textsc{Abramowitz} \& \textsc{Stegun}, ch.17. Therein, $m$ is the parameter, and $k = \sqrt{m}$ is the modulus.}
+We choose not to use this notation, as such conformity to other authors' really rather arbitrary notation will limit the available glyphs in this text unecessarily.
+
+\textsc{Jacobi} introduced the following set of equations, upon writing $x = \ellF(\varphi \vert k)$ and $\varphi = \amplitudinis(x)$.
+\begin{equation}\label{eq:jacobi_sn_cn}
+  \sn{x} = \sin{\varphi}, \qquad \cn{x} = \cos{\varphi};
+\end{equation}
+\begin{equation}\label{eq:jacobi_dn}
+  \dn{x} = \sqrt{1 - k\sin^2{\varphi}}
+\end{equation}
+This set, and variations thereof, is simply referred to as \textsc{Jacobi} elliptic functions, and their individual names are \emph{sinus amplitudinis}, \emph{cosinus amplitudinis}, and \emph{delta amplitudinis}, respectively.
+These functions will be explained further in later sections.

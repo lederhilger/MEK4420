@@ -3,7 +3,7 @@ There are multiple ways to approach discretizing the ellipse, the most apparent 
   \xtt = a\cos{\eta} + ib\sin{\eta}, \qquad \eta \in [0, 2\pi),
 \end{equation}
 where the parameter $\eta$ is the very same as the elliptic coordinate, called the \emph{eccentric} variable.
-It is indeed related, as is clear upon considering $\tan{\eta}$.
+It is indeed related to the polar variable, as is clear upon considering $\tan{\eta}$.
 This value is equal to $\sfrac{az}{bx}$, by the geometric interpretation of the tangent, where $\xtt = x + iz$.
 For a polar representation
 \begin{equation}\label{eq:polar_ellipse}
@@ -68,9 +68,22 @@ Of interest to investigate is how these distributions of nodes impact the conver
 To be investigated is also whether a distribution such that arc lengths between nodes remain constant over the whole ellipse will perform better than either the eccentric or polar representation.
 
 We wish to find a set of $N$ points on the ellipse such that the arc length between successive points is constant.
-The arc length of a curve parametrized with $\bm{y}(x)$ is given by
+The arc length of a curve parametrized by $\bm{y}(x)$ is given by
 \[
 \ell(a;b) = \int_{a}^{b} \absl{\bm{y}^{\prime}(x)} \,\dee x, \qquad 0 \leq a \leq b,
 \]
 where $a$ and $b$ are the start and end points of the parametrization, and their ordering is convention for the sake of clarity.
-Note that we may write $\ell(a;b) = \ell(0;b) - \ell(0;a)$.
+Note that we may write $\ell(a;b) = \ell(0;b) - \ell(0;a) \equiv \ell(b) - \ell(a)$.
+Finding then the arc length from $\eta = 0$ to some value, say $t$, using equation \eqref{eq:parametric_ellipse}, yields the integrand $\sqrt{a^2 \cos^2{\eta} + b^2 \sin^2{\eta}}$.
+We may use the Pythagorean identity that $\cos^2{\eta} + \sin^2{\eta} = 1$, which yields
+\[
+\ell(\etatt) = a\int_{0}^{\etatt} \sqrt{1 - k\sin^2{\eta}} \,\dee\eta, \qquad k = 1 - \frac{b^2}{a^2},
+\]
+which is exactly the incomplete elliptic integral of the second kind, as written in equation \eqref{eq:incomplete_elliptic_integral_second}.
+We now consider the perimeter of the ellipse.
+Due to the symmetry of the ellipse---or the periodicity of the elliptic functions---it is evident that the perimeter is given by $\ell(2\pi) = 4\ellE(k)$.
+We may then find the set of angles such that $N$ nodes of equal arc lengths are placed on the ellipse by the relation that
+\[
+\ellE(\etatt_n \vert k) = \frac{4n\ellE(k)}{a N}, \qquad n \in \{1, \dots, N\}.
+\]
+By an arithmetic-geometric mean algorithm, we may find the angles $\etatt$.

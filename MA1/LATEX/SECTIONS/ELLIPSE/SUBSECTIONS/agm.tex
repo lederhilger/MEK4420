@@ -1,0 +1,23 @@
+The arithmetic-geometric mean provides a swift way to calculate elliptic integrals numerically.
+Its formulation seems rather arbitrary, but we will quickly see that there is a foundational connection between them.
+Further reading is highly encouraged, in particular \emph{Pi and the AGM}\footnote{\cite{borwein1987pi} \textsc{Borwein} \& \textsc{Borwein}} by the \textsc{Borwein} brothers.
+Following the literature, we define the arithmetic geometric mean $M$ of $a$ and $b$ through the iterative process
+\[
+a_{n} = \frac{a_{n-1} + b_{n-1}}{2}, \qquad b_{n} = \sqrt{a_{n-1} b_{n-1}}.
+\]
+This process is maintained until $c_{n} = \sfrac{1}{2}(a_{n-1} - b_{n-1}) < \epsilon$, where $\epsilon$ is the desired accuracy.
+We have assumed that $0 < b_0 \leq a_0$, and we may observe that it is always true that $b_{n-1} \leq b_n \leq a_n \leq a_{n-1}$, so that the values have a common limit.
+This limit is the arithmetic-geometric mean:
+\[
+M(a, b) = \lim_{n \to \infty} a_n = \lim_{n \to \infty} b_n.
+\]
+It is evident that from this definition, the starting the algorithm at some later iteration must result in the same function.
+In other words,
+\[
+M(a, b) = M{\left( \frac{a + b}{2}, \sqrt{ab} \right)}.
+\]
+The arithmetic-geometric mean is also obviously homogeneous, meaning $M(\alpha a, \alpha b) = \alpha M(a,b)$, where $\alpha > 0$.
+It may be shown that\footnote{\cite{borwein1987pi} \textsc{Borwein} \& \textsc{Borwein}, pp.5--7}
+\[
+\frac{\pi}{2 M(1, x)} = \int_{0}^{\sfrac{\pi}{2}} \frac{1}{\sqrt{1 - \big( 1 - x^2\big)\sin^2{\theta}}} \,\dee\theta.
+\]
