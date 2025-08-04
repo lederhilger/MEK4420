@@ -16,8 +16,15 @@ In other words,
 \[
 M(a, b) = M{\left( \frac{a + b}{2}, \sqrt{ab} \right)}.
 \]
-The arithmetic-geometric mean is also obviously homogeneous, meaning $M(\alpha a, \alpha b) = \alpha M(a,b)$, where $\alpha > 0$.
+The arithmetic-geometric mean is also obviously homogeneous, meaning $M(\lambda a, \lambda b) = \lambda M(a,b)$, where $\lambda > 0$.
 It may be shown that\footnote{\cite{borwein1987pi} \textsc{Borwein} \& \textsc{Borwein}, pp.5--7}
 \[
-\frac{\pi}{2 M(1, x)} = \int_{0}^{\sfrac{\pi}{2}} \frac{1}{\sqrt{1 - \big( 1 - x^2\big)\sin^2{\theta}}} \,\dee\theta.
+\frac{\pi}{2 M(1, \ezh)} = \int_{0}^{\sfrac{\pi}{2}} \frac{1}{\sqrt{1 - \big( 1 - \ezh^2\big)\sin^2{\theta}}} \,\dee\theta.
 \]
+A full proof is not appropriately reproduced in this text, so the reader is referred to the \textsc{Borwein} brothers' book.
+The relation to elliptic integrals is now quite apparent, in particular
+\[
+\ellK(k) = \frac{\pi}{2 M(1, k^{\prime})}, \quad \frac{\ellE(k)}{\ellK(k)} = 1 - \sum_{n} 2^{n-1} {c_n}^2.
+\]
+These are the \texttt{K} and \texttt{E} methods implemented in the \texttt{Jacobi} class of \texttt{jacobi.py}.
+It is known that these algorithms only converge
