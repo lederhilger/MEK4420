@@ -27,4 +27,29 @@ The relation to elliptic integrals is now quite apparent, in particular
 \ellK(k) = \frac{\pi}{2 M(1, k^{\prime})}, \quad \frac{\ellE(k)}{\ellK(k)} = 1 - \sum_{n} 2^{n-1} {c_n}^2.
 \]
 These are the \texttt{K} and \texttt{E} methods implemented in the \texttt{Jacobi} class of \texttt{jacobi.py}.
-It is known that these algorithms only converge
+At the very heart of these implementations is the descending \textsc{Landen} transform.\footnote{\cite{king1924direct} \textsc{King}, sect.II, IV}
+The premise is to start at some modulus $k$ and amplitude $\varphi$, and set
+\begin{equation}\label{eq:descending_landen_transform}
+k_1 = \frac{1 - k^{\prime}}{1 + k^{\prime}}, \quad \sin{\varphi_1} = \frac{1 + k^{\prime} \sin{\varphi} \cos{\varphi}}{\sqrt{1 - k^2 \sin^2{\varphi}}},
+\end{equation}
+where $\varphi \leq \varphi_1$.
+It can then be shown that
+\[
+(1 + k^{\prime}) \ellF(\varphi \vert k) = \ellF(\varphi_1 \vert k_1).
+\]
+Inserting now in equation \eqref{eq:jacobi_dn} that $1 = a^2 \cos^2{\varphi} + b^2 \sin^2{\varphi}$, we get a relationship between the elliptical parameters $a$ and $b$, and the modulus of the elliptic integral, that $k$ is the focus.
+Furthermore, it can be shown that equation \eqref{eq:descending_landen_transform} is equivalent to stating that
+\[
+\sin{( 2\varphi - \varphi_1 )} = k_1 \sin{\varphi_1}.
+\]
+Through some tedious algebra, we find that this can be written now in terms of an arithmetic-geometric mean algorithm,
+\begin{equation}\label{eq:AGM_phi}
+\varphi_n = \sfrac{1}{2} \arcsin{\left( \frac{c_{n+1}}{a_{n+1}} \sin{\varphi_{n+1}} \right)} + \frac{\varphi_{n+1}}{2}.
+\end{equation}
+The above implies that if we run the arithmetic-geometric mean algorithm up until $c_N$ is sufficiently small, we can iterate backwards to find a $\varphi_0$, whence the \emph{descending} \textsc{Landen} transform.
+We obviously know what parameters to choose for the arithmetic-geometric mean algorithm, but the starting value of $\varphi_N$ is not as obvious.
+It can be shown that the following holds.\footnote{\cite{king1924direct} \textsc{King}, eq.25}
+\begin{equation}\label{eq:AGM_ellF}
+\ellF(\varphi \vert k) = \frac{\varphi_N}{a_N 2^N}
+\end{equation}
+This is very handy should we want to calculate any of the \textsc{Jacobi} elliptic functions, since $\ellF$ is the argument.
