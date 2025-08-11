@@ -5,7 +5,7 @@ from solve.quadrature import Quadrature
 from solve.potentials import Potentials
 
 class IntegralEquation:
-    def __init__(self, N, coordinates):
+    def __init__(self, N, coordinates, order):
         self.N = N
         self.x = coordinates[0]
         self.z = coordinates[1]
@@ -13,6 +13,7 @@ class IntegralEquation:
         for n in range(self.N):
             ж[0][n], ж[1][n] = .5*(self.x[n+1]+self.x[n]), .5*(self.z[n+1]+self.z[n])
         self.ж = ж
+        self.order = order
     
     def Δx(self) -> ndarray:
         Δx = zeros(self.N); Δz = zeros(self.N)
@@ -56,7 +57,7 @@ class IntegralEquation:
     def assemble_h(self) -> ndarray:
         δx = self.Δx()
         ж = self.ж
-        h = Quadrature(self.N, δx, ж, 'Lagrange', 4).quad()
+        h = Quadrature(self.N, δx, ж, 'Lagrange', self.order).quad()
         return h
     
     def right_hs(self, assemble_h, mode: int) -> ndarray:
@@ -82,14 +83,6 @@ class IntegralEquation:
         phi_2 = linalg.solve(assemble, self.right_hs(h, 2))
         phi_6 = linalg.solve(assemble, self.right_hs(h, 6))
         return phi_1, phi_2, phi_6
-    
-    def L2_norm(self):
-        phi_1, phi_2, phi_6 = self.solve()
-        theta = linspace(2*pi/self.N, 2*pi, self.N)
-        init = Potentials(self.a, self.b, self.N, theta)
-        mode_1 = sqrt(trapz(((phi_1 + init.circle_1())**2), theta))
-        mode_2 = sqrt(trapz(((phi_2 + init.circle_2())**2), theta))
-        return mode_1, mode_2
 
     def added_mass(self, phi):
         m_11 = 0; m_22 = 0; m_66 = 0

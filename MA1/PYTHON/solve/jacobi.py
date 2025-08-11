@@ -39,6 +39,7 @@ class Jacobi(Chebyshov):
         return π
 
     def φ(self, a, c, x: array):
+        # A&S 16.4.3
         N = len(a) - 1
         φ = deque([2**N * a[N] * x])
         for n in range(N):
@@ -52,6 +53,7 @@ class Jacobi(Chebyshov):
         return K
 
     def E(self) -> float:
+        # A&S 17.6.4
         a, b, c = self.AGM(1, cos(self.α), sin(self.α))
         K = .5*pi/a[-1]
         e = 0
@@ -61,6 +63,7 @@ class Jacobi(Chebyshov):
         return E
 
     def cd(self, x):
+        # A&S 16.4.4
         a, b, c = self.AGM(1, sqrt(.5), sqrt(.5))
         φ = self.φ(a, c, x)
         cd = cos(φ[1] - φ[0])

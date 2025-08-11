@@ -35,23 +35,25 @@ class PlotConvergence:
             plt.plot(self.abscissa, abs(self.m['m66'] - real_m66[self.shape]), '.', color = 'k', label = r'${m}_{66}$')
         else: pass
         plt.legend()
+        plt.tight_layout()
         plt.savefig(f"addedmass_{self.shape}_N{self.N*self.number}.pgf", transparent = True, format = "pgf")
         plt.show()
 
     def pi_axis(self):
         plt.gca().xaxis.set_major_formatter(FuncFormatter(lambda val, pos: r'{:.0g}$\pi$'.format(val/pi) if val != 0 else '0'))
         plt.gca().xaxis.set_major_locator(MultipleLocator(base = pi))
+        plt.tight_layout()
     
     def plot_phi(self, ж):
         N = int(self.abscissa[-1])
         plt.rcParams['text.usetex'] = True
-        plt.title(f'$N = {self.N}$')
+        plt.title(f'$N = {N}$')
         # arctan2 \in (-pi, pi). Therefore domain -> domain-pi in potentials.py
         domain = zeros(N)
         for n in range(N):
             domain[n] = arctan2(ж[1][n], ж[0][n]) + pi
-        sorted_domain = sorted(domain)
         init = Potentials(self.a, self.b, N, domain)
+        sorted_domain = sorted(domain)
         count = 1
         if self.shape != 'circle' and self.shape != 'ellipse':
             for phi in self.phi:
@@ -80,3 +82,22 @@ class PlotConvergence:
                 plt.savefig(f"phi_{count}_N{N}.pgf", transparent = True, format = "pgf")
                 plt.show()
                 count = count + count*count
+
+    def L2_norm(self):
+        phi_1, phi_2, phi_6 = self.phi
+        N = int(self.abscissa[-1])
+        theta = linspace(2*pi/N, 2*pi, N)
+        domain = zeros(N)
+        for n in range(N):
+            domain[n] = arctan2(ж[1][n], ж[0][n]) + pi
+        self.init = Potentials(self.a, self.b, N, domain)
+        sorted_domain = sorted(domain)
+        if self.shape == 'circle':
+            mode_1 = sqrt(trapz(((phi_1 - self.init.circle_1())**2), theta))
+            mode_2 = sqrt(trapz(((phi_2 - self.init.circle_2())**2), theta))
+            return mode_1, mode_2
+        elif self.shape == 'ellipse':
+            mode_1 = sqrt(trapz(((phi_1 - self.init.ellipse_1())**2), theta))
+            mode_2 = sqrt(trapz(((phi_1 - self.init.ellipse_2())**2), theta))
+            return mode_1, mode_2
+        else: pass

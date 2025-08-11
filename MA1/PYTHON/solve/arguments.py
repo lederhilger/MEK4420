@@ -5,4 +5,5 @@ def parse_args():
     parser.add_argument("--b", type = float, default = 1, help = "Minor axis of ellipse")
     parser.add_argument("--N", type = int, default = 32, help = "Number of boundary nodes")
     parser.add_argument("--number", type = int, default = 5, help = "Number of times to evaluate added mass")
+    parser.add_argument("--order", type = int, default = 2, help = "Order of quadrature scheme")
     return parser.parse_args()
