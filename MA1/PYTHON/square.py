@@ -28,7 +28,7 @@ def test_square(N: int):
     for i in range(number):
         abscissa[i] = M*(i+1)
         geometry = square(a, (i+1)*N)
-        init = IntegralEquation((i+1)*M, geometry)
+        init = IntegralEquation((i+1)*M, geometry, order)
         phi = init.solve()
         m_11[i], m_22[i], m_66[i] = init.added_mass(phi)
         bar.next()
@@ -40,5 +40,5 @@ def test_square(N: int):
 if __name__ == "__main__":
     plt.rcParams['text.usetex'] = True
     args = parse_args()
-    a = args.a; N = args.N; number = args.number
+    a = args.a; N = args.N; number = args.number; order = args.order
     test_square(N)

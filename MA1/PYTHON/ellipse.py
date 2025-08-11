@@ -15,7 +15,8 @@ def ellipse(a, b, N):
     r = radius(a, b, θ)
     x = zeros(N+1); z = zeros(N+1)
     for n in range(N+1):
-        x[n], z[n] = r[n]*cos(θ[n]), r[n]*sin(θ[n])
+        # x[n], z[n] = r[n]*cos(θ[n]), r[n]*sin(θ[n])
+        x[n], z[n] = a*cos(θ[n]), b*sin(θ[n])
     return x, z
 
 def test_convergence():
@@ -25,7 +26,7 @@ def test_convergence():
     for i in range(number):
         abscissa[i] = N*(i+1)
         geometry = ellipse(a,b,(i+1)*N)
-        init = IntegralEquation((i+1)*N, geometry)
+        init = IntegralEquation((i+1)*N, geometry, order)
         phi = init.solve()
         m_11[i], m_22[i], m_66[i] = init.added_mass(phi)
         bar.next()
@@ -39,5 +40,6 @@ def test_convergence():
 if __name__ == "__main__":
     plt.rcParams['text.usetex'] = True
     args = parse_args()
-    a = args.a; b = args.b; N = args.N; number = args.number
+    a = args.a; b = args.b
+    N = args.N; number = args.number; order = args.order
     test_convergence()
