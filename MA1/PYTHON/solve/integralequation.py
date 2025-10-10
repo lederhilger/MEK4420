@@ -1,5 +1,5 @@
 from numpy import (ndarray, linalg, sqrt, pi,
-                    zeros, angle, linspace, trapz)
+                    zeros, angle, linspace, trapz, diff, fill_diagonal)
 from solve.chebyshov import Chebyshov
 from solve.quadrature import Quadrature
 from solve.potentials import Potentials
@@ -9,38 +9,34 @@ class IntegralEquation:
         self.N = N
         self.x = coordinates[0]
         self.z = coordinates[1]
-        ж = zeros((2,self.N))
-        for n in range(self.N):
-            ж[0][n], ж[1][n] = .5*(self.x[n+1]+self.x[n]), .5*(self.z[n+1]+self.z[n])
-        self.ж = ж
+        self.ж = zeros((2,self.N))
+        self.ж[0] = .5*(self.x[1:]+self.x[:-1])
+        self.ж[1] = .5*(self.z[1:]+self.z[:-1])
+        # for n in range(self.N):
+        #     ж[0,n], ж[1,n] = .5*(self.x[n+1]+self.x[n]), .5*(self.z[n+1]+self.z[n])
+        # self.ж = ж
         self.order = order
     
     def Δx(self) -> ndarray:
-        Δx = zeros(self.N); Δz = zeros(self.N)
-        for n in range(self.N):
-            Δx[n] = self.x[n+1] - self.x[n]
-            Δz[n] = self.z[n+1] - self.z[n]
+        Δx = diff(self.x)
+        Δz = diff(self.z)
         return Δx, Δz
+
+    def dS(self) -> ndarray:
+        δx, δz = self.Δx()
+        dS = sqrt(δx**2 + δz**2)
+        return dS
 
     def normal_vector(self) -> ndarray:
         '''
         Δx = x_m+1 - x_m, Δz = z_m+1 - z_m
-        nhat = (Δz, -Δx)
+        nhat = (-Δz, Δx)
         '''
-        nx = zeros(self.N); nz = zeros(self.N)
         δx, δz = self.Δx()
-        for n in range(self.N):
-            denominator = sqrt(δx[n]**2 + δz[n]**2)
-            nx[n] = -δz[n]/denominator
-            nz[n] = δx[n]/denominator
+        denominator = self.dS()
+        nx = -δz/denominator
+        nz = δx/denominator
         return nx, nz
-
-    def dS(self) -> ndarray:
-        δx, δz = self.Δx()
-        dS = zeros(self.N)
-        for n in range(self.N):
-            dS[n] = sqrt(δx[n]**2 + δz[n]**2)
-        return dS
     
     def assemble(self) -> ndarray:
         ж, ч = self.ж
@@ -89,10 +85,9 @@ class IntegralEquation:
         phi_1, phi_2, phi_6 = phi
         nx, nz = self.normal_vector(); dS = self.dS()
         ж, ч = self.ж
-        for j in range(self.N):
-            m_11 += phi_1[j]*nx[j]*dS[j]
-            m_22 += phi_2[j]*nz[j]*dS[j]
-            m_66 += phi_6[j]*(ж[j]*nz[j] - ч[j]*nx[j])*dS[j]
+        m_11 = (phi_1*nx*dS).sum()
+        m_22 = (phi_2*nz*dS).sum()
+        m_66 = (phi_6*(ж*nz - ч*nx)*dS).sum()
         return m_11, m_22, m_66
 
     def normal_plot(self):
