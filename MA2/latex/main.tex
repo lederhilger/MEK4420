@@ -17,30 +17,30 @@
 \edef\headtitle{\@title}
 \makeatother
 
-\graphicspath{{../PYTHON/}}
+\graphicspath{{../python/}}
 
 \begin{document}
 \maketitle\thispagestyle{fancy}
     \begin{multicols*}{2}
         \section[Heave]{The Heave Problem}
-        \subfile{SECTIONS/HEAVE_PROBLEM/heave_problem.tex}
+        \begingroup\input{sections/heave_problem/heave_problem.tex}\endgroup
 
         \section[Discretizations]{Discretization of the Integral Equation and Boundary}
-        \subfile{SECTIONS/DISCRETIZATIONS/discretizations.tex}
+        \begingroup\input{sections/discretizations/discretizations.tex}\endgroup
 
         \section[Waves]{Wave Interactions}
-        \subfile{SECTIONS/WAVE_INTERACTIONS/wave_interactions.tex}
+        \begingroup\input{sections/wave_interactions/wave_interactions.tex}\endgroup
 
         \section[Diffraction]{The Diffraction Problem}
-        \subfile{SECTIONS/DIFFRACTION_PROBLEM/diffraction_problem.tex}
+        \begingroup\input{sections/diffraction_problem/diffraction_problem.tex}\endgroup
 
         \section[Response]{The Body Response}
-        \subfile{SECTIONS/BODY_RESPONSE/body_response.tex}
+        \begingroup\input{sections/body_response/body_response.tex}\endgroup
         %\printbibliography
     \end{multicols*}
     
     \section{Problem 6.17}
-    \subfile{SECTIONS/6_17/problem.tex}
+    \begingroup\input{sections/6_17/problem.tex}\endgroup
     \newline\vspace{2mm}
-    \subfile{SECTIONS/6_17/6_17.tex}
+    \begingroup\input{sections/6_17/6_17.tex}\endgroup
 \end{document}

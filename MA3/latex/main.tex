@@ -18,19 +18,19 @@
 \edef\headtitle{\@title}
 \makeatother
 
-\graphicspath{{../PYTHON/}}
+\graphicspath{{../python/}}
 
 \begin{document}
 \maketitle\thispagestyle{fancy}
 \begin{multicols*}{2}
   \section[Introduction]{Introduction}
-  \subfile{SECTIONS/INTRODUCTION/introduction.tex}
+  \begingroup\input{sections/introduction/introduction.tex}\endgroup
   
   \section[Mooring]{Mooring systems}
-  \subfile{SECTIONS/MOORING/mooring.tex}
+  \begingroup\input{sections/mooring/mooring.tex}\endgroup
 
   \section[Results]{Implementation and Results}
-  \subfile{SECTIONS/RESULTS/results.tex}
+  \begingroup\input{sections/results/results.tex}\endgroup
   \printbibliography
 \end{multicols*}
 \end{document}
