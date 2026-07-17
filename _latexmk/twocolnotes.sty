@@ -1,0 +1,871 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% TWO-COLUMN FOOTNOTES %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ProvidesPackage{twocolnotes}[%
+  2026/07/17 Hack fix for dblfnote/multicol
+]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% PACKAGE SETUP %%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{multicol}
+\RequirePackage{etoolbox}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% REGISTER DECLARATIONS %%%%%%%%%%%%%%%%%%%%%
+\newmarks\tcf@bodymarks \newmarks\tcf@fnmarks
+
+\newcount\tcf@lastnote  \newcount\tcf@placed
+\newcount\tcf@bodylast  \newcount\tcf@triallast
+\newcount\tcf@readylast \newcount\tcf@footlast
+\newcount\tcf@currnote  \newcount\tcf@marknote
+\newcount\tcf@queuehead \newcount\tcf@queuetail
+\newcount\tcf@tries     \newcount\tcf@savedvbadness
+
+\newbox\tcf@ins        \newbox\tcf@trialins
+\newbox\tcf@source     \newbox\tcf@savedins
+\newbox\tcf@balanceins \newbox\tcf@splitins
+\newbox\tcf@pageins    \newbox\tcf@rest
+\newbox\tcf@leftbox    \newbox\tcf@rightbox
+\newbox\tcf@footbox    \newbox\tcf@latexins
+\newbox\tcf@trialbody  \newbox\tcf@heldbody
+\newbox\tcf@trialleft  \newbox\tcf@trialright
+
+\newdimen\tcf@columnwidth \newdimen\tcf@fullwidth
+\newdimen\tcf@colroom     \newdimen\tcf@colheight
+\newdimen\tcf@fnheight    \newdimen\tcf@maxfnheight
+\newdimen\tcf@low         \newdimen\tcf@high
+\newdimen\tcf@mid         \newdimen\tcf@pageheight
+\newdimen\tcf@target      \newdimen\tcf@probeheight
+\newdimen\tcf@streamheight \newdimen\tcf@halfheight
+\newdimen\tcf@leftheight  \newdimen\tcf@rightheight
+\newdimen\tcf@savedvfuzz
+
+\newif\iftcf@footinsready \newif\iftcf@bodyheld
+\newif\iftcf@fits         \newif\iftcf@found
+\newif\iftcf@singlecol    \newif\iftcf@ownmark
+\newif\iftcf@queued       \newif\iftcf@skipqueue
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% FOOTNOTE CAPTURE %%%%%%%%%%%%%%%%%%%%%%%
+\long\def\tcf@ifactive#1#2{%
+  \ifnum\doublecol@number>\z@
+    \ifnum\col@number=\tw@
+      \if@boxedmulticols #2\else #1\fi
+    \else #2\fi
+  \else #2\fi%
+}
+
+\def\tcf@newnote{%
+  \global\advance\tcf@lastnote\@ne
+  \tcf@currnote=\tcf@lastnote
+  \expandafter\newbox%
+    \csname tcf@note@\number\tcf@currnote\endcsname
+  \expandafter\gdef%
+    \csname tcf@ready@\number\tcf@currnote\endcsname{0}%
+}
+
+\def\tcf@setready{%
+  \expandafter\gdef%
+    \csname tcf@ready@\number\tcf@currnote\endcsname{1}%
+}
+
+\def\tcf@putmark#1{%
+  \ifhmode
+    \vadjust{\marks\tcf@bodymarks{#1}}%
+  \else
+    \marks\tcf@bodymarks{#1}%
+  \fi%
+}
+
+\def\tcf@savemarkdata{%
+  \expandafter\protected@xdef
+    \csname tcf@fnmark@\number\tcf@currnote\endcsname{%
+      \@thefnmark%
+    }%
+}
+
+\def\tcf@savehref{%
+  \@ifundefined{Hy@footnote@currentHref}{}{%
+    \expandafter\xdef
+      \csname tcf@href@\number\tcf@currnote\endcsname{%
+        \Hy@footnote@currentHref%
+      }%
+  }%
+}
+
+\def\tcf@purgequeue{%
+  \ifnum\tcf@queuehead<\tcf@queuetail
+    \@tempcnta=\tcf@queuehead \advance\@tempcnta\@ne
+    \@tempcntb=%
+      \csname tcf@queued@\number\@tempcnta\endcsname\relax
+    \ifnum\@tempcntb>\tcf@placed\else
+      \global\advance\tcf@queuehead\@ne
+      \expandafter\tcf@purgequeue
+    \fi
+  \fi%
+}
+
+\def\tcf@queuemark{%
+  \tcf@purgequeue
+  \global\advance\tcf@queuetail\@ne
+  \expandafter\xdef%
+    \csname tcf@queued@\number\tcf@queuetail\endcsname{%
+      \number\tcf@currnote%
+    }%
+}
+
+\def\tcf@popqueued{%
+  \tcf@purgequeue
+  \tcf@currnote=\z@
+  \ifnum\tcf@queuehead<\tcf@queuetail
+    \global\advance\tcf@queuehead\@ne
+    \tcf@currnote=
+      \csname tcf@queued@\number\tcf@queuehead\endcsname\relax
+  \fi%
+}
+
+\def\tcf@matchmark{%
+  \tcf@skipqueuetrue
+  \tcf@purgequeue
+  \ifnum\tcf@queuehead<\tcf@queuetail
+    \@tempcnta=\tcf@queuehead \advance\@tempcnta\@ne
+    \@tempcntb=%
+      \csname tcf@queued@\number\@tempcnta\endcsname\relax
+    \protected@edef\tcf@tmpa{\@thefnmark}%
+    \protected@edef\tcf@tmpb{%
+      \csname tcf@fnmark@\number\@tempcntb\endcsname%
+    }%
+    \ifx\tcf@tmpa\tcf@tmpb
+      \tcf@skipqueuefalse
+    \fi
+  \fi%
+}
+
+\def\tcf@clearqueue{%
+  \tcf@ifactive{\global\tcf@queuehead=\tcf@queuetail}{}%
+}
+
+\long\def\tcf@capture#1#2{%
+  \global\setbox\tcf@currentbox=\vbox{%
+    \marks\tcf@fnmarks{\number\tcf@currnote}%
+    #2%
+  }%
+}
+
+\long\def\tcf@footnotetext#1{%
+  \tcf@ifactive{%
+    \tcf@ownmarkfalse
+    \tcf@queuedfalse
+    \ifnum\tcf@currnote=\z@
+      \iftcf@skipqueue
+        \tcf@newnote
+        \tcf@ownmarktrue
+      \else
+        \tcf@popqueued
+        \ifnum\tcf@currnote=\z@
+          \tcf@newnote
+          \tcf@ownmarktrue
+        \else
+          \tcf@queuedtrue
+        \fi
+      \fi
+    \fi
+    \global\tcf@columnwidth=\hsize
+    \global\tcf@fullwidth=\full@width
+    \expandafter\let\expandafter\tcf@currentbox
+      \csname tcf@note@\number\tcf@currnote\endcsname
+    \begingroup
+      \columnwidth=\tcf@columnwidth
+      \hsize=\tcf@columnwidth
+      \iftcf@queued
+        \expandafter\let\expandafter\@thefnmark
+          \csname tcf@fnmark@\number\tcf@currnote\endcsname
+        \@ifundefined{tcf@href@\number\tcf@currnote}{}{%
+          \expandafter\let\expandafter
+            \Hy@footnote@currentHref
+            \csname tcf@href@\number\tcf@currnote\endcsname%
+        }%
+      \fi
+      \let\insert\tcf@capture
+      \tcf@latex@footnotetext{#1}%
+    \endgroup
+    \tcf@setready
+    \iftcf@ownmark
+      \expandafter\tcf@putmark\expandafter{%
+        \number\tcf@currnote%
+      }%
+    \fi
+    \tcf@currnote=\z@%
+  }{%
+    \tcf@latex@footnotetext{#1}%
+  }%
+}
+
+\long\def\tcf@xfootnotenext[#1]#2{%
+  \tcf@ifactive{%
+    \begingroup
+      \csname c@\@mpfn\endcsname #1\relax
+      \unrestored@protected@xdef\@thefnmark{\thempfn}%
+    \endgroup
+    \begingroup
+      \tcf@matchmark
+      \@ifundefined{H@@footnotetext}{}
+        {\let\tcf@latex@footnotetext\H@@footnotetext}%
+      \tcf@footnotetext{#2}%
+    \endgroup%
+  }{%
+    \tcf@latex@xfootnotenext[#1]{#2}%
+  }%
+}
+
+\long\def\tcf@footnote#1{%
+  \tcf@ifactive{%
+    \tcf@newnote
+    \tcf@marknote=\tcf@currnote
+    \tcf@latex@footnote{#1}%
+    \expandafter\tcf@putmark\expandafter{%
+      \number\tcf@marknote%
+    }%
+    \tcf@currnote=\z@%
+  }{%
+    \tcf@latex@footnote{#1}%
+  }%
+}
+
+\long\def\tcf@xfootnote[#1]#2{%
+  \tcf@ifactive{%
+    \tcf@newnote
+    \tcf@marknote=\tcf@currnote
+    \tcf@latex@footnote[#1]{#2}%
+    \expandafter\tcf@putmark\expandafter{%
+      \number\tcf@marknote%
+    }%
+    \tcf@currnote=\z@%
+  }{%
+    \tcf@latex@footnote[#1]{#2}%
+  }%
+}
+
+\def\tcf@footnotemark{%
+  \tcf@ifactive{%
+    \tcf@newnote
+    \tcf@marknote=\tcf@currnote
+    \tcf@latex@footnotemark
+    \tcf@savemarkdata
+    \tcf@savehref
+    \tcf@queuemark
+    \expandafter\tcf@putmark\expandafter{%
+      \number\tcf@marknote%
+    }%
+    \tcf@currnote=\z@%
+  }{%
+    \tcf@latex@footnotemark%
+  }%
+}
+
+\def\tcf@xfootnotemark[#1]{%
+  \tcf@ifactive{%
+    \tcf@newnote
+    \tcf@marknote=\tcf@currnote
+    \tcf@latex@footnotemark[#1]%
+    \tcf@savemarkdata
+    \tcf@queuemark
+    \expandafter\tcf@putmark\expandafter{%
+      \number\tcf@marknote%
+    }%
+    \tcf@currnote=\z@%
+  }{%
+    \tcf@latex@footnotemark[#1]%
+  }%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% MARK SCANNING %%%%%%%%%%%%%%%%%%%%%%%%%
+\def\tcf@getreadylast{%
+  \tcf@readylast=\tcf@placed
+  \@tempcnta=\tcf@placed
+  \@whilenum\@tempcnta<\tcf@bodylast\do{%
+    \advance\@tempcnta\@ne
+    \ifnum\csname tcf@ready@\number\@tempcnta\endcsname>\z@
+      \tcf@readylast=\@tempcnta
+    \fi%
+  }%
+}
+
+\def\tcf@getbodymark#1{%
+  \edef\tcf@tmp{#1}%
+  \ifx\tcf@tmp\@empty\else
+    \@tempcnta=\tcf@tmp\relax
+    \ifnum\@tempcnta>\tcf@triallast
+      \tcf@triallast=\@tempcnta
+    \fi
+  \fi%
+}
+
+\def\tcf@getfootmark#1{%
+  \edef\tcf@tmp{#1}%
+  \ifx\tcf@tmp\@empty\else
+    \@tempcnta=\tcf@tmp\relax
+    \ifnum\@tempcnta>\tcf@footlast
+      \tcf@footlast=\@tempcnta
+    \fi
+  \fi%
+}
+
+\def\tcf@getbodylast#1{%
+  \tcf@triallast=\tcf@placed
+  \setbox\tcf@trialbody=\copy\@cclv
+  \splittopskip\topskip
+  \splitmaxdepth\@maxdepth
+  \setbox\tcf@trialleft=\vsplit\tcf@trialbody to#1\relax
+  \expandafter\tcf@getbodymark\expandafter{%
+    \splitbotmarks\tcf@bodymarks%
+  }%
+  \iftcf@singlecol\else
+    \setbox\tcf@trialright=\vsplit\tcf@trialbody to#1\relax
+    \expandafter\tcf@getbodymark\expandafter{%
+      \splitbotmarks\tcf@bodymarks%
+    }%
+  \fi%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% FOOTNOTE ASSEMBLY %%%%%%%%%%%%%%%%%%%%%%%
+\def\tcf@appendnotes{%
+  \@tempcnta=\tcf@placed
+  \@whilenum\@tempcnta<\tcf@bodylast\do{%
+    \advance\@tempcnta\@ne
+    \ifnum\csname tcf@ready@\number\@tempcnta\endcsname>\z@
+      \expandafter\unvcopy%
+        \csname tcf@note@\number\@tempcnta\endcsname
+      \allowbreak
+    \fi
+  }%
+}
+
+\def\tcf@buildnotes{%
+  \tcf@getreadylast
+  \ifvoid\tcf@ins
+    \ifnum\tcf@readylast=\tcf@placed
+      \setbox\tcf@trialins=\box\voidb@x
+    \else
+      \setbox\tcf@trialins=\vbox{%
+        \boxmaxdepth\dp\strutbox
+        \tcf@appendnotes%
+      }%
+    \fi
+  \else
+    \setbox\tcf@trialins=\vbox{%
+      \boxmaxdepth\dp\strutbox
+      \unvcopy\tcf@ins\allowbreak
+      \tcf@appendnotes%
+    }%
+  \fi%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% COLUMN BALANCING %%%%%%%%%%%%%%%%%%%%%%%
+\def\tcf@balance{%
+  \setbox\tcf@balanceins=\copy\tcf@source
+  \tcf@streamheight=\ht\tcf@balanceins
+  \advance\tcf@streamheight\dp\tcf@balanceins
+  \tcf@halfheight=.5\tcf@streamheight
+  \tcf@balance@try
+  \tcf@fnheight=\tcf@leftheight
+  \ifdim\tcf@rightheight>\tcf@fnheight
+    \tcf@fnheight=\tcf@rightheight
+  \fi
+  \setbox\tcf@balanceins=\box\voidb@x%
+}
+
+\def\tcf@balance@try{%
+  \setbox\tcf@source=\copy\tcf@balanceins
+  \splittopskip\footnotesep
+  \splitmaxdepth\dp\strutbox
+  \vbadness\@M \vfuzz\maxdimen
+  \setbox\tcf@leftbox=\vsplit\tcf@source to\tcf@halfheight
+  \setbox\tcf@leftbox=\vbox{\unvbox\tcf@leftbox}%
+  \setbox\tcf@rightbox=\vbox{\unvbox\tcf@source}%
+  \ifvoid\tcf@leftbox
+    \setbox\tcf@leftbox=\box\tcf@rightbox
+  \fi
+  \tcf@leftheight=\ht\tcf@leftbox
+  \advance\tcf@leftheight\dp\tcf@leftbox
+  \tcf@rightheight=\ht\tcf@rightbox
+  \advance\tcf@rightheight\dp\tcf@rightbox
+  \ifdim\tcf@leftheight<\tcf@rightheight
+    \expandafter\tcf@balance@retry
+  \fi%
+}
+
+\def\tcf@balance@retry{%
+  \ifdim\tcf@halfheight>\tcf@streamheight
+    \PackageError{twocolnotes}
+      {%
+        Forced footnote break leaves the left column shorter%
+      }
+      {%
+        Remove the forced break from the footnote so that its
+        columns can be balanced in source order.%
+      }%
+  \else
+    \ifdim\tcf@halfheight<\tcf@rightheight
+      \tcf@halfheight=\tcf@rightheight
+    \else
+      \advance\tcf@halfheight\baselineskip
+    \fi
+    \advance\tcf@halfheight\p@
+    \expandafter\tcf@balance@try
+  \fi%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% INSERTION SPLITTING %%%%%%%%%%%%%%%%%%%%%%
+\def\tcf@measure{%
+  \ifvoid\tcf@trialins
+    \tcf@fnheight=\z@
+  \else
+    \tcf@probeheight=2\tcf@maxfnheight
+    \setbox\tcf@source=\copy\tcf@trialins
+    \splittopskip\footnotesep
+    \splitmaxdepth\dp\strutbox
+    \vbadness\@M \vfuzz\maxdimen
+    \setbox\tcf@trialleft=\vsplit\tcf@source to\tcf@probeheight
+    \setbox\tcf@trialleft=\vbox{\unvbox\tcf@trialleft}%
+    \ifvoid\tcf@source
+      \setbox\tcf@source=\box\tcf@trialleft
+      \tcf@balance
+    \else
+      \tcf@fnheight=\tcf@maxfnheight \advance\tcf@fnheight\p@
+    \fi
+  \fi%
+}
+
+\def\tcf@rigid@error{%
+  \PackageError{twocolnotes}
+    {%
+      Footnote contains an unbreakable object taller than its
+      column%
+    }
+    {%
+      Ordinary paragraphs may continue across any number of
+      pages, but TeX cannot split a tall minipage, box, or
+      similar rigid object.%
+    }%
+  \setbox\tcf@pageins=\box\tcf@splitins
+  \setbox\tcf@rest=\box\voidb@x
+  \@tempswafalse%
+}
+
+\def\tcf@shrinktarget{%
+  \ifdim\baselineskip>\z@
+    \advance\tcf@target-\baselineskip
+  \else
+    \advance\tcf@target-\p@
+  \fi
+  \ifdim\tcf@target<\z@
+    \tcf@target=\z@
+  \fi%
+}
+
+\def\tcf@measure@loop{%
+  \let\tcf@trialnext\relax
+  \setbox\tcf@source=\copy\tcf@savedins
+  \setbox\tcf@pageins=\vsplit\tcf@source to\tcf@target
+  \tcf@footlast=\tcf@placed
+  \expandafter\tcf@getfootmark\expandafter{%
+    \splitbotmarks\tcf@fnmarks%
+  }%
+  \setbox\tcf@pageins=\vbox{\unvbox\tcf@pageins}%
+  \ifvoid\tcf@pageins
+    \tcf@fnheight=\tcf@maxfnheight
+    \advance\tcf@fnheight\p@
+  \else
+    \setbox\tcf@trialins=\vbox{\unvcopy\tcf@pageins}%
+    \tcf@measure
+    \ifdim\tcf@fnheight>\tcf@maxfnheight
+      \ifdim\tcf@target>\z@
+        \tcf@shrinktarget
+        \let\tcf@trialnext\tcf@measure@loop
+      \fi
+    \fi
+  \fi
+  \tcf@trialnext%
+}
+
+\def\tcf@measurepage{%
+  \tcf@footlast=\tcf@placed
+  \ifvoid\tcf@trialins
+    \tcf@fnheight=\z@
+  \else
+    \setbox\tcf@savedins=\box\tcf@trialins
+    \setbox\tcf@trialins=\copy\tcf@savedins
+    \tcf@measure
+    \ifdim\tcf@fnheight>\tcf@maxfnheight
+      \tcf@target=2\tcf@maxfnheight
+      \advance\tcf@target-2\baselineskip
+      \ifdim\tcf@target<\z@
+        \tcf@target=\z@
+      \fi
+      \tcf@measure@loop
+    \else
+      \tcf@leftheight=\tcf@fnheight
+      \setbox\tcf@source=\copy\tcf@savedins
+      \tcf@target=2\tcf@maxfnheight
+      \setbox\tcf@pageins=\vsplit\tcf@source to\tcf@target
+      \expandafter\tcf@getfootmark\expandafter{%
+        \splitbotmarks\tcf@fnmarks%
+      }%
+      \tcf@fnheight=\tcf@leftheight
+    \fi
+    \setbox\tcf@trialins=\box\tcf@savedins
+  \fi%
+}
+
+\def\tcf@splitpage{%
+  \tcf@measure
+  \ifdim\tcf@fnheight>\tcf@maxfnheight
+    \setbox\tcf@splitins=\box\tcf@trialins
+    \tcf@target=2\tcf@maxfnheight
+    \advance\tcf@target-2\baselineskip
+    \ifdim\tcf@target<\z@
+      \tcf@target=\z@
+    \fi
+    \@tempswatrue
+    \loop
+      \setbox\tcf@source=\copy\tcf@splitins
+      \setbox\tcf@pageins=\vsplit\tcf@source to\tcf@target
+      \setbox\tcf@rest=\box\tcf@source
+      \setbox\tcf@pageins=\vbox{\unvbox\tcf@pageins}%
+      \ifvoid\tcf@pageins
+        \tcf@rigid@error
+      \else
+        \setbox\tcf@trialins=\vbox{\unvcopy\tcf@pageins}%
+        \tcf@measure
+        \ifdim\tcf@fnheight>\tcf@maxfnheight
+          \ifdim\tcf@target>\z@
+            \tcf@shrinktarget
+          \else
+            \tcf@rigid@error
+          \fi
+        \else
+          \@tempswafalse
+        \fi
+      \fi
+    \if@tempswa\repeat
+    \ifvoid\tcf@rest
+      \global\setbox\tcf@ins=\box\voidb@x
+    \else
+      \global\setbox\tcf@ins=\vbox{\unvbox\tcf@rest}%
+    \fi
+    \setbox\tcf@splitins=\box\voidb@x
+  \else
+    \setbox\tcf@pageins=\box\tcf@trialins
+    \global\setbox\tcf@ins=\box\voidb@x
+  \fi%
+}
+
+\def\tcf@makefootbox{%
+  \setbox\tcf@source=\box\tcf@pageins
+  \tcf@balance
+  \vbadness=\tcf@savedvbadness
+  \vfuzz=\tcf@savedvfuzz
+  \setbox\tcf@footbox=\vbox{%
+    \hbox to\tcf@fullwidth{%
+      \hbox to\tcf@columnwidth{%
+        \vbox to\tcf@fnheight{\unvbox\tcf@leftbox\vss}\hss%
+      }%
+      \hskip\columnsep
+      \hbox to\tcf@columnwidth{%
+        \ifvoid\tcf@rightbox\else
+          \vbox to\tcf@fnheight{\unvbox\tcf@rightbox\vss}%
+        \fi\hss%
+      }%
+    }%
+  }%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% PAGE FITTING %%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\tcf@tryheight#1{%
+  \tcf@getbodylast{#1}%
+  \tcf@bodylast=\tcf@triallast
+  \tcf@buildnotes
+  \tcf@measurepage
+  \tcf@pageheight=#1\relax
+  \ifdim\tcf@fnheight>\z@
+    \ifvoid\footins
+      \advance\tcf@pageheight\skip\footins
+    \fi
+    \@tempdima=\tcf@fnheight
+    \ifdim\@tempdima>\tcf@maxfnheight
+      \@tempdima=\tcf@maxfnheight
+    \fi
+    \advance\tcf@pageheight\@tempdima
+  \fi
+  \ifnum\tcf@readylast>\tcf@footlast
+    \tcf@fitsfalse
+  \else\ifdim\tcf@pageheight>\tcf@colroom
+    \tcf@fitsfalse
+  \else
+    \tcf@fitstrue
+  \fi\fi%
+}
+
+\def\tcf@restorebody{%
+  \iftcf@bodyheld
+    \setbox\@cclv=\vbox{%
+      \ifvoid\@cclv\else\unvbox\@cclv\fi
+      \unvbox\tcf@heldbody%
+    }%
+    \tcf@bodyheldfalse
+  \fi%
+}
+
+\def\tcf@findheight{%
+  \tcf@low=\z@
+  \tcf@high=\tcf@colroom
+  \tcf@foundfalse
+  \tcf@tryheight\tcf@high
+  \iftcf@fits
+    \tcf@foundtrue
+    \tcf@colheight=\tcf@high
+  \else
+    \tcf@tries=20
+    \loop\ifnum\tcf@tries>\z@
+      \tcf@mid=\tcf@low
+      \advance\tcf@mid\tcf@high
+      \divide\tcf@mid\tw@
+      \tcf@tryheight\tcf@mid
+      \iftcf@fits
+        \tcf@foundtrue
+        \tcf@low=\tcf@mid
+      \else
+        \tcf@high=\tcf@mid
+      \fi
+      \advance\tcf@tries\m@ne
+    \repeat
+    \iftcf@found
+      \tcf@colheight=\tcf@low
+      \tcf@tryheight\tcf@colheight
+    \fi
+  \fi%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% PAGE OUTPUT %%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\tcf@prepare{%
+  \ifnum\col@number=\tw@
+    \tcf@savedvbadness=\vbadness
+    \tcf@savedvfuzz=\vfuzz
+    \tcf@colroom=\dimen@
+    \tcf@maxfnheight=.5\tcf@colroom
+    \tcf@singlecolfalse
+    \tcf@findheight
+    \iftcf@found\else
+      \tcf@singlecoltrue
+      \tcf@findheight
+      \iftcf@found\else
+        \ifvoid\tcf@ins
+          \PackageError{twocolnotes}
+            {%
+              No body prefix can carry the next footnote
+              beginning%
+            }
+            {%
+              The earliest indivisible body line contains more
+              footnote marks than can begin on this physical
+              page. Separate those marks or shorten the
+              preceding footnote so every beginning can fit.%
+            }%
+        \fi
+        \tcf@colheight=\z@
+        \tcf@bodylast=\tcf@placed
+        \tcf@maxfnheight=\tcf@colroom
+        \ifvoid\footins
+          \advance\tcf@maxfnheight-\skip\footins
+        \fi
+        \tcf@buildnotes
+        \tcf@measurepage
+      \fi
+    \fi
+    \ifvoid\tcf@trialins
+      \tcf@footinsreadyfalse
+    \else
+      \tcf@splitpage
+      \tcf@makefootbox
+      \tcf@footinsreadytrue
+    \fi
+    \tcf@release
+    \global\tcf@placed=\tcf@bodylast
+    \dimen@=\tcf@colheight
+    \splittopskip\topskip
+    \splitmaxdepth\@maxdepth
+    \boxmaxdepth\@maxdepth
+    \vbadness=\tcf@savedvbadness
+    \vfuzz=\tcf@savedvfuzz
+    \ifdim\tcf@colheight=\z@
+      \setbox\tcf@heldbody=\box\@cclv
+      \setbox\@cclv=\box\voidb@x
+      \tcf@bodyheldtrue
+    \else
+      \iftcf@singlecol
+        \setbox\tcf@heldbody=\box\@cclv
+        \setbox\@cclv=\vsplit\tcf@heldbody to\tcf@colheight
+        \tcf@bodyheldtrue
+      \fi
+    \fi
+    \setbox\tcf@latexins=\box\footins
+  \fi%
+}
+
+\def\tcf@putfootins{%
+  \ifvoid\tcf@latexins
+    \iftcf@footinsready
+      \setbox\footins=\box\tcf@footbox
+    \fi
+  \else
+    \iftcf@footinsready
+      \setbox\footins=\vbox{%
+        \unvbox\tcf@latexins
+        \unvbox\tcf@footbox%
+      }%
+    \else
+      \setbox\footins=\box\tcf@latexins
+    \fi
+  \fi
+  \tcf@footinsreadyfalse%
+}
+
+\def\tcf@release{%
+  \@tempcnta=\tcf@placed
+  \@whilenum\@tempcnta<\tcf@bodylast\do{%
+    \advance\@tempcnta\@ne
+    \expandafter\let\expandafter\tcf@releasebox
+      \csname tcf@note@\number\@tempcnta\endcsname
+    \global\setbox\tcf@releasebox=\box\voidb@x
+  }%
+}
+
+\def\tcf@flush{%
+  \ifnum\doublecol@number>\z@
+    \loop\ifvoid\tcf@ins\else
+      \null\vfil\penalty-\@M
+    \repeat
+  \fi%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% MULTICOL PATCHES %%%%%%%%%%%%%%%%%%%%%%%
+\let\tcf@latex@balance@columns@out\balance@columns@out
+\def\balance@columns@out{%
+  \ifnum\col@number=\tw@
+    \ifvoid\tcf@ins
+      \tcf@bodylast=\tcf@lastnote
+      \tcf@getreadylast
+      \ifnum\tcf@readylast=\tcf@placed
+        \ifnum\tcf@lastnote>\tcf@placed
+          \tcf@release
+          \global\tcf@placed=\tcf@lastnote
+        \fi
+        \tcf@latex@balance@columns@out
+      \else
+        \multi@column@out \penalty-\@Mvi
+      \fi
+    \else
+      \multi@column@out \penalty-\@Mvi
+    \fi
+  \else
+    \tcf@latex@balance@columns@out
+  \fi%
+}
+
+\patchcmd\multi@column@out
+  {%
+    \ifvbox \@kludgeins
+      \advance \dimen@ -\ht\@kludgeins
+      \ifdim \wd\@kludgeins>\z@
+        \shr@nkingtrue
+      \fi
+    \fi%
+  }
+  {%
+    \ifvbox \@kludgeins
+      \advance \dimen@ -\ht\@kludgeins
+      \ifdim \wd\@kludgeins>\z@
+        \shr@nkingtrue
+      \fi
+    \fi
+    \tcf@prepare%
+  }
+  {}
+  {%
+    \PackageError{twocolnotes}
+      {Unsupported multicol output routine}
+      {}%
+  }
+\patchcmd\multi@column@out
+  {\ifvoid\@cclv \else}
+  {\tcf@restorebody\ifvoid\@cclv \else}
+  {}
+  {%
+    \PackageError{twocolnotes}
+      {Cannot restore held body material}
+      {}%
+  }
+\patchcmd\multi@column@out
+  {\@makecol\@outputpage}
+  {\tcf@putfootins\@makecol\@outputpage}
+  {}
+  {%
+    \PackageError{twocolnotes}
+      {Cannot install page footnotes}
+      {}%
+  }
+\patchcmd\endmulticols
+  {\penalty-\@Mvi}
+  {\penalty-\@Mvi\tcf@flush\tcf@clearqueue}
+  {}
+  {%
+    \PackageError{twocolnotes}
+      {Cannot install continuation flushing}
+      {}%
+  }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% INITIALIZATION %%%%%%%%%%%%%%%%%%%%%%%%
+\AtBeginDocument{%
+  \tcf@fullwidth=\textwidth
+  \tcf@columnwidth=\tcf@fullwidth
+  \advance\tcf@columnwidth-\columnsep
+  \divide\tcf@columnwidth\tw@
+  \let\tcf@latex@footnotetext\@footnotetext
+  \let\tcf@latex@xfootnotenext\@xfootnotenext
+  \let\tcf@latex@footnote\footnote
+  \let\tcf@latex@footnotemark\footnotemark
+  \let\@footnotetext\tcf@footnotetext
+  \let\@xfootnotenext\tcf@xfootnotenext
+  \def\footnote{%
+    \@ifnextchar[%
+      \tcf@xfootnote
+      \tcf@footnote%
+  }%
+  \def\footnotemark{%
+    \@ifnextchar[%
+      \tcf@xfootnotemark
+      \tcf@footnotemark%
+  }%
+}
+\endinput
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
