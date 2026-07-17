@@ -1,2 +1,5 @@
-ensure_path('BIBINPUTS', '..//');
-ensure_path('TEXINPUTS', '..//');
+$ENV{'TEXINPUTS'}='../_latexmk//:'||'./FRAMES//:' . $ENV{'TEXINPUTS'};
+ensure_path('BIBINPUTS', '../_latexmk//');
+$pdf_mode = 1;
+$postscript_mode = $dvi_mode = 0;
+$aux_dir = 'compile';
