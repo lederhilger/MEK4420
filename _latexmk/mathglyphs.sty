@@ -1,0 +1,239 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% SIMON's math glyphs %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ProvidesPackage{mathglyphs}[2026/07/17 MEK4420 math glyphs]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% REQUIRED PACKAGES %%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{graphicx}
+\RequirePackage{amsthm}
+\RequirePackage{siunitx}
+\RequirePackage{accsupp}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% THEOREM ENVIRONMENTS %%%%%%%%%%%%%%%%%%%%%
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{proposition}{Proposition}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem*{corollary}{Corollary}
+\newtheorem*{lemma}{Lemma}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% ANALYSIS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% DIFFERENTIALS %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\dee}{\mathrm{d}}
+\newcommand{\Dee}{\mathrm{D}}
+\newcommand{\deex}{\partial_x}
+\newcommand{\deey}{\partial_y}
+\newcommand{\deez}{\partial_z}
+\newcommand{\deet}{\partial_t}
+%%%%%%%%%%%%%%%%%%%%%%%%%% OPERATORS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\DeclareMathOperator{\adv}{adv}
+\DeclareMathOperator{\dive}{div}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\trace}{tr}
+\DeclareMathOperator{\legendre}{P}
+\DeclareMathOperator{\erf}{erf}
+\DeclareMathOperator{\erfc}{erfc}
+\DeclareMathOperator{\green}{G}
+\renewcommand{\Re}{\mathrm{Re}}
+\renewcommand{\Im}{\mathrm{Im}}
+\AddToHook{begindocument/end}{%
+  \renewcommand{\Re}{\mathrm{Re}}%
+  \renewcommand{\Im}{\mathrm{Im}}%
+}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Arg}{Arg}
+\DeclareMathOperator{\amplitudinis}{am}
+\DeclareMathOperator{\sn}{sn}
+\DeclareMathOperator{\cn}{cn}
+\DeclareMathOperator{\dn}{dn}
+\DeclareMathOperator{\ellK}{K}
+\DeclareMathOperator{\ellE}{E}
+\DeclareMathOperator{\ellF}{F}
+\DeclareMathOperator{\AGM}{M}
+\DeclareMathOperator{\principalvalue}{pv}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% ABSOLUTE VALUE %%%%%%%%%%%%%%%%%%%%%%%%%
+\DeclarePairedDelimiter\absl\lvert\rvert
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% TENSORS & VECTORS %%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\uvec}{\symbf{u}}
+\newcommand{\xvec}{\symbf{x}}
+\newcommand{\eye}{\mathfrak{d}}
+\newcommand{\jacobi}[1]{\symbf{\mathfrak{J}_{#1}}}
+\newcommand{\stress}{\symbf{\mathfrak{P}}}
+\newcommand{\strain}{\symbf{\mathfrak{e}}}
+\newcommand{\addedmass}{\symbf{\mathfrak{m}}}
+\newcommand{\gravity}{\mathrm{g}}
+\newcommand{\vgravity}{\symbfup{g}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% UNIT VECTORS %%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\ihat}{\symbf{\hat{\imath}}}
+\newcommand{\jhat}{\symbf{\hat{\jmath}}}
+\newcommand{\khat}{\symbf{\hat{k}}}
+\newcommand{\ehat}{\symbf{\hat{e}}}
+\newcommand{\uhat}{\symbf{\hat{u}}}
+\newcommand{\zhat}{\hat{z}}
+\newcommand{\nhat}{\symbf{\hat{n}}}
+\newcommand{\rhat}{\symbf{\hat{r}}}
+\newcommand{\tehat}{\boldsymbol{\hat{\vartheta}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% DISCRETE NOTATION %%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\xtt}{{\textit{\texttt{x}}}}
+\newcommand{\ytt}{{\textit{\texttt{y}}}}
+\newcommand{\ztt}{{\textit{\texttt{z}}}}
+\newcommand{\ttt}{{\textit{\texttt{t}}}}
+\newcommand{\deltt}{{\mathtt{{\Delta t}}}}
+\newcommand{\utt}{\textit{\texttt{u}}}
+\newcommand{\htt}{\textit{\texttt{h}}}
+\newcommand{\nhattt}{\hat{\texttt{\textit{n}}}}
+\newcommand{\naturals}{\mathbb{N}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%% DIMENSIONLESS OR OTHERWISE NAMED NUMBERS %%%%%%%%%%%
+\newcommand{\Ekman}{\mathrm{Ek}}
+\newcommand{\Euler}{\mathrm{Eu}}
+\newcommand{\Stokes}{\mathrm{Stk}}
+\newcommand{\Reynolds}{\mathrm{Re}}
+\newcommand{\Rossby}{\mathrm{Ro}}
+\newcommand{\Courant}{\mathrm{Co}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% TYPEWRITER GREEK %%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\etatt}{\texttt{\textit{\texteta}}}
+\newcommand{\Thetatt}{\texttt{\textTheta}}
+\newcommand{\thetatt}{\texttt{\texttheta}}
+\newcommand{\phitt}{\texttt{\textit{\textphi}}}
+\newcommand{\deltatt}{\texttt{\textit{\textdelta}}}
+\newcommand{\dxtt}{\texttt{\textit{\textdelta{x}}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% NON-STANDARD MATH SYMBOLS %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% DISPLACED VOLUME %%%%%%%%%%%%%%%%%%%%%%%
+\newsavebox{\displacedvolumeVbox}
+\newsavebox{\displacedvolumetildebox}
+\newdimen\displacedvolumeraise
+\newdimen\displacedvolumeshift
+\newcommand{\displacedvolumeaux}[2]{%
+  \begingroup
+  \sbox{\displacedvolumeVbox}{$\m@th#1%
+    \BeginAccSupp{method = hex, unicode, ActualText = D800DD97}%
+    \text{\normalfont\itshape V}%
+    \EndAccSupp{}$}%
+  \sbox{\displacedvolumetildebox}{%
+    \scalebox{1.0833333333}{$\m@th#1%
+      \BeginAccSupp{ActualText = {}}%
+      \text{\normalfont\itshape\symbol{"007E}}%
+      \EndAccSupp{}$}}%
+  \displacedvolumeraise=.241\ht\displacedvolumeVbox
+  \displacedvolumeshift=.109\wd\displacedvolumeVbox
+  \ooalign{%
+    \hfil\copy\displacedvolumeVbox\hfil\crcr
+    \hidewidth\hskip\displacedvolumeshift
+      \raise\displacedvolumeraise\copy\displacedvolumetildebox
+    \hidewidth\crcr}%
+  \endgroup}
+\DeclareRobustCommand{\displacedvolume}{%
+  \ifmmode
+    \mathord{\mathpalette\displacedvolumeaux\relax}%
+  \else
+    \ensuremath{\displacedvolume}%
+  \fi}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OTHAL %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newfontfamily\gothicfont{Ulfilas}
+\DeclareRobustCommand{\Othal}{%
+  \TextOrMath
+    {%
+      \BeginAccSupp{method=pdfstringdef,unicode,ActualText={𐍉}}%
+      {\gothicfont O}%
+      \EndAccSupp{}%
+    }%
+    {%
+      \mathord{\text{%
+          \BeginAccSupp{method=pdfstringdef,unicode,%
+            ActualText={𐍉}}%
+        {\gothicfont O}%
+        \EndAccSupp{}%
+      }}%
+    }%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% CYRILLIC %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% CYRILLIC FONT FAMILIES %%%%%%%%%%%%%%%%%%%%
+\newfontfamily\newcmcyrfont[
+  Renderer = Basic,
+  Script = Cyrillic,
+  RawFeature = +cmu
+]{NewCM10-Book}
+\newfontfamily\newcmcyrttfont[
+  Script = Cyrillic
+]{NewCMMono10-Book}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% CYRILLIC MATH FAMILIES %%%%%%%%%%%%%%%%%%%%
+\begingroup
+  \newcmcyrfont
+  \xdef\newcmcyrfamily{\f@family}
+  \newcmcyrttfont
+  \xdef\newcmcyrttfamily{\f@family}
+\endgroup
+\DeclareSymbolFont{cyrup}{TU}{\newcmcyrfamily}{m}{n}
+\DeclareSymbolFont{cyrit}{TU}{\newcmcyrfamily}{m}{it}
+\DeclareSymbolFont{cyrbf}{TU}{\newcmcyrfamily}{b}{n}
+\DeclareSymbolFont{cyrbfit}{TU}{\newcmcyrfamily}{b}{it}
+\DeclareSymbolFont{cyrtt}{TU}{\newcmcyrttfamily}{m}{it}
+\let\cyrupfam\symcyrup
+\let\cyritfam\symcyrit
+\let\cyrbffam\symcyrbf
+\let\cyrbfitfam\symcyrbfit
+\let\cyrttfam\symcyrtt
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% CYRILLIC MATH CODES %%%%%%%%%%%%%%%%%%%%%
+\Umathcode"0434 = 7 \cyritfam "0434
+\Umathcode"0436 = 7 \cyritfam "0436
+\Umathcode"0437 = 7 \cyritfam "0437
+\Umathcode"0447 = 7 \cyritfam "0447
+\Umathcode"04A9 = 7 \cyritfam "04A9
+\Umathcode"04E1 = 7 \cyritfam "04E1
+
+\Umathcode"040F = 7 \cyrupfam "040F
+\Umathcode"0414 = 7 \cyrupfam "0414
+\Umathcode"0427 = 7 \cyrupfam "0427
+
+\Umathchardef\bche  = 7 \cyrbfitfam "0447
+\Umathchardef\bzhe  = 7 \cyrbfitfam "0436
+\Umathchardef\zhett = 7 \cyrttfam   "0436
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% CYRILLIC COMMANDS %%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\rde}{д}
+\newcommand{\rDe}{Д}
+\newcommand{\che}{ч}
+\newcommand{\Che}{Ч}
+\newcommand{\Dzhe}{Џ}
+\newcommand{\zhe}{ж}
+\newcommand{\ze}{з}
+\newcommand{\ezh}{ӡ}
+\newcommand{\abha}{ҩ}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% EXTRA LATIN GLYPHS %%%%%%%%%%%%%%%%%%%%%%
+\Umathcode"01B6 = 7 \cyritfam "01B6
+\Umathcode"01B5 = 7 \cyrupfam "01B5
+\newcommand{\zedd}{ƶ}
+\newcommand{\Zedd}{Ƶ}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
