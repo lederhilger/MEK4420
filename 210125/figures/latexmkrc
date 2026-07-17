@@ -1,0 +1,17 @@
+use Cwd qw(abs_path);
+use File::Basename qw(dirname);
+my $this_rc = abs_path(__FILE__);
+my $dir = abs_path(dirname(__FILE__));
+my $loaded = 0;
+while ($dir ne dirname($dir)) {
+    my $candidate = "$dir/latexmkrc";
+    if (-f $candidate && abs_path($candidate) ne $this_rc) {
+        my $ret = do $candidate;
+        die $@ if $@;
+        die "Could not load $candidate: $!\n" unless defined $ret;
+        $loaded = 1;
+        last;
+    }
+    $dir = dirname($dir);
+}
+die "Could not find parent latexmkrc\n" unless $loaded;

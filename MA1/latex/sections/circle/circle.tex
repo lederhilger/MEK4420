@@ -35,14 +35,14 @@ Implementing the potentials described in equation \eqref{eq:circle_phi1} and \eq
 In figures \ref{fig:circle_phi1} and \ref{fig:circle_phi2}, we have used a fourth order quadrature scheme, and we see that there is seemingly negligible difference in the numerical solution and the theory.
 \begin{Figure}
   \centering
-  \resizebox{\textwidth}{!}{\input{phi_1_N160.pgf}}
+  \resizebox{\textwidth}{!}{\includegraphics{phi_1_N160.pdf}}
   \captionsetup{type = figure}
   \caption{First mode of the potential for a circle using a fourth order quadrature scheme.}
   \label{fig:circle_phi1}
 \end{Figure}
 \begin{Figure}
   \centering
-  \resizebox{\textwidth}{!}{\input{phi_2_N160.pgf}}
+  \resizebox{\textwidth}{!}{\includegraphics{phi_2_N160.pdf}}
   \captionsetup{type = figure}
   \caption{Second mode of the potential for a circle using a fourth order quadrature scheme.}
   \label{fig:circle_phi2}
@@ -89,7 +89,7 @@ We measure the error in the added mass absolutely, so that we just measure the a
 Since we set the the radius of the circle to be 1, a maximal difference of less than 0.05, as is indicated in figure \ref{fig:added_mass_circle}, is fine, considering the added mass would simply be $\pi$.
 \begin{Figure}
   \centering
-  \resizebox{\textwidth}{!}{\input{addedmass_circle_N160.pgf}}
+  \resizebox{\textwidth}{!}{\includegraphics{addedmass_circle_N160.pdf}}
   \captionsetup{type = figure}
   \caption{Absolute difference between the theoretical added mass $m_{\mathrm{theory}}$ and the calculated added mass $m_{\mathrm{num}}$}
   \label{fig:added_mass_circle}

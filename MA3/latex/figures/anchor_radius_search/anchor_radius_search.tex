@@ -1,0 +1,11 @@
+\ExplSyntaxOn
+\sys_ensure_backend:
+\pdf_version_gset:n { 1.7 }
+\ExplSyntaxOff
+\documentclass{standalone}
+\usepackage{pgf}
+\usepackage{simonsfigures}
+\providecommand{\mathdefault}[1]{#1}
+\begin{document}
+\input{anchor_radius_search.pgf}
+\end{document}
