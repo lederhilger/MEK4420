@@ -74,16 +74,17 @@ The arc length of a curve parametrized by $\symbf{y}(x)$ is given by
 \]
 where $a$ and $b$ are the start and end points of the parametrization, and their ordering is convention for the sake of clarity.
 Note that we may write $\ell(a;b) = \ell(0;b) - \ell(0;a) \equiv \ell(b) - \ell(a)$.
-Finding then the arc length from $\eta = 0$ to some value, say $t$, using equation \eqref{eq:parametric_ellipse}, yields the integrand $\sqrt{a^2 \cos^2{\eta} + b^2 \sin^2{\eta}}$.
+Finding then the arc length from $\eta = 0$ to some value, say $t$, using equation \eqref{eq:parametric_ellipse}, yields the integrand $\sqrt{a^2 \sin^2{\eta} + b^2 \cos^2{\eta}}$.
 We may use the Pythagorean identity that $\cos^2{\eta} + \sin^2{\eta} = 1$, which yields
 \[
-\ell(\etatt) = a\int_{0}^{\etatt} \sqrt{1 - k^2 \sin^2{\eta}} \,\dee\eta, \qquad k^2 = 1 - \frac{b^2}{a^2},
+\ell(\etatt) = a\int_{0}^{\etatt} \sqrt{1 - k^2 \cos^2{\eta}} \,\dee\eta,
 \]
-which is exactly the incomplete elliptic integral of the second kind, as written in equation \eqref{eq:incomplete_elliptic_integral_second}.
+which is exactly the incomplete elliptic integral of the second kind, as written in equation \eqref{eq:incomplete_elliptic_integral_second}, under a transformation $\eta \mapsto \sfrac{\pi}{2} - \eta$.
 We now consider the perimeter of the ellipse.
-Due to the symmetry of the ellipse---or the periodicity of the elliptic functions---it is evident that the perimeter is given by $\ell(2\pi) = 4\ellE(k)$.
+Due to the symmetry of the ellipse---or the periodicity of the elliptic functions---it is evident that the perimeter is given by $\ell(2\pi) = 4a\ellE(k)$, due to the periodicity of the trigonometric functions.
 We may then find the set of angles such that $N$ nodes of equal arc lengths are placed on the ellipse by the relation that
 \[
-\ellE(\etatt_n \vert k) = \frac{4n\ellE(k)}{a N}, \qquad n \in \{1, \dots, N\}.
+\ellE \big( \varphi^n \vert k \big) = \left( 1 - \frac{4n}{N} \right) \ellE(k),
 \]
-By an arithmetic-geometric mean algorithm, we may find the angles $\etatt_n$.
+where $n \in \{0, \dots, N-1\}$ denotes the index along the arc, not to be confused with the indexation for the arithmetic-geometric algorithm.
+For by an arithmetic-geometric mean algorithm, we may find the angles $\etatt_n = \sfrac{\pi}{2} - \varphi^n$.
