@@ -1,42 +1,57 @@
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator, FuncFormatter
-from numpy import pi, zeros, arctan2
+from numpy import pi, zeros, arctan2, sqrt
 from solve.jacobi import Jacobi
+from solve.ellipticity import Ellipticity
 from solve.potentials import Potentials
 
+def relative_error(numerical, theoretical):
+    return abs(numerical - theoretical)/abs(theoretical)
+
 class PlotConvergence:
-    def __init__(self, shape: str, a: float, b: float, N: int, number: int, abscissa, phi, **kwargs):
+    def __init__(self, shape: str, a: float, b: float, N: int, number: int, abscissa, phi, parametrization = None, **kwargs):
         self.shape = shape
         self.a = a; self.b = b
         self.N = N; self.number = number
         self.abscissa = abscissa
         self.phi = phi
+
+        self.parametrization = parametrization
+        self.filetag = f"_{parametrization}" if parametrization is not None else ""
+        
         if kwargs:
             kwargs = {m: kwargs[m] for m in ['m11', 'm22', 'm66'] if m in kwargs}
             self.m = kwargs
         else:
             raise ValueError('Please input added mass')
-        self.k = 4*(2*Jacobi(None).K()**2/pi - 1)
+        self.k = 4*(2*Ellipticity(modulus = sqrt(.5)).K()**2/pi - 1)
 
     def plot_added_mass(self):
         plt.xscale('log')
         plt.title('Added mass')
-        plt.xlabel(r'$N$'); plt.ylabel(r'$\vert m_{\mathrm{num}} - m_{\mathrm{theory}}\vert$')
+        plt.xlabel(r'$N$'); plt.ylabel('Relative error')
         real_m11 = {'circle': pi*self.b**2, 'ellipse': pi*self.b**2, 'square': self.k*self.a**2}
         real_m22 = {'circle': pi*self.a**2, 'ellipse': pi*self.a**2, 'square': self.k*self.a**2}
         real_m66 = {'circle': 0, 'ellipse': .125*pi*(self.a**2 - self.b**2)**2, 'square': .725*self.a**4}
-        if 'm11' in self.m.keys():
-            plt.plot(self.abscissa, abs(self.m['m11'] - real_m11[self.shape]), '*', color = 'k', label = r'${m}_{11}$')
+        if 'm11' in self.m:
+            exact = real_m11[self.shape]
+            error = relative_error(self.m['m11'], exact)
+            plt.plot(self.abscissa, error, '*', color = 'k', label = r'${m}_{11}$')
         else: pass
-        if 'm22' in self.m.keys():
-            plt.plot(self.abscissa, abs(self.m['m22'] - real_m22[self.shape]), 'x', color = 'k', label = r'${m}_{22}$')
+        if 'm22' in self.m:
+            exact = real_m22[self.shape]
+            error = relative_error(self.m['m22'], exact)
+            plt.plot(self.abscissa, error, 'x', color = 'k', label = r'${m}_{22}$')
         else: pass
-        if 'm66' in self.m.keys():
-            plt.plot(self.abscissa, abs(self.m['m66'] - real_m66[self.shape]), '.', color = 'k', label = r'${m}_{66}$')
+        if 'm66' in self.m:
+            exact = real_m66[self.shape]
+            if exact != 0:
+                error = relative_error(self.m['m66'], exact)
+                plt.plot(self.abscissa, error, '.', color = 'k', label = r'${m}_{66}$')
         else: pass
         plt.legend()
         plt.tight_layout()
-        plt.savefig(f"addedmass_{self.shape}_N{self.N*self.number}.pgf", transparent = True, format = "pgf")
+        plt.savefig(f"addedmass_{self.shape}{self.filetag}_N{int(self.abscissa[-1])}.pgf", transparent = True, format = "pgf")
         plt.show()
 
     def pi_axis(self):
@@ -48,12 +63,11 @@ class PlotConvergence:
         N = int(self.abscissa[-1])
         plt.rcParams['text.usetex'] = True
         plt.title(f'$N = {N}$')
-        # arctan2 \in (-pi, pi). Therefore domain -> domain-pi in potentials.py
-        domain = zeros(N)
-        for n in range(N):
-            domain[n] = arctan2(ж[1][n], ж[0][n]) + pi
-        init = Potentials(self.a, self.b, N, domain)
-        sorted_domain = sorted(domain)
+        # arctan2 \in (-pi, pi). Therefore domain -> [0, 2pi)
+        domain = arctan2(ж[1], ж[0])%(2*pi)
+        indices = domain.argsort()
+        sorted_domain = domain[indices]
+        init = Potentials(self.a, self.b, N, sorted_domain)
         count = 1
         if self.shape != 'circle' and self.shape != 'ellipse':
             for phi in self.phi:
@@ -66,9 +80,7 @@ class PlotConvergence:
         else:
             for phi in self.phi:
                 self.pi_axis()
-                coordinates = list(zip(domain, phi))
-                coordinates = sorted(coordinates, key = lambda coordinate: coordinate[0])
-                garbo, sorted_phi = list(zip(*coordinates))
+                sorted_phi = phi[indices]
                 plt.plot(sorted_domain, sorted_phi, 'x', color = 'k', markersize = 2, label = r'$\phi_{\mathrm{num}}$')
                 if count == 1:
                     if self.shape == 'ellipse': call = init.ellipse_1()
@@ -78,8 +90,12 @@ class PlotConvergence:
                     if self.shape == 'ellipse': call = init.ellipse_2()
                     else: call = init.circle_2()
                     plt.plot(sorted_domain, call, color = 'k', label = r'$\phi_2$')
+                elif count == 6 and self.shape == 'ellipse':
+                    call = init.ellipse_6()
+                    plt.plot(sorted_domain, call, color = 'k', label = r'$\phi_6$')
+                
                 plt.legend()
-                plt.savefig(f"phi_{count}_N{N}.pgf", transparent = True, format = "pgf")
+                plt.savefig(f"phi_{count}{self.filetag}_N{N}.pgf", transparent = True, format = "pgf")
                 plt.show()
                 count = count + count*count
 

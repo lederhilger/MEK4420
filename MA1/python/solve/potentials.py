@@ -5,7 +5,7 @@ class Potentials:
         self.a = a
         self.b = b
         self.N = N
-        self.domain = [domain[n]-pi for n in range(len(domain))]
+        self.domain = domain
 
     def circle_1(self):
         phi = cos(self.domain)
@@ -23,4 +23,9 @@ class Potentials:
     def ellipse_2(self):
         denominator = sqrt(self.b**2 * cos(self.domain)**2 + self.a**2 * sin(self.domain)**2)
         phi = self.a**2 * sin(self.domain) / denominator
+        return phi
+
+    def ellipse_6(self):
+        denominator = self.b**2 * cos(self.domain)**2 + self.a**2 * sin(self.domain)**2
+        phi = self.a*self.b*(self.a**2 - self.b**2)*sin(2*self.domain) / (4*denominator)
         return phi
