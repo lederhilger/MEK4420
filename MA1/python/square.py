@@ -1,14 +1,15 @@
-from numpy import linspace, ones, zeros, flip, pi
+from numpy import linspace, ones, zeros, flip, pi, sqrt
 import matplotlib.pyplot as plt
 from solve.integralequation import IntegralEquation
 from solve.arguments import parse_args
+from solve.ellipticity import Ellipticity
 from solve.jacobi import Jacobi
 from solve.chebyshov import Chebyshov
 from solve.plot_convergence import PlotConvergence
 from progress.bar import Bar
 
 def square(a: float, N: int) -> tuple:
-    # line = Jacobi(linspace(-a, a, N + 1)).inverse_map()
+    # line = Jacobi(linspace(-a, a, N + 1), sqrt(.5)).inverse_map()
     line = Chebyshov(linspace(-a, a, N + 1)).inverse_map()
     # line = linspace(-a, a, N + 1)
     x = ones(4*N + 1); z = ones(4*N + 1)
@@ -23,7 +24,7 @@ def test_square(N: int):
     M = 4*N
     abscissa = zeros(number)
     m_11 = zeros(number); m_22 = zeros(number); m_66 = zeros(number)
-    k = 4*(2*Jacobi(None).K()**2/pi - 1)
+    k = 4*(2*Ellipticity(modulus = sqrt(.5)).K()**2/pi - 1)
     bar = Bar('Calculating', max = number, fill='#', suffix='%(percent)d%% %(elapsed)ds')
     for i in range(number):
         abscissa[i] = M*(i+1)
