@@ -42,15 +42,19 @@ class Jacobi(Chebyshov):
         E = self.ellipticity.E()
 
         newton = Newton()
-        for n in range(N):
+        for n in range(1, N):
+            q = 1 - n/N
+            target = q*E
+            
             def function(x):
                 incomplete_E, derivative = (
                     self.ellipticity.incomplete_E_and_derivative(x)
                 )
-                return incomplete_E - (1 - n/N)*E, derivative
+                return incomplete_E - target, derivative
 
-            x_0 = (1 - n/N)*K
-            x = newton.solve(function, x_0, 0, K)
+            x_0 = q*K
+            x = newton.solve(function, x_0, 0, -target)
             φ = self.ellipticity.φ(x)
             η[n] = .5*pi - φ[0]
+
         return η
