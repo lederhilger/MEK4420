@@ -1,0 +1,46 @@
+\begin{tikzpicture}
+  \begin{scope}[scale = 5]
+    \def\slingringsmonn{.2}
+    \def\majorradius{1}
+    \def\minorradius{.5}
+
+    \draw[-latex, thick] ({-\majorradius - \slingringsmonn}, 0)--({\majorradius + \slingringsmonn}, 0);
+    \draw[-latex, thick] (0, {- \minorradius - \slingringsmonn})--(0, {\minorradius + \slingringsmonn});
+    \draw[thick] ({-\majorradius}, .05)--({-\majorradius}, -.05) node[below = 1ex, left]{$-a$};
+    \draw[thick] (\majorradius, .05)--(\majorradius, -.05) node[below = 1ex, right]{$a$};
+    \draw[thick] (.05, \minorradius)--(-.05, \minorradius) node[above = 1.5ex, left]{$b$};
+    \draw[thick] (.05, {-\minorradius})--(-.05, {-\minorradius}) node[below = 1.5ex, left]{$-b$};
+
+    \draw[fill = white] ({-\majorradius}, 0) circle (.01);
+    \draw[fill = white] (\majorradius, 0) circle (.01);
+    \draw[fill = white] (0, \minorradius) circle (.01);
+    \draw[fill = white] (0, {-\minorradius}) circle (.01);
+
+    \foreach \eta in  {
+      0.149727555132877,
+      0.291058381883093,
+      0.420570310484157,
+      0.538784702588300,
+      0.647540092251922,
+      0.748706384052278,
+      0.843843535537352,
+      0.934187593969708,
+      1.020712815471299,
+      1.104196772801416,
+      1.185272712274500,
+      1.264468876320687,
+      1.342237701080695,
+      1.418977800938841,
+      1.495051030191154
+    } {
+      \pgfmathsetmacro{\xcoordinate}{\majorradius*cos(\eta r)}
+      \pgfmathsetmacro{\zcoordinate}{\minorradius*sin(\eta r)}
+
+      \foreach \xsign in {-1, 1} {
+        \foreach \zsign in {-1, 1} {
+          \draw[fill = white] ({\xsign*\xcoordinate}, {\zsign*\zcoordinate}) circle (.01);
+	}
+      }
+    }
+  \end{scope}
+\end{tikzpicture}
