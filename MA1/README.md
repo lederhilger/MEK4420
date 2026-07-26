@@ -5,6 +5,10 @@
 ### Boundary element method
 - Write about Fredholm integral equations
 
+### Circle case
+- Update figures: potentials, added mass convergence
+- Quadrature table to list relative error, not L^2
+
 ### Ellipse case
 - Explain Newtons method: Alefeld & Potra (1988)
 - Polish the AGM section
